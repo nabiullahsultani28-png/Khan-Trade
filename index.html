@@ -89,15 +89,35 @@
 
   <!-- ============ HERO ============ -->
   <section class="hero" aria-label="Introduction">
-    <video class="hero-video" autoplay muted loop playsinline poster="assets/img/chart-crt.jpg">
-      <source src="assets/video/chart-1.mp4" type="video/mp4" />
+    <video class="hero-video" autoplay muted loop playsinline poster="assets/img/xauusd.png">
+      <source src="assets/video/hero-dribbble.mp4" type="video/mp4" />
     </video>
     <div class="hero-overlay"></div>
+    <div class="hero-candles" aria-hidden="true">
+      <svg viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
+        <g class="hero-candles-row">
+          <g class="hero-candle" data-tone="bull"><line x1="0" y1="220" x2="0" y2="380"/><rect x="-7" y="260" width="14" height="100" rx="1"/></g>
+          <g class="hero-candle" data-tone="bear" transform="translate(95 0)"><line x1="0" y1="260" x2="0" y2="430"/><rect x="-7" y="290" width="14" height="120" rx="1"/></g>
+          <g class="hero-candle" data-tone="bull" transform="translate(190 0)"><line x1="0" y1="200" x2="0" y2="340"/><rect x="-7" y="230" width="14" height="90" rx="1"/></g>
+          <g class="hero-candle" data-tone="bull" transform="translate(285 0)"><line x1="0" y1="150" x2="0" y2="300"/><rect x="-7" y="180" width="14" height="100" rx="1"/></g>
+          <g class="hero-candle" data-tone="bear" transform="translate(380 0)"><line x1="0" y1="180" x2="0" y2="360"/><rect x="-7" y="220" width="14" height="120" rx="1"/></g>
+          <g class="hero-candle" data-tone="bull" transform="translate(475 0)"><line x1="0" y1="140" x2="0" y2="290"/><rect x="-7" y="170" width="14" height="100" rx="1"/></g>
+          <g class="hero-candle" data-tone="bull" transform="translate(570 0)"><line x1="0" y1="100" x2="0" y2="250"/><rect x="-7" y="130" width="14" height="100" rx="1"/></g>
+          <g class="hero-candle" data-tone="bear" transform="translate(665 0)"><line x1="0" y1="130" x2="0" y2="310"/><rect x="-7" y="170" width="14" height="120" rx="1"/></g>
+          <g class="hero-candle" data-tone="bull" transform="translate(760 0)"><line x1="0" y1="180" x2="0" y2="340"/><rect x="-7" y="220" width="14" height="100" rx="1"/></g>
+          <g class="hero-candle" data-tone="bull" transform="translate(855 0)"><line x1="0" y1="220" x2="0" y2="380"/><rect x="-7" y="250" width="14" height="110" rx="1"/></g>
+          <g class="hero-candle" data-tone="bear" transform="translate(950 0)"><line x1="0" y1="260" x2="0" y2="440"/><rect x="-7" y="300" width="14" height="120" rx="1"/></g>
+          <g class="hero-candle" data-tone="bull" transform="translate(1045 0)"><line x1="0" y1="200" x2="0" y2="370"/><rect x="-7" y="230" width="14" height="110" rx="1"/></g>
+          <g class="hero-candle" data-tone="bull" transform="translate(1140 0)"><line x1="0" y1="160" x2="0" y2="320"/><rect x="-7" y="190" width="14" height="110" rx="1"/></g>
+          <g class="hero-candle" data-tone="bear" transform="translate(1235 0)"><line x1="0" y1="200" x2="0" y2="370"/><rect x="-7" y="240" width="14" height="110" rx="1"/></g>
+        </g>
+      </svg>
+    </div>
 
     <div class="container hero-inner">
       <span class="eyebrow">ICT &middot; CRT &middot; Unicorn</span>
-      <h1 style="margin-top:24px">
-        Master the market<br>the <span class="accent">ICT</span> way.
+      <h1 style="margin-top:24px" class="hero-h1" aria-label="Master the market the ICT way.">
+        <span aria-hidden="true">Master</span> <span aria-hidden="true">the</span> <span aria-hidden="true">market</span><br><span aria-hidden="true">the</span> <span class="accent" aria-hidden="true">ICT</span> <span aria-hidden="true">way.</span>
       </h1>
       <p class="lead">
         A complete forex execution system for serious traders. Built around <strong>Candle Range Theory</strong>, the <strong>Unicorn entry model</strong>, and the timing &amp; liquidity logic that actually moves Gold and the majors.
@@ -127,24 +147,24 @@
       <!-- duplicated content for seamless loop -->
       <span class="ticker-item">XAUUSD <span class="up">▲ 4,657.59</span></span>
       <span class="ticker-item sep">&bull;</span>
-      <span class="ticker-item">CRT Model <span class="up">FOUNDATIONS &middot; CONFIRMATIONS &middot; EXECUTION</span></span>
+      <span class="ticker-item">CRT Model <span class="up">▲ FOUNDATIONS &middot; CONFIRMATIONS &middot; EXECUTION</span></span>
       <span class="ticker-item sep">&bull;</span>
-      <span class="ticker-item">Unicorn Entry <span class="up">BREAKER &times; FVG &times; LIQUIDITY</span></span>
+      <span class="ticker-item">Unicorn Entry <span class="up">▲ BREAKER &times; FVG &times; LIQUIDITY</span></span>
       <span class="ticker-item sep">&bull;</span>
-      <span class="ticker-item">London Open <span class="down">02:00 NY</span></span>
+      <span class="ticker-item">London Open <span class="down">▼ 02:00 NY</span></span>
       <span class="ticker-item sep">&bull;</span>
-      <span class="ticker-item">Personal CRT Secret <span class="up">PREMIUM ONLY</span></span>
+      <span class="ticker-item">Personal CRT Secret <span class="up">▲ PREMIUM ONLY</span></span>
       <span class="ticker-item sep">&bull;</span>
       <!-- duplicate -->
       <span class="ticker-item">XAUUSD <span class="up">▲ 4,657.59</span></span>
       <span class="ticker-item sep">&bull;</span>
-      <span class="ticker-item">CRT Model <span class="up">FOUNDATIONS &middot; CONFIRMATIONS &middot; EXECUTION</span></span>
+      <span class="ticker-item">CRT Model <span class="up">▲ FOUNDATIONS &middot; CONFIRMATIONS &middot; EXECUTION</span></span>
       <span class="ticker-item sep">&bull;</span>
-      <span class="ticker-item">Unicorn Entry <span class="up">BREAKER &times; FVG &times; LIQUIDITY</span></span>
+      <span class="ticker-item">Unicorn Entry <span class="up">▲ BREAKER &times; FVG &times; LIQUIDITY</span></span>
       <span class="ticker-item sep">&bull;</span>
-      <span class="ticker-item">London Open <span class="down">02:00 NY</span></span>
+      <span class="ticker-item">London Open <span class="down">▼ 02:00 NY</span></span>
       <span class="ticker-item sep">&bull;</span>
-      <span class="ticker-item">Personal CRT Secret <span class="up">PREMIUM ONLY</span></span>
+      <span class="ticker-item">Personal CRT Secret <span class="up">▲ PREMIUM ONLY</span></span>
       <span class="ticker-item sep">&bull;</span>
     </div>
   </div>
@@ -214,7 +234,7 @@
             <p>What CRT actually is, why it works, and the narrative behind every candle you'll ever take a trade from. The mental model that powers every later module.</p>
           </div>
           <div class="module-visual" data-parallax>
-            <img src="assets/img/chart-crt.jpg" alt="Annotated Gold chart showing a CRT high being formed by a purging candle on the 5-minute timeframe." loading="lazy" />
+            <div class="chart-anim" data-chart="foundations"></div>
           </div>
         </article>
 
@@ -226,7 +246,7 @@
             <p>Why CRT only fires inside specific sessions and how to align your watch-windows with London Open, NY AM, and the silver-bullet kill-zones. No more random screen time.</p>
           </div>
           <div class="module-visual" data-parallax>
-            <div class="placeholder">Session map &middot; 10–11 AM / 2–3 PM NY</div>
+            <div class="chart-anim" data-chart="sessions"></div>
           </div>
         </article>
 
@@ -238,7 +258,7 @@
             <p>Read the candle that takes liquidity, recognize the delivery in real time, and separate a true purge from a fake-out before you ever click buy or sell.</p>
           </div>
           <div class="module-visual" data-parallax>
-            <div class="placeholder">Purge candle anatomy</div>
+            <div class="chart-anim" data-chart="purge"></div>
           </div>
         </article>
 
@@ -250,7 +270,7 @@
             <p>The four variants of the CRT setup and the exact confirmation each requires. Removes the guesswork between "valid setup" and "skip this one."</p>
           </div>
           <div class="module-visual" data-parallax>
-            <img src="assets/img/chart-crt.jpg" alt="Gold chart annotated with the CRT high being defended and confirmation forming on the lower timeframe." loading="lazy" />
+            <div class="chart-anim" data-chart="models"></div>
           </div>
         </article>
 
@@ -262,7 +282,7 @@
             <p>Where the liquidity actually sits, how price hunts it, and how to use that to predict where the market goes next — not just where it just was.</p>
           </div>
           <div class="module-visual" data-parallax>
-            <div class="placeholder">Buyside &middot; Sellside liquidity</div>
+            <div class="chart-anim" data-chart="liquidity"></div>
           </div>
         </article>
 
@@ -274,7 +294,7 @@
             <p>Risk, position sizing, partial-take rules, stop placement, trade management. The mechanical layer that turns a "good idea" into a repeatable PnL.</p>
           </div>
           <div class="module-visual" data-parallax>
-            <div class="placeholder">Entry &middot; Stop &middot; Target</div>
+            <div class="chart-anim" data-chart="execution"></div>
           </div>
         </article>
 
@@ -290,7 +310,7 @@
             </span>
           </div>
           <div class="module-visual" data-parallax>
-            <div class="placeholder" style="color:var(--gold)">[ Locked &middot; Premium tier ]</div>
+            <div class="chart-anim" data-chart="premium"></div>
           </div>
         </article>
 
@@ -302,10 +322,10 @@
   <section id="unicorn" class="unicorn" aria-labelledby="unicorn-h">
     <div class="container">
       <div class="grid-2">
-        <div class="unicorn-visual">
+        <div class="unicorn-visual unicorn-visual--glow">
           <span class="badge"><span class="pulse"></span> Live example</span>
-          <video data-lazy muted loop playsinline poster="assets/img/chart-crt.jpg">
-            <source src="assets/video/chart-2.mp4" type="video/mp4" />
+          <video data-lazy muted loop playsinline poster="assets/img/chart-fallback.jpeg">
+            <source src="assets/video/chart-unicorn.mp4" type="video/mp4" />
           </video>
         </div>
         <div>
@@ -313,7 +333,10 @@
           <h2 id="unicorn-h" style="margin-top:20px">Rare. Clean. Repeatable.</h2>
           <p style="margin-top:18px">The Unicorn is the highest-conviction entry in the system — a breaker block overlapped with a fair-value gap, taken at a liquidity sweep, confirmed by timing. It doesn't appear every day, and that's the point.</p>
 
-          <div style="margin-top:24px">
+          <div class="unicorn-steps" style="margin-top:24px">
+            <svg class="unicorn-line" viewBox="0 0 4 100" preserveAspectRatio="none" aria-hidden="true">
+              <line class="unicorn-line-path" x1="2" y1="0" x2="2" y2="100" stroke-linecap="round"/>
+            </svg>
             <div class="step">
               <div class="step-num">01</div>
               <div>
@@ -358,19 +381,19 @@
 
       <div class="stats reveal" style="margin-bottom:60px">
         <div class="stat">
-          <div class="stat-num"><span data-count="7">0</span></div>
+          <div class="stat-num"><span data-count="7">0</span><svg class="sparkline" viewBox="0 0 100 30"><path d="M0 25 Q15 25 20 15 T40 10 T60 20 T80 5 T100 0"/></svg></div>
           <div class="stat-label">CRT modules</div>
         </div>
         <div class="stat">
-          <div class="stat-num"><span data-count="500">0</span><span class="unit">+</span></div>
+          <div class="stat-num"><span data-count="500">0</span><span class="unit">+</span><svg class="sparkline" viewBox="0 0 100 30"><path d="M0 20 Q10 20 25 10 T50 15 T75 5 T100 0"/></svg></div>
           <div class="stat-label">Trades reviewed</div>
         </div>
         <div class="stat">
-          <div class="stat-num"><span data-count="1">0</span><span class="unit">:5+</span></div>
+          <div class="stat-num"><span data-count="1">0</span><span class="unit">:5+</span><svg class="sparkline" viewBox="0 0 100 30"><path d="M0 30 Q20 30 30 15 T60 25 T80 5 T100 0"/></svg></div>
           <div class="stat-label">Avg RR taught</div>
         </div>
         <div class="stat">
-          <div class="stat-num"><span data-count="2">0</span></div>
+          <div class="stat-num"><span data-count="2">0</span><svg class="sparkline" viewBox="0 0 100 30"><path d="M0 10 Q10 10 20 25 T40 15 T60 20 T80 5 T100 0"/></svg></div>
           <div class="stat-label">Telegram channels</div>
         </div>
       </div>
@@ -478,7 +501,9 @@
       <div class="grid-3 stagger-group">
         <!-- TODO: replace with real testimonials -->
         <article class="quote-card">
-          <div class="qmark">&ldquo;</div>
+          <svg class="qmark-svg" viewBox="0 0 60 50" aria-hidden="true">
+            <path class="qmark-path" d="M 8 38 Q 8 22 22 16 M 36 38 Q 36 22 50 16" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
           <p>The CRT modules finally made the ICT material click. I stopped second-guessing entries and started executing with a checklist.</p>
           <div class="who">
             <div class="avatar">AH</div>
@@ -489,7 +514,9 @@
           </div>
         </article>
         <article class="quote-card">
-          <div class="qmark">&ldquo;</div>
+          <svg class="qmark-svg" viewBox="0 0 60 50" aria-hidden="true">
+            <path class="qmark-path" d="M 8 38 Q 8 22 22 16 M 36 38 Q 36 22 50 16" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
           <p>The Unicorn model alone changed how I look at NY AM session. One clean setup a day beats forcing ten.</p>
           <div class="who">
             <div class="avatar">RM</div>
@@ -500,7 +527,9 @@
           </div>
         </article>
         <article class="quote-card">
-          <div class="qmark">&ldquo;</div>
+          <svg class="qmark-svg" viewBox="0 0 60 50" aria-hidden="true">
+            <path class="qmark-path" d="M 8 38 Q 8 22 22 16 M 36 38 Q 36 22 50 16" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
           <p>The premium channel is the closest thing to having a mentor watching your charts in real time. Worth it.</p>
           <div class="who">
             <div class="avatar">SK</div>
@@ -694,6 +723,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="js/charts.js"></script>
 <script src="js/main.js"></script>
 <script src="js/animations.js"></script>
 </body>

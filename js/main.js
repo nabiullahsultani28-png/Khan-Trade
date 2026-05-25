@@ -28,14 +28,42 @@
   closeBtn?.addEventListener('click', closeMenu);
   menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
 
-  // ---- FAQ accordion
+  // ---- Ticker pause-on-hover
+  const tickerTrack = document.querySelector('.ticker-track');
+  if (tickerTrack) {
+    tickerTrack.parentElement.addEventListener('mouseenter', () => tickerTrack.style.animationPlayState = 'paused');
+    tickerTrack.parentElement.addEventListener('mouseleave', () => tickerTrack.style.animationPlayState = 'running');
+  }
+
+  // ---- FAQ accordion (smooth height via measured inline max-height)
+  const setFaqHeight = (item, open) => {
+    const a = item.querySelector('.faq-a');
+    if (!a) return;
+    if (open) {
+      const inner = a.querySelector('.faq-a-inner');
+      const h = inner ? inner.scrollHeight + 2 : a.scrollHeight;
+      a.style.maxHeight = h + 'px';
+    } else {
+      a.style.maxHeight = '0px';
+    }
+  };
   document.querySelectorAll('.faq-item').forEach(item => {
     const btn = item.querySelector('.faq-q');
     btn?.addEventListener('click', () => {
       const wasOpen = item.classList.contains('open');
-      item.parentElement?.querySelectorAll('.faq-item.open').forEach(o => o.classList.remove('open'));
-      if (!wasOpen) item.classList.add('open');
+      item.parentElement?.querySelectorAll('.faq-item.open').forEach(o => {
+        o.classList.remove('open');
+        setFaqHeight(o, false);
+      });
+      if (!wasOpen) {
+        item.classList.add('open');
+        setFaqHeight(item, true);
+      }
     });
+  });
+  // Recompute open item heights on viewport resize (line-wrap can change height)
+  window.addEventListener('resize', () => {
+    document.querySelectorAll('.faq-item.open').forEach(o => setFaqHeight(o, true));
   });
 
   // ---- Scroll reveal (IntersectionObserver fallback if GSAP not loaded)
@@ -74,6 +102,17 @@
   const easeOut = (t) => 1 - Math.pow(1 - t, 3);
   const animateNumber = (el) => {
     const target = parseFloat(el.dataset.count);
+
+    // Sparkline animation if present
+    const sparkline = el.parentElement.querySelector('.sparkline');
+    if (sparkline && typeof gsap !== 'undefined') {
+      const path = sparkline.querySelector('path');
+      const length = path.getTotalLength();
+      path.style.strokeDasharray = length;
+      path.style.strokeDashoffset = length;
+      gsap.to(sparkline, { opacity: 0.6, duration: 0.2 });
+      gsap.to(path, { strokeDashoffset: 0, duration: 1.2, ease: 'power2.out', delay: 0.2 });
+    }
     const decimals = (el.dataset.decimals != null) ? parseInt(el.dataset.decimals, 10) : 0;
     const duration = 1400;
     const start = performance.now();
@@ -81,8 +120,17 @@
       const t = Math.min(1, (now - start) / duration);
       const val = target * easeOut(t);
       el.textContent = val.toFixed(decimals);
-      if (t < 1) requestAnimationFrame(tick);
-      else el.textContent = target.toFixed(decimals);
+      if (t < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        el.textContent = target.toFixed(decimals);
+        const statNum = el.closest('.stat-num');
+        if (statNum) {
+          statNum.classList.remove('popped');
+          void statNum.offsetWidth; // restart animation
+          statNum.classList.add('popped');
+        }
+      }
     };
     requestAnimationFrame(tick);
   };

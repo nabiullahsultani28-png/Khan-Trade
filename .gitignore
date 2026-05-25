@@ -18,3 +18,7 @@ dist/
 
 # Logs
 *.log
+
+# Source / reference material (not part of the deployed site)
+Images/
+IMPROVEMENT_PLAN.md

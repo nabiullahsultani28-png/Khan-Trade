@@ -348,6 +348,7 @@ section { padding: clamp(72px, 10vw, 140px) 0; position: relative; }
   max-width: 14ch;
   margin-bottom: 24px;
 }
+.hero h1 span { display: inline-block; }
 .hero h1 .accent { color: var(--bull); }
 .hero h1 .accent-gold { color: var(--gold); }
 
@@ -389,6 +390,8 @@ section { padding: clamp(72px, 10vw, 140px) 0; position: relative; }
   background: var(--bg-elev);
   overflow: hidden;
   position: relative;
+  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
 }
 .ticker-track {
   display: flex;
@@ -803,7 +806,7 @@ section { padding: clamp(72px, 10vw, 140px) 0; position: relative; }
 .faq-a {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.5s var(--ease-out);
+  transition: max-height 0.55s var(--ease-out);
 }
 .faq-a-inner {
   padding: 0 0 22px;
@@ -811,7 +814,9 @@ section { padding: clamp(72px, 10vw, 140px) 0; position: relative; }
   font-size: 0.98rem;
   max-width: 64ch;
 }
-.faq-item.open .faq-a { max-height: 400px; }
+.faq-item.open .faq-a { max-height: 1500px; }
+/* JS sets exact pixel height on .faq-a inline for accurate animation;
+   this rule is the no-JS / fallback path. */
 
 /* ============================================================
    Plan comparison
@@ -874,11 +879,38 @@ section { padding: clamp(72px, 10vw, 140px) 0; position: relative; }
 .plan ul li svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 3px; color: var(--bull); }
 .plan .btn-tg { width: 100%; justify-content: center; margin-top: auto; }
 
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes rotate {
+  to { --angle: 360deg; }
+}
 .plan.premium {
-  border-color: var(--gold);
+  border-color: transparent;
   background:
     linear-gradient(135deg, rgba(212, 175, 55, 0.07), transparent 60%),
     var(--bg-elev);
+  position: relative;
+  z-index: 1;
+}
+.plan.premium::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: calc(var(--radius-lg) + 1px);
+  background: conic-gradient(from var(--angle), transparent 60%, var(--gold));
+  animation: rotate 6s linear infinite;
+  z-index: -1;
+}
+.plan.premium::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  background: var(--bg-elev);
+  z-index: -1;
 }
 .plan.premium .plan-tier { color: var(--gold); }
 .plan.premium ul li svg { color: var(--gold); }
@@ -1054,12 +1086,208 @@ section { padding: clamp(72px, 10vw, 140px) 0; position: relative; }
   transform: translateY(0);
 }
 
+/* ============================================================
+   Charts, Sparklines & Polish
+   ============================================================ */
+.chart-anim {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+.c-bull { fill: var(--bull); }
+.c-bear { fill: var(--bear); }
+.c-wick { stroke: var(--ink-dim); stroke-width: 1.5px; }
+.c-zone-crt { fill: var(--gold-soft); }
+.c-zone-session { fill: rgba(255,255,255,0.03); }
+.c-zone-bg { fill: var(--bg-base); }
+.c-level.l-grey { stroke: var(--ink-dim); stroke-width: 1; stroke-dasharray: 4; }
+.c-level.l-red { stroke: var(--bear); stroke-width: 1; stroke-dasharray: 4; }
+.c-level.l-green { stroke: var(--bull); stroke-width: 1; stroke-dasharray: 4; }
+.c-level.l-gold { stroke: var(--gold); stroke-width: 1; stroke-dasharray: 4; }
+.c-label-bg { fill: var(--bg-base); stroke: var(--ink-dim); stroke-width: 1; }
+.c-label-text { fill: var(--ink); font-family: var(--font-mono); font-size: 10px; }
+.c-sweep { fill: none; stroke: var(--bull); stroke-width: 2; stroke-dasharray: 4; }
+.c-marker { fill: var(--bull); }
+.c-mini-label { fill: var(--ink-mute); font-family: var(--font-mono); font-size: 12px; }
+.c-premium { fill: var(--gold); opacity: 0.5; }
+.c-redact { fill: var(--bg-base); opacity: 0.9; }
+.c-lock-icon { fill: var(--gold); }
+.c-dim { opacity: 0.3; }
+
+.sparkline {
+  height: 30px;
+  width: 80px;
+  fill: none;
+  stroke: var(--ink-mute);
+  stroke-width: 2;
+  margin-left: 14px;
+  opacity: 0;
+  stroke-linecap: round;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.shimmer-skeleton::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+  animation: shimmer 2s infinite;
+  pointer-events: none;
+}
+
+/* ============================================================
+   Hero drifting candle backdrop
+   ============================================================ */
+.hero-candles {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.12;
+  mask-image: linear-gradient(180deg, transparent 0%, #000 25%, #000 75%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 25%, #000 75%, transparent 100%);
+}
+.hero-candle line { stroke: var(--ink-mute); stroke-width: 1.2; }
+.hero-candle[data-tone="bull"] rect { fill: var(--bull); }
+.hero-candle[data-tone="bear"] rect { fill: var(--bear); }
+.hero-candles-row { transform: translateX(0); will-change: transform; }
+
+/* Hero overlay needs to sit above the candle layer */
+.hero-overlay { z-index: 1; }
+.hero-inner { z-index: 3; }
+
+/* ============================================================
+   Unicorn — connecting line + animated gold border on video
+   ============================================================ */
+.unicorn-steps {
+  position: relative;
+}
+.unicorn-line {
+  position: absolute;
+  top: 30px;
+  bottom: 30px;
+  left: 22px;
+  width: 4px;
+  height: calc(100% - 60px);
+  overflow: visible;
+  pointer-events: none;
+}
+.unicorn-line-path {
+  stroke: var(--gold);
+  stroke-width: 2;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.5));
+}
+.unicorn-steps .step {
+  position: relative;
+  padding-left: 18px;
+}
+
+.unicorn-visual--glow {
+  position: relative;
+  isolation: isolate;
+}
+.unicorn-visual--glow::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: calc(var(--radius-lg) + 2px);
+  background: conic-gradient(from var(--angle, 0deg),
+    transparent 0deg,
+    transparent 200deg,
+    var(--gold) 280deg,
+    transparent 360deg);
+  animation: rotate 9s linear infinite;
+  z-index: -1;
+  opacity: 0.65;
+}
+
+/* ============================================================
+   Testimonial — animated SVG quote-mark + slow float
+   ============================================================ */
+.qmark-svg {
+  width: 56px;
+  height: 46px;
+  color: var(--bull);
+  overflow: visible;
+}
+.qmark-path {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+}
+@keyframes quoteFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.quote-card.floating {
+  animation: quoteFloat 4.5s ease-in-out infinite;
+}
+.quote-card:nth-child(2).floating { animation-delay: 0.6s; }
+.quote-card:nth-child(3).floating { animation-delay: 1.2s; }
+
+/* ============================================================
+   Stats — gold pulse on count-complete
+   ============================================================ */
+@keyframes statPulse {
+  0% {
+    text-shadow: 0 0 0 rgba(212, 175, 55, 0);
+    transform: scale(1);
+  }
+  35% {
+    text-shadow: 0 0 22px rgba(212, 175, 55, 0.7);
+    transform: scale(1.04);
+  }
+  100% {
+    text-shadow: 0 0 0 rgba(212, 175, 55, 0);
+    transform: scale(1);
+  }
+}
+.stat-num.popped { animation: statPulse 0.9s var(--ease-out); }
+
+/* ============================================================
+   About — faint candlestick pattern background
+   ============================================================ */
+.about-pattern {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.about-pattern::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='none' stroke='%238A93A6' stroke-width='1'%3E%3Cline x1='20' y1='30' x2='20' y2='110'/%3E%3Crect x='14' y='50' width='12' height='40' rx='1' fill='%2322C55E' fill-opacity='0.5' stroke='none'/%3E%3Cline x1='55' y1='40' x2='55' y2='120'/%3E%3Crect x='49' y='60' width='12' height='50' rx='1' fill='%23EF4444' fill-opacity='0.5' stroke='none'/%3E%3Cline x1='90' y1='35' x2='90' y2='100'/%3E%3Crect x='84' y='45' width='12' height='42' rx='1' fill='%2322C55E' fill-opacity='0.5' stroke='none'/%3E%3Cline x1='125' y1='50' x2='125' y2='130'/%3E%3Crect x='119' y='70' width='12' height='45' rx='1' fill='%23EF4444' fill-opacity='0.5' stroke='none'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 320px 320px;
+  opacity: 0.06;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ============================================================
+   Reduced-motion fallbacks
+   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.001s !important;
   }
   .reveal { opacity: 1; transform: none; }
   .ticker-track { animation: none; }
   .hero-video { display: none; }
+  .hero-candles { display: none; }
+  .shimmer-skeleton::after { display: none; }
+  .plan.premium::before { animation: none; background: linear-gradient(135deg, var(--gold), transparent 70%); }
+  .unicorn-visual--glow::before { animation: none; opacity: 0.4; }
+  .quote-card.floating { animation: none; }
+  .unicorn-line-path { stroke-dashoffset: 0; }
+  .qmark-path { stroke-dashoffset: 0; }
+  .sparkline { opacity: 0.6; }
+  .sparkline path { stroke-dashoffset: 0 !important; }
+  .stat-num.popped { animation: none; }
 }

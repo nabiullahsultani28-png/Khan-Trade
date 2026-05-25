@@ -15,7 +15,10 @@
   const heroLead = document.querySelector('.hero .lead');
   const heroCta = document.querySelector('.hero .tg-cta-pair');
   const heroMeta = document.querySelector('.hero-meta');
-  if (heroH1) {
+  const heroH1Spans = document.querySelectorAll('.hero-h1 span');
+  if (heroH1Spans.length) {
+    gsap.from(heroH1Spans, { y: 36, opacity: 0, duration: 1.2, ease: 'expo.out', delay: 0.1, stagger: 0.1 });
+  } else if (heroH1) {
     gsap.from(heroH1, { y: 36, opacity: 0, duration: 1.2, ease: 'expo.out', delay: 0.1 });
   }
   if (heroLead) {
@@ -70,6 +73,76 @@
         scrollTrigger: { trigger: '.plans', start: 'top 75%' },
         y: 40, opacity: 0, duration: 1, ease: 'expo.out', delay: i * 0.12
       });
+      // Checkmarks stagger
+      gsap.from(p.querySelectorAll('ul li'), {
+        scrollTrigger: { trigger: p, start: 'top 80%' },
+        x: -10, opacity: 0, duration: 0.6, stagger: 0.1, delay: i * 0.12 + 0.3
+      });
+    });
+
+    // --- Unicorn steps
+    gsap.from('.unicorn .step', {
+      scrollTrigger: { trigger: '.unicorn .grid-2', start: 'top 60%' },
+      y: 20, opacity: 0, duration: 0.8, stagger: 0.15
+    });
+
+    // --- Testimonial cards
+    gsap.from('.quote-card', {
+      scrollTrigger: { trigger: '.quote-card', start: 'top 85%' },
+      y: 30, scale: 0.96, opacity: 0, duration: 0.8, ease: 'expo.out', stagger: 0.1
+    });
+
+    // --- Testimonial SVG quote-mark draw-in + slow float
+    gsap.utils.toArray('.qmark-svg .qmark-path').forEach(path => {
+      gsap.fromTo(path, { strokeDashoffset: 200 }, {
+        strokeDashoffset: 0,
+        duration: 1.4,
+        ease: 'expo.out',
+        scrollTrigger: { trigger: path.closest('.quote-card'), start: 'top 85%' }
+      });
+    });
+    gsap.utils.toArray('.quote-card').forEach(card => {
+      ScrollTrigger.create({
+        trigger: card,
+        start: 'top 85%',
+        once: true,
+        onEnter: () => card.classList.add('floating')
+      });
+    });
+
+    // --- Unicorn vertical connecting line — draws as section scrolls
+    const uLine = document.querySelector('.unicorn-line-path');
+    if (uLine) {
+      gsap.fromTo(uLine, { strokeDashoffset: 100 }, {
+        strokeDashoffset: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.unicorn-steps',
+          start: 'top 75%',
+          end: 'bottom 70%',
+          scrub: 0.6
+        }
+      });
+    }
+  }
+
+  // --- Hero drifting candle backdrop — slow infinite drift
+  const heroCandlesRow = document.querySelector('.hero-candles-row');
+  if (heroCandlesRow) {
+    gsap.to(heroCandlesRow, {
+      x: -200,
+      duration: 28,
+      ease: 'none',
+      repeat: -1,
+      yoyo: true
+    });
+    gsap.to('.hero-candle', {
+      y: 8,
+      duration: 4,
+      ease: 'sine.inOut',
+      repeat: -1,
+      yoyo: true,
+      stagger: { each: 0.25, from: 'random' }
     });
   }
 
