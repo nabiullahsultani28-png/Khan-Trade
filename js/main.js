@@ -112,6 +112,24 @@
       path.style.strokeDashoffset = length;
       gsap.to(sparkline, { opacity: 0.6, duration: 0.2 });
       gsap.to(path, { strokeDashoffset: 0, duration: 1.2, ease: 'power2.out', delay: 0.2 });
+
+      // Gold dot that rides the line as it draws
+      const NS = 'http://www.w3.org/2000/svg';
+      const dot = document.createElementNS(NS, 'circle');
+      dot.setAttribute('r', '2.6');
+      dot.setAttribute('class', 'sparkline-dot');
+      sparkline.appendChild(dot);
+      const proxy = { p: 0 };
+      gsap.to(proxy, {
+        p: 1, duration: 1.2, ease: 'power2.out', delay: 0.2,
+        onStart: () => { dot.style.opacity = 1; },
+        onUpdate: () => {
+          const pt = path.getPointAtLength(length * proxy.p);
+          dot.setAttribute('cx', pt.x);
+          dot.setAttribute('cy', pt.y);
+        },
+        onComplete: () => { gsap.to(dot, { opacity: 0, duration: 0.5, delay: 0.3 }); }
+      });
     }
     const decimals = (el.dataset.decimals != null) ? parseInt(el.dataset.decimals, 10) : 0;
     const duration = 1400;

@@ -30,6 +30,10 @@
   if (heroMeta) {
     gsap.from(heroMeta.children, { y: 14, opacity: 0, duration: 0.8, ease: 'expo.out', delay: 0.85, stagger: 0.08 });
   }
+  const heroPanel = document.querySelector('.hero-chart-panel');
+  if (heroPanel) {
+    gsap.from(heroPanel, { y: 40, opacity: 0, scale: 0.97, duration: 1.2, ease: 'expo.out', delay: 0.4 });
+  }
 
   // --- Generic section header reveal
   if (window.ScrollTrigger) {
@@ -81,16 +85,20 @@
     });
 
     // --- Unicorn steps
-    gsap.from('.unicorn .step', {
-      scrollTrigger: { trigger: '.unicorn .grid-2', start: 'top 60%' },
-      y: 20, opacity: 0, duration: 0.8, stagger: 0.15
-    });
+    if (document.querySelector('.unicorn .step')) {
+      gsap.from('.unicorn .step', {
+        scrollTrigger: { trigger: '.unicorn .grid-2', start: 'top 60%' },
+        y: 20, opacity: 0, duration: 0.8, stagger: 0.15
+      });
+    }
 
     // --- Testimonial cards
-    gsap.from('.quote-card', {
-      scrollTrigger: { trigger: '.quote-card', start: 'top 85%' },
-      y: 30, scale: 0.96, opacity: 0, duration: 0.8, ease: 'expo.out', stagger: 0.1
-    });
+    if (document.querySelector('.quote-card')) {
+      gsap.from('.quote-card', {
+        scrollTrigger: { trigger: '.quote-card', start: 'top 85%' },
+        y: 30, scale: 0.96, opacity: 0, duration: 0.8, ease: 'expo.out', stagger: 0.1
+      });
+    }
 
     // --- Testimonial SVG quote-mark draw-in + slow float
     gsap.utils.toArray('.qmark-svg .qmark-path').forEach(path => {
@@ -115,6 +123,23 @@
     if (uLine) {
       gsap.fromTo(uLine, { strokeDashoffset: 100 }, {
         strokeDashoffset: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.unicorn-steps',
+          start: 'top 75%',
+          end: 'bottom 70%',
+          scrub: 0.6
+        }
+      });
+    }
+    // Traveling glow node rides down the unicorn line as it draws
+    const uNode = document.querySelector('.unicorn-line-node');
+    const uSteps = document.querySelector('.unicorn-steps');
+    if (uNode && uSteps) {
+      const travel = uSteps.offsetHeight - 60;
+      gsap.fromTo(uNode, { y: 0, opacity: 0 }, {
+        y: travel,
+        opacity: 1,
         ease: 'none',
         scrollTrigger: {
           trigger: '.unicorn-steps',

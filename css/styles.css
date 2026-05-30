@@ -30,7 +30,7 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 body {
   margin: 0;
   background: var(--bg-base);
@@ -43,20 +43,39 @@ body {
   overflow-x: hidden;
 }
 
-/* Ambient candle-grid background — subtle */
+/* Ambient mesh-gradient backdrop — deep charcoal + slow-drifting gold glow.
+   Fixed + pointer-events:none so it never intercepts input; sits behind
+   main/header/footer (z-index:1). Animated via transform only (GPU-cheap). */
 body::before {
+  content: '';
+  position: fixed;
+  inset: -15%;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(36% 42% at 16% 8%,  rgba(212, 175, 55, 0.14), transparent 62%),
+    radial-gradient(30% 38% at 84% 16%, rgba(212, 175, 55, 0.08), transparent 60%),
+    radial-gradient(44% 52% at 76% 80%, rgba(34, 197, 94, 0.045), transparent 62%),
+    radial-gradient(50% 58% at 26% 96%, rgba(212, 175, 55, 0.05), transparent 64%);
+  will-change: transform;
+  animation: meshDrift 34s ease-in-out infinite alternate;
+}
+
+/* Fine film-grain — adds tooth and kills gradient banding. Static, cheap. */
+body::after {
   content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  background-image:
-    linear-gradient(var(--line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size: 80px 80px;
-  opacity: 0.25;
-  mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, transparent 70%);
-  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, transparent 70%);
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@keyframes meshDrift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(2%, -2.4%, 0) scale(1.07); }
+  100% { transform: translate3d(-2.4%, 1.8%, 0) scale(1.03); }
 }
 
 main, header, footer { position: relative; z-index: 1; }
@@ -79,7 +98,28 @@ p { margin: 0 0 1rem; color: var(--ink-mute); }
 p.lead { font-size: 1.2rem; color: var(--ink); }
 
 a { color: inherit; text-decoration: none; }
-.mono { font-family: var(--font-mono); letter-spacing: 0.02em; }
+
+/* Keyboard focus ring — visible for keyboard users, suppressed for mouse/touch */
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+
+/* Branded text selection */
+::selection { background: rgba(212, 175, 55, 0.30); color: #fff; }
+
+/* Refined dark scrollbar (WebKit) */
+::-webkit-scrollbar { width: 11px; height: 11px; }
+::-webkit-scrollbar-track { background: var(--bg-base); }
+::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 999px; border: 3px solid var(--bg-base); }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+.mono { font-family: var(--font-mono); letter-spacing: 0.02em; font-variant-numeric: tabular-nums; }
+/* Inline "secret" key glyph — replaces the old 🔑 emoji */
+.ico-key {
+  width: 1em;
+  height: 1em;
+  color: var(--gold);
+  vertical-align: -0.14em;
+  margin-left: 6px;
+  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.45));
+}
 
 /* Layout */
 .container {
@@ -159,6 +199,8 @@ section { padding: clamp(72px, 10vw, 140px) 0; position: relative; }
   transform: translateY(-2px);
   box-shadow: 0 18px 40px -10px rgba(212, 175, 55, 0.7);
 }
+/* Tactile press — physical "push" feedback on tap/click */
+.btn-tg:active { transform: translateY(0) scale(0.97); transition-duration: 0.08s; }
 
 .tg-cta-pair.compact .btn-tg {
   padding: 10px 18px;
@@ -342,7 +384,15 @@ section { padding: clamp(72px, 10vw, 140px) 0; position: relative; }
     linear-gradient(180deg, rgba(10, 14, 20, 0.55) 0%, rgba(10, 14, 20, 0.9) 100%);
   z-index: 1;
 }
-.hero-inner { position: relative; z-index: 2; }
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: center;
+  gap: 64px;
+}
+.hero-copy { min-width: 0; }
 
 .hero h1 {
   max-width: 14ch;
@@ -411,8 +461,13 @@ section { padding: clamp(72px, 10vw, 140px) 0; position: relative; }
   gap: 14px;
 }
 .ticker-item .sep { color: var(--gold); }
-.ticker-item .up { color: var(--bull); }
-.ticker-item .down { color: var(--bear); }
+.ticker-item .up { color: var(--bull); text-shadow: 0 0 8px rgba(34, 197, 94, 0.55); }
+.ticker-item .down { color: var(--bear); text-shadow: 0 0 8px rgba(239, 68, 68, 0.55); }
+.tkr-pulse { animation: tkrPulse 2.4s ease-in-out infinite; }
+@keyframes tkrPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; text-shadow: 0 0 12px rgba(34, 197, 94, 0.85); }
+}
 @keyframes tickerScroll {
   to { transform: translateX(-50%); }
 }
@@ -725,6 +780,7 @@ section { padding: clamp(72px, 10vw, 140px) 0; position: relative; }
   display: flex;
   align-items: baseline;
   gap: 4px;
+  font-variant-numeric: tabular-nums;
 }
 .stat-num .unit { font-family: var(--font-mono); font-size: 1.1rem; color: var(--bull); }
 .stat-label {
@@ -1115,6 +1171,14 @@ section { padding: clamp(72px, 10vw, 140px) 0; position: relative; }
 .c-lock-icon { fill: var(--gold); }
 .c-dim { opacity: 0.3; }
 
+/* Shared chart upgrades: grid, crosshair, price line, area fill */
+.c-gridline { stroke: var(--ink); stroke-width: 0.5; opacity: 0.05; }
+.c-cross-line { stroke: var(--ink-mute); stroke-width: 0.6; stroke-dasharray: 3 4; opacity: 0.35; }
+.c-priceline { filter: drop-shadow(0 0 3px currentColor); }
+.c-area { pointer-events: none; }
+.c-last-dot { filter: drop-shadow(0 0 5px currentColor); }
+.sparkline-dot { fill: var(--gold); opacity: 0; filter: drop-shadow(0 0 4px var(--gold)); }
+
 .sparkline {
   height: 30px;
   width: 80px;
@@ -1161,6 +1225,83 @@ section { padding: clamp(72px, 10vw, 140px) 0; position: relative; }
 .hero-inner { z-index: 3; }
 
 /* ============================================================
+   Hero live chart panel
+   ============================================================ */
+.hero-chart-panel {
+  position: relative;
+  isolation: isolate;
+  background: var(--bg-elev-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 16px 16px 12px;
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+}
+.hero-chart-panel::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: calc(var(--radius-lg) + 1px);
+  background: conic-gradient(from var(--angle, 0deg),
+    transparent 0deg, transparent 210deg,
+    var(--gold) 290deg, transparent 360deg);
+  animation: rotate 11s linear infinite;
+  opacity: 0.5;
+  z-index: -1;
+}
+.hcp-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 2px 4px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+}
+.hcp-symbol { color: var(--ink); font-weight: 600; }
+.hcp-symbol span { color: var(--gold); }
+.hcp-tf {
+  color: var(--ink-dim);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 2px 7px;
+}
+.hcp-live {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--bull);
+}
+.hcp-dot {
+  width: 7px; height: 7px;
+  border-radius: 999px;
+  background: var(--bull);
+  box-shadow: 0 0 10px var(--bull);
+  animation: livePulse 1.6s ease-in-out infinite;
+}
+@keyframes livePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+.hero-chart-panel .chart-anim {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  height: auto;
+}
+
+@media (max-width: 900px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .hero h1, .hero .lead { max-width: none; }
+  .hero-chart-panel { order: 2; }
+}
+
+/* ============================================================
    Unicorn — connecting line + animated gold border on video
    ============================================================ */
 .unicorn-steps {
@@ -1182,6 +1323,19 @@ section { padding: clamp(72px, 10vw, 140px) 0; position: relative; }
   stroke-dasharray: 100;
   stroke-dashoffset: 100;
   filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.5));
+}
+.unicorn-line-node {
+  position: absolute;
+  left: 22px;
+  top: 30px;
+  width: 10px;
+  height: 10px;
+  margin-left: -3px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 10px 2px rgba(212, 175, 55, 0.8);
+  opacity: 0;
+  pointer-events: none;
 }
 .unicorn-steps .step {
   position: relative;
@@ -1278,6 +1432,7 @@ section { padding: clamp(72px, 10vw, 140px) 0; position: relative; }
     transition-duration: 0.001s !important;
   }
   .reveal { opacity: 1; transform: none; }
+  body::before { animation: none; transform: none; }
   .ticker-track { animation: none; }
   .hero-video { display: none; }
   .hero-candles { display: none; }
@@ -1286,8 +1441,12 @@ section { padding: clamp(72px, 10vw, 140px) 0; position: relative; }
   .unicorn-visual--glow::before { animation: none; opacity: 0.4; }
   .quote-card.floating { animation: none; }
   .unicorn-line-path { stroke-dashoffset: 0; }
+  .unicorn-line-node { display: none; }
   .qmark-path { stroke-dashoffset: 0; }
   .sparkline { opacity: 0.6; }
   .sparkline path { stroke-dashoffset: 0 !important; }
   .stat-num.popped { animation: none; }
+  .hero-chart-panel::before { animation: none; opacity: 0.45; }
+  .hcp-dot { animation: none; }
+  .tkr-pulse { animation: none; opacity: 1; }
 }

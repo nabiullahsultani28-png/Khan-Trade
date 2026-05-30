@@ -26,13 +26,16 @@
     return n;
   }
 
+  let cidSeq = 0;
   function createSvg() {
-    return el('svg', {
+    const svg = el('svg', {
       viewBox: '0 0 ' + W + ' ' + H,
       preserveAspectRatio: 'xMidYMid meet',
       width: '100%',
       height: '100%'
     });
+    svg.__cid = (++cidSeq).toString(36);
+    return svg;
   }
 
   // Candle: x is center; openY/highY/lowY/closeY are y coords (smaller y = higher price)
@@ -146,9 +149,144 @@
     return g;
   }
 
+  // ---------- Shared visual upgrades (glow / grid / area / crosshair) ----------
+
+  const COLORS = { green: '#22C55E', red: '#EF4444', gold: '#D4AF37', grey: '#8A93A6' };
+
+  function ensureDefs(svg) {
+    let defs = svg.querySelector('defs');
+    if (!defs) { defs = el('defs'); svg.insertBefore(defs, svg.firstChild); }
+    return defs;
+  }
+
+  // Reusable soft glow filter (element keeps its own colour). Cached per svg+strength.
+  function glowFilter(svg, strength) {
+    const s = strength || 2.2;
+    const id = 'glow-' + svg.__cid + '-' + Math.round(s * 10);
+    if (svg.querySelector('#' + id)) return id;
+    const f = el('filter', { id: id, x: '-70%', y: '-70%', width: '240%', height: '240%' });
+    f.appendChild(el('feGaussianBlur', { in: 'SourceGraphic', stdDeviation: s, result: 'b' }));
+    const m = el('feMerge');
+    m.appendChild(el('feMergeNode', { in: 'b' }));
+    m.appendChild(el('feMergeNode', { in: 'SourceGraphic' }));
+    f.appendChild(m);
+    ensureDefs(svg).appendChild(f);
+    return id;
+  }
+  function applyGlow(svg, node, strength) {
+    node.setAttribute('filter', 'url(#' + glowFilter(svg, strength) + ')');
+    return node;
+  }
+
+  // Gradient area fill beneath a [x,y] polyline, down to baseY.
+  function areaFill(svg, points, tone, baseY) {
+    const c = COLORS[tone] || COLORS.green;
+    const gid = 'area-' + svg.__cid + '-' + Math.random().toString(36).slice(2, 6);
+    const grad = el('linearGradient', { id: gid, x1: '0', y1: '0', x2: '0', y2: '1' });
+    grad.appendChild(el('stop', { offset: '0%', 'stop-color': c, 'stop-opacity': 0.3 }));
+    grad.appendChild(el('stop', { offset: '100%', 'stop-color': c, 'stop-opacity': 0 }));
+    ensureDefs(svg).appendChild(grad);
+    let d = 'M ' + points[0][0] + ' ' + baseY + ' L ' + points.map(p => p[0] + ' ' + p[1]).join(' L ');
+    d += ' L ' + points[points.length - 1][0] + ' ' + baseY + ' Z';
+    return el('path', { d: d, fill: 'url(#' + gid + ')', stroke: 'none', class: 'c-area' });
+  }
+
+  // Stroked price line over a [x,y] polyline.
+  function priceLine(points, tone) {
+    const c = COLORS[tone] || COLORS.green;
+    return el('path', {
+      class: 'c-priceline',
+      d: 'M ' + points.map(p => p[0] + ' ' + p[1]).join(' L '),
+      fill: 'none', stroke: c, 'stroke-width': 1.5,
+      'stroke-linejoin': 'round', 'stroke-linecap': 'round'
+    });
+  }
+
+  // Faint background grid.
+  function grid(opts) {
+    opts = opts || {};
+    const rows = opts.rows || 5, cols = opts.cols || 6;
+    const x0 = opts.x0 != null ? opts.x0 : 8, x1 = opts.x1 != null ? opts.x1 : W - 8;
+    const y0 = opts.y0 != null ? opts.y0 : 20, y1 = opts.y1 != null ? opts.y1 : H - 20;
+    const g = el('g', { class: 'c-grid' });
+    for (let r = 0; r <= rows; r++) {
+      const y = y0 + (y1 - y0) * r / rows;
+      g.appendChild(el('line', { class: 'c-gridline', x1: x0, x2: x1, y1: y, y2: y }));
+    }
+    for (let c = 0; c <= cols; c++) {
+      const x = x0 + (x1 - x0) * c / cols;
+      g.appendChild(el('line', { class: 'c-gridline', x1: x, x2: x, y1: y0, y2: y1 }));
+    }
+    return g;
+  }
+
+  // Dashed crosshair with a moveTo(x,y) method.
+  function crosshair() {
+    const g = el('g', { class: 'c-crosshair' });
+    const vx = el('line', { class: 'c-cross-line', x1: 0, x2: 0, y1: 18, y2: H - 18 });
+    const hy = el('line', { class: 'c-cross-line', x1: 8, x2: W - 8, y1: 0, y2: 0 });
+    g.appendChild(vx); g.appendChild(hy);
+    g.moveTo = function (x, y) {
+      vx.setAttribute('x1', x); vx.setAttribute('x2', x);
+      hy.setAttribute('y1', y); hy.setAttribute('y2', y);
+    };
+    return g;
+  }
+
+  // Pause infinite loops while the container is off-screen (perf). Mirrors buildPremium.
+  function gateLoop(container, loops) {
+    if (hasST) {
+      ScrollTrigger.create({
+        trigger: container, start: 'top bottom', end: 'bottom top',
+        onEnter:     () => loops.forEach(t => t.play()),
+        onEnterBack: () => loops.forEach(t => t.play()),
+        onLeave:     () => loops.forEach(t => t.pause()),
+        onLeaveBack: () => loops.forEach(t => t.pause())
+      });
+    } else {
+      loops.forEach(t => t.play());
+    }
+  }
+
   // ---------- Animation helpers ----------
 
   function hide(elem) { elem.style.opacity = 0; return elem; }
+
+  // Candles "print" in: grow from baseline + slight rise + fade. Replaces flat opacity reveals.
+  function printCandles(t, els, opts) {
+    opts = opts || {};
+    if (!els.length) return t;
+    gsap.set(els, { transformOrigin: '50% 100%' });
+    return t.fromTo(els,
+      { opacity: 0, scaleY: 0.25, y: 6 },
+      {
+        opacity: 1, scaleY: 1, y: 0,
+        duration: opts.duration != null ? opts.duration : 0.28,
+        stagger: opts.stagger != null ? opts.stagger : 0.04,
+        ease: opts.ease || 'power3.out'
+      },
+      opts.position
+    );
+  }
+
+  // Draw a path in via stroke-dashoffset (no paid DrawSVG plugin needed).
+  function drawIn(t, pathEl, dur, pos) {
+    const len = pathEl.getTotalLength ? pathEl.getTotalLength() : 0;
+    if (!len) return t.to(pathEl, { opacity: 1, duration: dur || 0.5 }, pos);
+    pathEl.style.strokeDasharray = len;
+    pathEl.style.strokeDashoffset = len;
+    pathEl.style.opacity = 1;
+    return t.to(pathEl, { strokeDashoffset: 0, duration: dur || 0.6, ease: 'power2.out' }, pos);
+  }
+
+  // Subtle infinite flicker on the latest candle so it feels real-time. Scroll-gated.
+  function liveTick(container, candleGroup) {
+    if (!hasGsap) return;
+    const tw = gsap.to(candleGroup, {
+      y: '+=1.4', duration: 0.55, repeat: -1, yoyo: true, ease: 'sine.inOut', paused: true
+    });
+    gateLoop(container, [tw]);
+  }
 
   function tl(container) {
     if (!hasST) return null;
@@ -190,6 +328,19 @@
     const rangeHighY = 122;
     const rangeLowY  = 168;
 
+    // Background grid
+    const gridEl = grid({ x1: 312 });
+    hide(gridEl);
+    svg.appendChild(gridEl);
+
+    // Gradient area fill under the close-price line
+    const areaPts = data.map(d => [d.x, d.c]);
+    const areaEl = areaFill(svg, areaPts, 'green', 280);
+    const lineEl = priceLine(areaPts, 'green');
+    hide(areaEl); hide(lineEl);
+    svg.appendChild(areaEl);
+    svg.appendChild(lineEl);
+
     // CRT zone
     const zoneEl = zone(20, rangeHighY, 285, rangeLowY - rangeHighY, 'crt');
     hide(zoneEl);
@@ -210,11 +361,13 @@
 
     // Purging candle — wicks above rangeHigh, closes back below it
     const purgeEl = candle(282, 138, 80, 148, 152, { width: 12 });
+    applyGlow(svg, purgeEl, 2.4);
     hide(purgeEl);
     svg.appendChild(purgeEl);
 
     // Confirmation bear
     const confEl = candle(304, 150, 145, 200, 195, { width: 12 });
+    applyGlow(svg, confEl, 2.4);
     hide(confEl);
     svg.appendChild(confEl);
 
@@ -235,8 +388,11 @@
     if (reduce || !hasST) { showAll(svg); return; }
 
     const t = tl(container);
-    t.to(candleEls, { opacity: 1, duration: 0.35, stagger: 0.06, ease: 'power2.out' });
-    t.to(zoneEl, { opacity: 1, duration: 0.5, ease: 'power2.out' }, '-=0.4');
+    t.to(gridEl, { opacity: 1, duration: 0.4 });
+    printCandles(t, candleEls, { stagger: 0.045, position: '-=0.2' });
+    t.to(areaEl, { opacity: 1, duration: 0.5 }, '-=0.5');
+    drawIn(t, lineEl, 0.6, '<');
+    t.to(zoneEl, { opacity: 1, duration: 0.5, ease: 'power2.out' }, '-=0.3');
     t.to([lblZ1, lblMid, lblZ2], { opacity: 1, duration: 0.35, stagger: 0.08 }, '-=0.2');
     t.to(callout, { opacity: 1, duration: 0.4 }, '-=0.2');
     t.to(liqEl, { opacity: 1, duration: 0.4 }, '+=0.1');
@@ -263,6 +419,11 @@
       return { x: 25 + i * 18, o: o, h: h, l: l, c: c };
     });
 
+    // Faint background grid
+    const gridEl = grid({ rows: 5, cols: 6 });
+    gsap.set(gridEl, { opacity: 0 });
+    svg.insertBefore(gridEl, svg.firstChild);
+
     // Session window — gold band, slides
     const sessionEl = el('rect', {
       x: 25, y: 30, width: 95, height: 220, rx: 2,
@@ -270,6 +431,7 @@
       stroke: '#D4AF37', 'stroke-opacity': 0.45,
       'stroke-dasharray': 3, 'stroke-width': 1
     });
+    applyGlow(svg, sessionEl, 1.8);
     hide(sessionEl);
     svg.appendChild(sessionEl);
 
@@ -309,7 +471,8 @@
     }
 
     const t = tl(container);
-    t.to(candleEls, { opacity: 1, duration: 0.25, stagger: 0.03 });
+    t.to(gridEl, { opacity: 1, duration: 0.4 });
+    printCandles(t, candleEls, { stagger: 0.035, position: '-=0.2' });
     t.to(sessionEl, { opacity: 1, duration: 0.4 }, '-=0.2');
     t.to(lab1, { opacity: 1, duration: 0.3 }, '<');
 
@@ -351,8 +514,13 @@
       svg.appendChild(candle(d.x, d.o, d.h, d.l, d.c, { dim: true, width: 8 }));
     });
 
+    const gridEl = grid({ rows: 5, cols: 6 });
+    gsap.set(gridEl, { opacity: 0 });
+    svg.insertBefore(gridEl, svg.firstChild);
+
     const liqY = 120;
     const liqEl = level(30, 370, liqY, 'red');
+    applyGlow(svg, liqEl, 2.2);
     hide(liqEl);
     svg.appendChild(liqEl);
 
@@ -379,8 +547,17 @@
       height: 4,
       rx: 2
     });
+    applyGlow(svg, heroBody, 2.4);
     hide(heroBody);
     svg.appendChild(heroBody);
+
+    // Glow-burst ring at the grab point (above liquidity)
+    const burst = el('circle', {
+      cx: heroX, cy: wickHigh, r: 6,
+      fill: 'none', stroke: '#EF4444', 'stroke-width': 2, opacity: 0
+    });
+    applyGlow(svg, burst, 3);
+    svg.appendChild(burst);
 
     // Wicks
     const upperWick = el('line', {
@@ -421,14 +598,19 @@
     }
 
     const t = tl(container);
-    t.to(liqEl,  { opacity: 1, duration: 0.5 });
+    t.to(gridEl, { opacity: 1, duration: 0.4 });
+    t.to(liqEl,  { opacity: 1, duration: 0.5 }, '-=0.2');
     t.to(liqLab, { opacity: 1, duration: 0.3 }, '<0.15');
     t.to(heroBody, { opacity: 1, duration: 0.2 }, '+=0.1');
     t.to(upperWick, {
       attr: { y2: wickHigh },
       duration: 0.55, ease: 'power3.out'
     }, '+=0.05');
-    t.to(grab,    { opacity: 1, duration: 0.3 }, '-=0.2');
+    // Glow-burst flash as the wick spears liquidity
+    t.set(burst, { attr: { r: 6 }, opacity: 0.9 }, '-=0.12');
+    t.to(burst, { attr: { r: 22 }, opacity: 0, duration: 0.5, ease: 'power2.out' }, '<');
+    t.fromTo(liqEl, { opacity: 1 }, { opacity: 0.45, duration: 0.12, yoyo: true, repeat: 1 }, '<');
+    t.to(grab,    { opacity: 1, duration: 0.3 }, '-=0.35');
     t.to(labWick, { opacity: 1, duration: 0.3 }, '<0.1');
     t.to(heroBody, {
       attr: { y: heroOpen, height: heroClose - heroOpen },
@@ -491,7 +673,9 @@
 
       // Gold check chip (initially hidden)
       const chip = el('g', { transform: 'translate(' + (cellW - 32) + ',26)', opacity: 0 });
-      chip.appendChild(el('circle', { cx: 0, cy: 0, r: 10, fill: '#D4AF37' }));
+      const chipDisc = el('circle', { cx: 0, cy: 0, r: 10, fill: '#D4AF37' });
+      applyGlow(svg, chipDisc, 2.4);
+      chip.appendChild(chipDisc);
       chip.appendChild(el('path', {
         d: 'M -4 0 L -1 3 L 4 -3',
         stroke: '#1B1503', 'stroke-width': 2,
@@ -511,14 +695,17 @@
 
     const t = tl(container);
     cells.forEach((c, i) => {
-      t.to(c.g, { opacity: 1, duration: 0.4, ease: 'power2.out' }, i * 0.18);
-      t.to(c.chip, {
-        attr: { opacity: 1 },
-        scale: 1,
+      gsap.set(c.g, { transformOrigin: '50% 50%' });
+      t.fromTo(c.g, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.45, ease: 'power3.out' }, i * 0.18);
+      t.fromTo(c.chip, { opacity: 0, scale: 0.4 }, {
+        opacity: 1, scale: 1,
         transformOrigin: '50% 50%',
         duration: 0.35,
-        ease: 'back.out(2)'
-      }, i * 0.18 + 0.25);
+        ease: 'back.out(2.2)'
+      }, i * 0.18 + 0.28);
+      // Brief gold confirm flash on the cell border
+      const border = c.g.querySelector('rect');
+      t.fromTo(border, { stroke: '#D4AF37' }, { stroke: '#1E2632', duration: 0.6, ease: 'power2.out' }, i * 0.18 + 0.28);
     });
   }
 
@@ -544,10 +731,21 @@
       { x: 272, o: 192, h: 188, l: 220, c: 215 }   // sweeps sellside
     ];
 
+    const gridEl = grid({ rows: 5, cols: 6 });
+    gsap.set(gridEl, { opacity: 0 });
+    svg.insertBefore(gridEl, svg.firstChild);
+
     const buyY = 100;
     const sellY = 210;
 
+    // Gradient area fill under the close-price path
+    const areaPts = data.map(d => [d.x, d.c]);
+    const areaEl = areaFill(svg, areaPts, 'grey', 248);
+    gsap.set(areaEl, { opacity: 0 });
+    svg.appendChild(areaEl);
+
     const buyLine = level(20, 305, buyY, 'green');
+    applyGlow(svg, buyLine, 2);
     hide(buyLine);
     svg.appendChild(buyLine);
     const buyChip = priceLabel(312, buyY, 'BUYSIDE', 'green');
@@ -555,6 +753,7 @@
     svg.appendChild(buyChip);
 
     const sellLine = level(20, 305, sellY, 'red');
+    applyGlow(svg, sellLine, 2);
     hide(sellLine);
     svg.appendChild(sellLine);
     const sellChip = priceLabel(312, sellY, 'SELLSIDE', 'red');
@@ -570,6 +769,8 @@
 
     const arrowUp = arrow(140, 130, 162, 100, 'green');
     const arrowDown = arrow(250, 180, 272, 215, 'red');
+    applyGlow(svg, arrowUp, 2.6);
+    applyGlow(svg, arrowDown, 2.6);
     hide(arrowUp); hide(arrowDown);
     svg.appendChild(arrowUp); svg.appendChild(arrowDown);
 
@@ -582,18 +783,24 @@
     if (reduce || !hasST) { showAll(svg); return; }
 
     const t = tl(container);
-    t.to(candleEls.slice(0, 6), { opacity: 1, duration: 0.3, stagger: 0.05 });
-    t.to([buyLine, sellLine], { opacity: 1, duration: 0.4 }, '-=0.15');
+    t.to(gridEl, { opacity: 1, duration: 0.4 });
+    printCandles(t, candleEls.slice(0, 6), { stagger: 0.05, position: '-=0.15' });
+    t.to(areaEl, { opacity: 1, duration: 0.5 }, '-=0.2');
+    t.to([buyLine, sellLine], { opacity: 1, duration: 0.4 }, '-=0.3');
     t.to([buyChip, sellChip], { opacity: 1, duration: 0.35, stagger: 0.1 }, '-=0.25');
 
-    t.to(arrowUp, { opacity: 1, duration: 0.3 }, '+=0.15');
-    t.to(candleEls[6], { opacity: 1, duration: 0.35, ease: 'power2.out' }, '<0.1');
-    t.to(candleEls.slice(7, 11), { opacity: 1, duration: 0.3, stagger: 0.06 });
+    // Sweep up through buyside — arrow flicks in with a glow trail
+    t.fromTo(arrowUp, { opacity: 0, scale: 0.6, transformOrigin: '50% 100%' }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(2)' }, '+=0.15');
+    printCandles(t, [candleEls[6]], { duration: 0.35, position: '<0.05' });
+    printCandles(t, candleEls.slice(7, 11), { stagger: 0.06 });
 
-    t.to(candleEls[11], { opacity: 1, duration: 0.35 }, '+=0.05');
-    t.to(arrowDown, { opacity: 1, duration: 0.3 }, '<0.05');
+    printCandles(t, [candleEls[11]], { duration: 0.35, position: '+=0.05' });
+    t.fromTo(arrowDown, { opacity: 0, scale: 0.6, transformOrigin: '50% 0%' }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(2)' }, '<0.05');
 
     t.to(caption, { opacity: 1, duration: 0.4 }, '+=0.15');
+
+    // Last candle ticks live
+    liveTick(container, candleEls[11]);
   }
 
   // ============================================================
@@ -625,9 +832,14 @@
       { x: 272, o: 122, h: 95,  l: 130, c: 100 }
     ];
 
+    const gridEl = grid({ rows: 5, cols: 6 });
+    gsap.set(gridEl, { opacity: 0 });
+    svg.insertBefore(gridEl, svg.firstChild);
+
     const entryLine = level(20, 305, entryY, 'gold');
     const stopLine = level(20, 305, stopY, 'red');
     const targetLine = level(20, 305, targetY, 'green');
+    applyGlow(svg, targetLine, 2.4);
     [entryLine, stopLine, targetLine].forEach(l => { hide(l); svg.appendChild(l); });
 
     const entryChip = priceLabel(312, entryY, 'ENTRY', 'gold');
@@ -678,7 +890,8 @@
     }
 
     const t = tl(container);
-    t.to(setupEls, { opacity: 1, duration: 0.3, stagger: 0.05 });
+    t.to(gridEl, { opacity: 1, duration: 0.4 });
+    printCandles(t, setupEls, { stagger: 0.05, position: '-=0.15' });
     t.to([entryLine, stopLine, targetLine], {
       opacity: 1, duration: 0.5, stagger: 0.12
     }, '+=0.1');
@@ -692,7 +905,7 @@
 
     const rValue = { v: 0 };
     movingEls.forEach((g, i) => {
-      t.to(g, { opacity: 1, duration: 0.28, ease: 'power2.out' }, '+=0.04');
+      printCandles(t, [g], { duration: 0.28, position: '+=0.04' });
       t.to(rValue, {
         v: (i + 1) * 0.6,
         duration: 0.28,
@@ -700,7 +913,13 @@
           counterText.firstChild.nodeValue = rValue.v.toFixed(1) + 'R';
         }
       }, '<');
+      // R-counter flashes gold on each increment
+      t.fromTo(counterText, { scale: 1.25, transformOrigin: '50% 50%' }, { scale: 1, duration: 0.25, ease: 'power2.out' }, '<');
     });
+
+    // Target line pulses when price reaches it
+    t.fromTo(targetLine, { opacity: 1 }, { opacity: 0.4, duration: 0.18, yoyo: true, repeat: 3, ease: 'sine.inOut' }, '-=0.2');
+    liveTick(container, movingEls[movingEls.length - 1]);
   }
 
   // ============================================================
@@ -731,6 +950,9 @@
       x: 0, y: 0, width: W, height: H, fill: 'url(#' + gradId + ')'
     }));
 
+    // Faint grid for consistency with other scenes
+    svg.appendChild(grid({ rows: 5, cols: 6 }));
+
     // Gold-tinted candles (visible at reduced opacity)
     const data = [
       { x: 30,  o: 200, h: 185, l: 210, c: 188 },
@@ -747,6 +969,7 @@
     ];
     data.forEach(d => {
       const g = candle(d.x, d.o, d.h, d.l, d.c, { tone: 'gold' });
+      applyGlow(svg, g, 1.6);
       g.style.opacity = 0.55;
       svg.appendChild(g);
     });
@@ -824,9 +1047,130 @@
     }
   }
 
+  // ============================================================
+  //  SCENE 08 — HERO LIVE MARKET
+  //  Continuously-"forming" candlestick chart: grid, gradient area
+  //  fill under the close line, glowing last-price dot + dashed level
+  //  + ticking gold price chip, crosshair. The right-most candle keeps
+  //  moving so the chart feels real-time. Loop pauses when off-screen.
+  // ============================================================
+
+  function buildLive(svg, container) {
+    const pMin = 4628, pMax = 4676;
+    const top = 42, bot = 248;
+    const priceToY = p => bot - (p - pMin) / (pMax - pMin) * (bot - top);
+
+    svg.appendChild(grid({ x0: 10, x1: 332, y0: top, y1: bot, rows: 5, cols: 7 }));
+
+    const step = 20;
+    const seed = [4636, 4639, 4637, 4642, 4645, 4643, 4648, 4646, 4651, 4649, 4653, 4652, 4656, 4654, 4659];
+    const N = seed.length;
+    const data = seed.map((c, i) => {
+      const o = i ? seed[i - 1] : c - 2;
+      return { x: 24 + i * step, o: o, c: c, h: Math.max(o, c) + (1.6 + (i % 3) * 0.8), l: Math.min(o, c) - (1.6 + (i % 2) * 0.8) };
+    });
+
+    const closesPts = data.map(d => [d.x, priceToY(d.c)]);
+    const areaEl = areaFill(svg, closesPts, 'green', bot);
+    const lineEl = priceLine(closesPts, 'green');
+    applyGlow(svg, lineEl, 1.6);
+    hide(areaEl); hide(lineEl);
+    svg.appendChild(areaEl);
+    svg.appendChild(lineEl);
+
+    const candleEls = data.map(d => {
+      const g = candle(d.x, priceToY(d.o), priceToY(d.h), priceToY(d.l), priceToY(d.c), { width: 9 });
+      hide(g);
+      svg.appendChild(g);
+      return g;
+    });
+
+    const last = data[N - 1];
+    const lastY = priceToY(last.c);
+
+    const dashLine = el('line', { class: 'c-level l-gold', x1: 10, x2: 332, y1: lastY, y2: lastY });
+    hide(dashLine);
+    svg.appendChild(dashLine);
+
+    const dot = el('circle', { class: 'c-last-dot', cx: last.x, cy: lastY, r: 4, fill: '#D4AF37' });
+    hide(dot);
+    svg.appendChild(dot);
+
+    const chip = priceLabel(340, 0, '4,659.0', 'gold');
+    chip.setAttribute('transform', 'translate(0,' + lastY + ')');
+    const chipText = chip.querySelector('text');
+    hide(chip);
+    svg.appendChild(chip);
+
+    const cross = crosshair();
+    cross.moveTo(last.x, lastY);
+    hide(cross);
+    svg.appendChild(cross);
+
+    const lastG = candleEls[N - 1];
+    const lastWick = lastG.querySelector('line');
+    const lastRect = lastG.querySelector('rect');
+    const bodyW = 9;
+
+    function setLast(close) {
+      const yO = priceToY(last.o), yC = priceToY(close);
+      const bull = yC < yO;
+      lastRect.setAttribute('y', Math.min(yO, yC));
+      lastRect.setAttribute('height', Math.max(2, Math.abs(yC - yO)));
+      lastRect.setAttribute('x', last.x - bodyW / 2);
+      lastRect.setAttribute('class', bull ? 'c-bull' : 'c-bear');
+      lastWick.setAttribute('y1', priceToY(Math.max(last.o, close) + 1.8));
+      lastWick.setAttribute('y2', priceToY(Math.min(last.o, close) - 1.8));
+      dot.setAttribute('cy', yC);
+      dashLine.setAttribute('y1', yC);
+      dashLine.setAttribute('y2', yC);
+      chip.setAttribute('transform', 'translate(0,' + yC + ')');
+      chipText.firstChild.nodeValue = close.toFixed(1).replace(/(\d)(\d{3}\.)/, '$1,$2');
+      cross.moveTo(last.x, yC);
+    }
+
+    if (reduce || !hasGsap) {
+      [areaEl, lineEl, dashLine, dot, chip, cross].forEach(n => { n.style.opacity = ''; });
+      candleEls.forEach(c => { c.style.opacity = ''; });
+      return;
+    }
+
+    // Intro: grid is up, candles print in, area + line + level reveal.
+    const intro = gsap.timeline();
+    printCandles(intro, candleEls, { stagger: 0.05 });
+    intro.to(areaEl, { opacity: 1, duration: 0.5 }, '-=0.5');
+    drawIn(intro, lineEl, 0.7, '<');
+    intro.to([dashLine, dot, chip, cross], { opacity: 1, duration: 0.4, stagger: 0.06 }, '-=0.2');
+
+    // Live "forming" loop — close wanders, dot/level/chip/crosshair follow.
+    let cur = last.c;
+    const sLoop = gsap.timeline({ repeat: -1, paused: true });
+    const path = [4663, 4657, 4666, 4660, 4654, 4662, 4658, 4668, 4661];
+    path.forEach((target, i) => {
+      const st = { v: cur };
+      sLoop.to(st, {
+        v: target,
+        duration: 1.0 + (i % 3) * 0.25,
+        ease: 'sine.inOut',
+        onUpdate: () => setLast(st.v)
+      });
+      cur = target;
+    });
+
+    const pulse = gsap.to(dot, {
+      attr: { r: 6.5 }, opacity: 0.55,
+      duration: 0.9, repeat: -1, yoyo: true, ease: 'sine.inOut', paused: true
+    });
+
+    const loops = [sLoop, pulse];
+    gateLoop(container, loops);
+    if (hasST) loops.forEach(t => t.play()); // hero is visible at load; gateLoop pauses on leave
+  }
+
   // ---------- Init ----------
 
   const builders = {
+    live:        buildLive,
     foundations: buildFoundations,
     sessions:    buildSessions,
     purge:       buildPurge,
