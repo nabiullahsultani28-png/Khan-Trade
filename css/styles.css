@@ -1490,3 +1490,50 @@ section { padding: clamp(72px, 10vw, 140px) 0; position: relative; }
   .hcp-dot { animation: none; }
   .tkr-pulse { animation: none; opacity: 1; }
 }
+
+/* ============================================================
+   Page-hero — responsive top padding for about / contact
+   ============================================================ */
+.page-hero { padding-top: 160px; }
+@media (max-width: 720px) {
+  .page-hero { padding-top: 110px; }
+}
+@media (max-width: 480px) {
+  .page-hero { padding-top: 90px; }
+}
+
+/* ============================================================
+   Hero — mobile padding + SVH fix
+   ============================================================ */
+@media (max-width: 720px) {
+  .hero { padding-top: 100px; padding-bottom: 72px; }
+  .hero-meta { gap: 16px; margin-top: 36px; }
+}
+@media (max-width: 480px) {
+  .hero { padding-top: 90px; padding-bottom: 56px; }
+}
+/* Modern mobile browsers that expose the small viewport unit */
+@supports (min-height: 100svh) {
+  .hero { min-height: 100svh; }
+}
+
+/* ============================================================
+   xs — 480 px and below
+   ============================================================ */
+@media (max-width: 480px) {
+  /* Stats: single column so label text doesn't overflow */
+  .stats { grid-template-columns: 1fr; }
+  .stat { border-right: none; border-bottom: 1px solid var(--line); }
+  .stat:nth-child(2) { border-right: none; border-bottom: 1px solid var(--line); }
+  .stat:last-child { border-bottom: none; }
+
+  /* Section header: reduce bottom gap */
+  .section-header { margin-bottom: 40px; }
+
+  /* Timeline: tighten the left indent on narrow screens */
+  .module { padding-left: 52px; }
+
+  /* CTA pairs: stack full-width (skip the compact nav variant) */
+  .tg-cta-pair:not(.compact) { flex-direction: column; }
+  .tg-cta-pair:not(.compact) .btn-tg { width: 100%; justify-content: center; }
+}
