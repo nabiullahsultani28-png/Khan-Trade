@@ -372,16 +372,45 @@ section { padding: clamp(72px, 10vw, 140px) 0; position: relative; }
   height: 100%;
   object-fit: cover;
   z-index: 0;
-  opacity: 0.35;
-  filter: saturate(115%) contrast(110%);
+  opacity: 0.9;
+  display: none;
+  /* Zoom in so the source clip's baked UI mockup (text/buttons) is pushed
+     outside the frame, leaving only the 3D graphics. Origin centred on the
+     animated cluster. Tune scale/origin if any UI edge reappears. */
+  transform: scale(1.45);
+  transform-origin: 62% 42%;
+  filter: grayscale(100%) saturate(115%) contrast(108%) brightness(0.95);
+}
+/* Full-bleed 4K hero artwork. Sits behind the overlay (z1) and content (z3). */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  display: block;
+  background-image: url("../assets/img/hero-trading-bg-new.png");
+  background-size: cover;
+  background-position: 78% center;
+  background-repeat: no-repeat;
+  filter: brightness(1.18) saturate(1.02);
 }
 .hero-overlay {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 60% 40%, rgba(34, 197, 94, 0.08), transparent 60%),
-    radial-gradient(ellipse at 20% 80%, rgba(212, 175, 55, 0.06), transparent 55%),
-    linear-gradient(180deg, rgba(10, 14, 20, 0.55) 0%, rgba(10, 14, 20, 0.9) 100%);
+    /* Solid dark column on the left for crisp headline text, opening up to
+       let the world-map glow breathe on the right. */
+    linear-gradient(90deg,
+      rgba(10, 14, 20, 0.98) 0%,
+      rgba(10, 14, 20, 0.96) 38%,
+      rgba(10, 14, 20, 0.66) 52%,
+      rgba(10, 14, 20, 0.16) 72%,
+      rgba(10, 14, 20, 0.40) 100%),
+    /* Vertical fade: ease the top, sink the bottom into the ticker. */
+    linear-gradient(180deg,
+      rgba(10, 14, 20, 0.18) 0%,
+      rgba(10, 14, 20, 0.0) 30%,
+      rgba(10, 14, 20, 0.82) 100%);
   z-index: 1;
 }
 .hero-inner {
@@ -1207,6 +1236,7 @@ section { padding: clamp(72px, 10vw, 140px) 0; position: relative; }
    Hero drifting candle backdrop
    ============================================================ */
 .hero-candles {
+  display: none;
   position: absolute;
   inset: 0;
   z-index: 1;
@@ -1230,11 +1260,15 @@ section { padding: clamp(72px, 10vw, 140px) 0; position: relative; }
 .hero-chart-panel {
   position: relative;
   isolation: isolate;
-  background: var(--bg-elev-2);
-  border: 1px solid var(--line);
+  /* glass so the 3D backdrop reads through the panel */
+  background: color-mix(in srgb, var(--bg-elev-2) 66%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(125%);
+  backdrop-filter: blur(16px) saturate(125%);
+  border: 1px solid color-mix(in srgb, var(--gold) 20%, var(--line));
   border-radius: var(--radius-lg);
   padding: 16px 16px 12px;
-  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.7),
+              inset 0 1px 0 rgba(255, 255, 255, 0.05);
   overflow: hidden;
 }
 .hero-chart-panel::before {
@@ -1293,6 +1327,12 @@ section { padding: clamp(72px, 10vw, 140px) 0; position: relative; }
 }
 
 @media (max-width: 900px) {
+  .hero-bg { background-size: cover; background-position: 70% center; }
+  .hero-overlay {
+    background:
+      linear-gradient(90deg, rgba(10, 14, 20, 0.95) 0%, rgba(10, 14, 20, 0.84) 58%, rgba(10, 14, 20, 0.58) 100%),
+      linear-gradient(180deg, rgba(10, 14, 20, 0.32) 0%, rgba(10, 14, 20, 0.86) 100%);
+  }
   .hero-inner {
     grid-template-columns: 1fr;
     gap: 36px;

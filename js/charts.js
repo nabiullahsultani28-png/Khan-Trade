@@ -1070,14 +1070,6 @@
       return { x: 24 + i * step, o: o, c: c, h: Math.max(o, c) + (1.6 + (i % 3) * 0.8), l: Math.min(o, c) - (1.6 + (i % 2) * 0.8) };
     });
 
-    const closesPts = data.map(d => [d.x, priceToY(d.c)]);
-    const areaEl = areaFill(svg, closesPts, 'green', bot);
-    const lineEl = priceLine(closesPts, 'green');
-    applyGlow(svg, lineEl, 1.6);
-    hide(areaEl); hide(lineEl);
-    svg.appendChild(areaEl);
-    svg.appendChild(lineEl);
-
     const candleEls = data.map(d => {
       const g = candle(d.x, priceToY(d.o), priceToY(d.h), priceToY(d.l), priceToY(d.c), { width: 9 });
       hide(g);
@@ -1130,7 +1122,7 @@
     }
 
     if (reduce || !hasGsap) {
-      [areaEl, lineEl, dashLine, dot, chip, cross].forEach(n => { n.style.opacity = ''; });
+      [dashLine, dot, chip, cross].forEach(n => { n.style.opacity = ''; });
       candleEls.forEach(c => { c.style.opacity = ''; });
       return;
     }
@@ -1138,8 +1130,6 @@
     // Intro: grid is up, candles print in, area + line + level reveal.
     const intro = gsap.timeline();
     printCandles(intro, candleEls, { stagger: 0.05 });
-    intro.to(areaEl, { opacity: 1, duration: 0.5 }, '-=0.5');
-    drawIn(intro, lineEl, 0.7, '<');
     intro.to([dashLine, dot, chip, cross], { opacity: 1, duration: 0.4, stagger: 0.06 }, '-=0.2');
 
     // Live "forming" loop — close wanders, dot/level/chip/crosshair follow.
