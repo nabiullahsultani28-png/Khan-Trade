@@ -28,6 +28,47 @@
   closeBtn?.addEventListener('click', closeMenu);
   menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
 
+  // ---- Theme switch (dark / light / system)
+  // Stores the *preference*; resolves "system" against the OS at runtime and
+  // sets data-theme (concrete) + data-theme-pref (choice) on <html>. An inline
+  // <head> script applies the same on first paint to avoid a flash.
+  const THEMES = ['dark', 'light', 'system'];
+  const THEME_LABEL = { dark: 'Dark', light: 'Light', system: 'System' };
+  const mql = window.matchMedia('(prefers-color-scheme: light)');
+  const getPref = () => { try { return localStorage.getItem('theme') || 'dark'; } catch (e) { return 'dark'; } };
+  const resolveTheme = (pref) => pref === 'system' ? (mql.matches ? 'light' : 'dark') : pref;
+  let animTimer;
+  const applyTheme = (pref, animate) => {
+    const root = document.documentElement;
+    if (animate && !reduce) {
+      root.classList.add('theme-anim');
+      clearTimeout(animTimer);
+      animTimer = setTimeout(() => root.classList.remove('theme-anim'), 500);
+    }
+    root.dataset.theme = resolveTheme(pref);
+    root.dataset.themePref = pref;
+    document.querySelectorAll('.theme-toggle').forEach(b => {
+      b.setAttribute('aria-label', 'Theme: ' + THEME_LABEL[pref] + ' — click to switch');
+      b.setAttribute('title', 'Theme: ' + THEME_LABEL[pref]);
+    });
+  };
+  applyTheme(getPref());
+  mql.addEventListener('change', () => { if (getPref() === 'system') applyTheme('system', true); });
+  document.querySelectorAll('.theme-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const next = THEMES[(THEMES.indexOf(getPref()) + 1) % THEMES.length];
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      applyTheme(next, true);
+      // Replay the icon swap animation
+      btn.classList.remove('is-switching');
+      void btn.offsetWidth;
+      btn.classList.add('is-switching');
+    });
+    btn.addEventListener('animationend', () => btn.classList.remove('is-switching'));
+  });
+  // Flag the nav when it overlaps the dark hero (home page) for light-theme legibility
+  if (document.querySelector('.hero')) nav?.classList.add('over-hero');
+
   // ---- Ticker pause-on-hover
   const tickerTrack = document.querySelector('.ticker-track');
   if (tickerTrack) {

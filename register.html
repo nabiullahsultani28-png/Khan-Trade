@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Register — The Khan Trading</title>
+<meta name="theme-color" content="#0A0E14" />
+<link rel="icon" type="image/jpeg" href="assets/img/logo.jpg" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<div class="auth-layout">
+  <div class="auth-side">
+    <div class="auth-side-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-mark"><img src="assets/img/logo.jpg" alt="Logo" /></span>
+        <span>The Khan Trading</span>
+      </a>
+      <h2 style="font-size: 2rem; margin-bottom: 16px;">Social Intelligence <span style="color: var(--bull);">Platform</span></h2>
+      <p style="color: var(--ink-mute); font-size: 1.1rem;">Join the leading community of serious traders. Master ICT, CRT, and Unicorn strategies.</p>
+    </div>
+  </div>
+  
+  <div class="auth-form-container">
+    <div class="auth-form-inner" style="max-width: 480px;">
+      <h2>Create Account</h2>
+      <form class="form" action="#" method="POST">
+        <div class="grid-2" style="gap: 20px; align-items: start; margin-bottom: 0;">
+          <div>
+            <label for="firstName">First Name</label>
+            <input id="firstName" name="firstName" type="text" required autocomplete="given-name" />
+          </div>
+          <div>
+            <label for="lastName">Last Name</label>
+            <input id="lastName" name="lastName" type="text" required autocomplete="family-name" />
+          </div>
+        </div>
+        
+        <div>
+          <label for="country">Country</label>
+          <select id="country" name="country" required>
+            <option value="">Select Country&hellip;</option>
+            <option value="US">United States</option>
+            <option value="UK">United Kingdom</option>
+            <option value="CA">Canada</option>
+            <option value="AU">Australia</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        
+        <div>
+          <label for="phone">Phone Number</label>
+          <div style="display: flex; gap: 12px;">
+            <input type="text" value="+1" style="width: 80px; text-align: center;" aria-label="Country Code" />
+            <input id="phone" name="phone" type="tel" required style="flex: 1;" />
+          </div>
+        </div>
+
+        <div>
+          <label for="email">Email Address</label>
+          <input id="email" name="email" type="email" required autocomplete="email" />
+        </div>
+        
+        <div>
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" required autocomplete="new-password" />
+        </div>
+        
+        <div class="auth-terms">
+          <input type="checkbox" id="terms" name="terms" required />
+          <label for="terms">
+            I have read and accept the <a href="#">Terms of use</a>, <a href="#">Privacy Policy</a>, <a href="#">Conflict of Interest Policy</a>, <a href="#">Declaration of Consent</a>, and <a href="#">Risk Disclaimer</a>.
+          </label>
+        </div>
+        
+        <button type="submit" style="width: 100%;">Create account</button>
+      </form>
+      
+      <div class="auth-or">Or</div>
+      
+      <div class="auth-footer">
+        <p>Already have an account? <a href="login.html">Login</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>
