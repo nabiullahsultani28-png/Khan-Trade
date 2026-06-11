@@ -84,12 +84,24 @@
       });
     });
 
-    // --- Unicorn steps
-    if (document.querySelector('.unicorn .step')) {
-      gsap.from('.unicorn .step', {
-        scrollTrigger: { trigger: '.unicorn .grid-2', start: 'top 60%' },
-        y: 20, opacity: 0, duration: 0.8, stagger: 0.15
+    // --- Unicorn steps and layout reveal
+    if (document.querySelector('.unicorn .grid-2')) {
+      if (document.querySelector('.unicorn .unicorn-visual')) {
+        gsap.from('.unicorn .unicorn-visual', {
+          scrollTrigger: { trigger: '.unicorn', start: 'top 75%' },
+          y: 40, opacity: 0, duration: 1, ease: 'expo.out'
+        });
+      }
+      gsap.from('.unicorn .eyebrow, .unicorn h2, .unicorn p', {
+        scrollTrigger: { trigger: '.unicorn', start: 'top 75%' },
+        y: 20, opacity: 0, duration: 0.8, stagger: 0.1, ease: 'expo.out'
       });
+      if (document.querySelector('.unicorn .step')) {
+        gsap.from('.unicorn .step', {
+          scrollTrigger: { trigger: '.unicorn .grid-2', start: 'top 60%' },
+          y: 20, opacity: 0, duration: 0.8, stagger: 0.15
+        });
+      }
     }
 
     // --- Testimonial cards
@@ -149,6 +161,43 @@
         }
       });
     }
+
+    // --- CRT / ICT anatomy diagrams — each builds itself as it scrolls into view.
+    // SVG-safe: only opacity + translate tweens (scale/transformOrigin on
+    // <g>/<line> is unreliable across browsers), plus a stroke-dash arrow draw.
+    gsap.utils.toArray('.crt-diagram svg').forEach((crtDiagram) => {
+      const arrow = crtDiagram.querySelector('.crt-arrow-path');
+      const tl = gsap.timeline({
+        defaults: { ease: 'expo.out' },
+        scrollTrigger: { trigger: crtDiagram, start: 'top 80%', once: true }
+      });
+      // zones + range box fade in first
+      tl.from(crtDiagram.querySelectorAll('.crt-zone, .crt-rangebox'), {
+        opacity: 0, duration: 0.6, stagger: 0.08
+      });
+      // levels slide in from the left
+      tl.from(crtDiagram.querySelectorAll('.crt-level'), {
+        opacity: 0, x: -16, duration: 0.6, stagger: 0.05
+      }, '-=0.25');
+      // candles rise in left-to-right (DOM order = chronological)
+      tl.from(crtDiagram.querySelectorAll('.crt-candle'), {
+        opacity: 0, y: 16, duration: 0.45, stagger: 0.07
+      }, '-=0.35');
+      // sweep marker + label (not every diagram has them)
+      const sweepBits = crtDiagram.querySelectorAll('.crt-sweep-dot, .crt-lab-bear');
+      if (sweepBits.length) {
+        tl.from(sweepBits, { opacity: 0, y: -8, duration: 0.5, stagger: 0.1 }, '-=0.05');
+      }
+      // expansion arrow draws along its path, then the label fades in
+      if (arrow) {
+        const len = arrow.getTotalLength();
+        tl.fromTo(arrow, { strokeDasharray: len, strokeDashoffset: len }, {
+          strokeDashoffset: 0, duration: 1, ease: 'power2.out'
+        }, '-=0.1');
+        const bullLab = crtDiagram.querySelector('.crt-lab-bull');
+        if (bullLab) tl.from(bullLab, { opacity: 0, duration: 0.5 }, '-=0.4');
+      }
+    });
   }
 
   // --- Hero drifting candle backdrop — slow infinite drift
@@ -186,42 +235,42 @@
   });
 
   // --- Lightweight counters, FAQ toggles, and year fallback for non-GSAP flows
-  (function(){
+  (function () {
     // set footer year
     const y = document.querySelector('[data-year]');
-    if(y) y.textContent = new Date().getFullYear();
+    if (y) y.textContent = new Date().getFullYear();
 
     // animate numeric counters when visible
-    document.querySelectorAll('[data-count]').forEach(el=>{
-      const target = parseInt(el.getAttribute('data-count'),10) || 0;
+    document.querySelectorAll('[data-count]').forEach(el => {
+      const target = parseInt(el.getAttribute('data-count'), 10) || 0;
       el.textContent = '0';
-      const obs = new IntersectionObserver((entries, o)=>{
-        entries.forEach(entry=>{
-          if(entry.isIntersecting){
+      const obs = new IntersectionObserver((entries, o) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
             let start = null;
             const dur = 900;
-            function step(ts){
-              if(!start) start = ts;
-              const t = Math.min((ts - start)/dur, 1);
+            function step(ts) {
+              if (!start) start = ts;
+              const t = Math.min((ts - start) / dur, 1);
               el.textContent = Math.floor(t * target);
-              if(t < 1) requestAnimationFrame(step);
+              if (t < 1) requestAnimationFrame(step);
               else el.textContent = target;
             }
             requestAnimationFrame(step);
             o.unobserve(entry.target);
           }
         });
-      },{threshold:0.2});
+      }, { threshold: 0.2 });
       obs.observe(el);
     });
 
     // simple FAQ toggle (graceful if GSAP already handles visuals)
-    document.querySelectorAll('.faq-q').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.faq-q').forEach(btn => {
+      btn.addEventListener('click', () => {
         const item = btn.closest('.faq-item');
         const panel = item.querySelector('.faq-a');
         const open = item.classList.toggle('open');
-        if(open) panel.style.maxHeight = panel.scrollHeight + 'px';
+        if (open) panel.style.maxHeight = panel.scrollHeight + 'px';
         else panel.style.maxHeight = null;
       });
     });

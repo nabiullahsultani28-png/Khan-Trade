@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Register — The Khan Trading</title>
 <meta name="theme-color" content="#0A0E14" />
+<meta name="robots" content="noindex" />
 <link rel="icon" type="image/jpeg" href="assets/img/logo.jpg" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -16,17 +17,27 @@
 
 <div class="auth-layout">
   <div class="auth-side">
+    <div class="auth-top-nav">
+      <a href="index.html" class="auth-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Home
+      </a>
+      <a href="pricing.html" class="auth-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        Pricing
+      </a>
+    </div>
     <div class="auth-side-inner">
       <a class="brand" href="index.html">
-        <span class="brand-mark"><img src="assets/img/logo.jpg" alt="Logo" /></span>
-        <span>The Khan Trading</span>
+        <span class="brand-mark"><img src="assets/img/logo.jpg" alt="Logo" style="border-radius: 8px;" /></span>
+        <span style="font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;">The Khan Trading</span>
       </a>
-      <h2 style="font-size: 2rem; margin-bottom: 16px;">Social Intelligence <span style="color: var(--bull);">Platform</span></h2>
-      <p style="color: var(--ink-mute); font-size: 1.1rem;">Join the leading community of serious traders. Master ICT, CRT, and Unicorn strategies.</p>
+      <h2 class="auth-tagline">Elite Trading<br><span style="color: var(--bull); -webkit-text-fill-color: initial;">Academy</span></h2>
+      <p class="auth-desc">Join the leading community of serious traders. Master ICT, CRT, and Unicorn strategies with precision.</p>
     </div>
   </div>
   
-  <div class="auth-form-container">
+  <div class="auth-form-container reveal">
     <div class="auth-form-inner" style="max-width: 480px;">
       <h2>Create Account</h2>
       <form class="form" action="#" method="POST">
@@ -41,22 +52,22 @@
           </div>
         </div>
         
-        <div>
-          <label for="country">Country</label>
-          <select id="country" name="country" required>
-            <option value="">Select Country&hellip;</option>
-            <option value="US">United States</option>
-            <option value="UK">United Kingdom</option>
-            <option value="CA">Canada</option>
-            <option value="AU">Australia</option>
-            <option value="Other">Other</option>
-          </select>
+        <div class="custom-select-container" id="country-container">
+          <label for="country-search">Country</label>
+          <div class="custom-select-control">
+            <input type="text" id="country-search" class="custom-select-input" placeholder="Select Country&hellip;" autocomplete="off" required />
+            <input type="hidden" id="country" name="country" required />
+            <svg class="custom-select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+          <div class="custom-select-dropdown">
+            <div class="custom-select-list" id="country-list"></div>
+          </div>
         </div>
         
         <div>
           <label for="phone">Phone Number</label>
           <div style="display: flex; gap: 12px;">
-            <input type="text" value="+1" style="width: 80px; text-align: center;" aria-label="Country Code" />
+            <input type="text" id="phoneCode" name="phoneCode" value="+1" style="width: 80px; text-align: center;" aria-label="Country Code" />
             <input id="phone" name="phone" type="tel" required style="flex: 1;" />
           </div>
         </div>
@@ -90,6 +101,7 @@
   </div>
 </div>
 
+<script src="js/countries.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
