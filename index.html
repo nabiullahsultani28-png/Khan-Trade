@@ -33,7 +33,7 @@
   "@type": "Organization",
   "name": "The Khan Trading",
   "url": "https://thekhantrading.com",
-  "logo": "assets/img/logo.jpg",
+  "logo": "https://thekhantrading.com/assets/img/logo.jpg",
   "description": "ICT, CRT and Unicorn-model forex education for serious traders.",
   "sameAs": []
 }
@@ -80,10 +80,10 @@
         <a href="contact.html">Contact</a>
       </nav>
       <div class="nav-auth">
-        <a href="login.html" class="login-link">Login</a>
-        <div class="tg-cta-pair compact">
-          <a href="register.html" class="btn-tg btn-tg-premium" style="padding: 6px 14px; font-size: 0.85rem;">Register</a>
-        </div>
+        <a href="register.html" class="btn-join" aria-label="Join Now">
+          Join Now
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
       </div>
       <button class="theme-toggle nav-theme" type="button" aria-label="Switch theme">
         <svg class="ic-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
@@ -120,23 +120,37 @@
           <path d="M5 12h14M13 5l7 7-7 7" />
         </svg>
       </a>
-      <div class="mobile-nav-group" style="padding: 16px 24px; color: var(--ink-mute); font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;">Learn</div>
-      <a href="ict.html" style="padding-left: 40px;">
-        <span class="nav-num" aria-hidden="true">02</span>
-        <span class="nav-label">ICT Concepts</span>
-        <svg class="nav-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" aria-hidden="true">
-          <path d="M5 12h14M13 5l7 7-7 7" />
-        </svg>
-      </a>
-      <a href="crt.html" style="padding-left: 40px;">
-        <span class="nav-num" aria-hidden="true">03</span>
-        <span class="nav-label">CRT Model</span>
-        <svg class="nav-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" aria-hidden="true">
-          <path d="M5 12h14M13 5l7 7-7 7" />
-        </svg>
-      </a>
+      <div class="mobile-learn-section">
+        <button class="mobile-learn-toggle" type="button" aria-expanded="false" aria-controls="mobile-learn-panel">
+          <svg class="mlt-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          <span class="mlt-label">Learn</span>
+          <svg class="mlt-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="mobile-learn-panel" id="mobile-learn-panel">
+          <a href="ict.html" class="mobile-learn-card">
+            <span class="mlc-num">02</span>
+            <span class="mlc-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </span>
+            <span class="mlc-text">
+              <span class="mlc-title">ICT Concepts</span>
+              <span class="mlc-sub">Inner Circle Trader</span>
+            </span>
+            <svg class="nav-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+          <a href="crt.html" class="mobile-learn-card">
+            <span class="mlc-num">03</span>
+            <span class="mlc-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>
+            </span>
+            <span class="mlc-text">
+              <span class="mlc-title">CRT Model</span>
+              <span class="mlc-sub">Candle Range Theory</span>
+            </span>
+            <svg class="nav-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
       <a href="about.html">
         <span class="nav-num" aria-hidden="true">04</span>
         <span class="nav-label">About</span>
@@ -172,24 +186,7 @@
         </button>
       </div>
       <p class="mobile-menu-tagline">ICT · CRT · Unicorn</p>
-      <div class="tg-cta-pair">
-        <a class="btn-tg btn-tg-free" href="https://t.me/" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path
-              d="M21.5 2.5 2.7 9.9c-.9.3-.8 1.6.1 1.9l4.6 1.4 1.7 5.4c.2.7 1.1.9 1.6.3l2.5-2.5 4.6 3.4c.6.4 1.4.1 1.6-.6l3-15c.2-.8-.7-1.5-1.5-1.2Zm-3.7 4.6L9.3 13.4l-.4 4.1-1.5-4.6 12.3-7.4-1.9 1.6Z" />
-          </svg>
-          Join Free Channel
-        </a>
-        <a class="btn-tg btn-tg-premium" href="https://t.me/" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-            stroke-linejoin="round" aria-hidden="true">
-            <rect x="3" y="11" width="18" height="11" rx="2" />
-            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-          </svg>
-          Join Premium Channel
-        </a>
-      </div>
-    </div>
+      <a href="register.html" class="btn-join btn-join-mobile">Join Now <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></div>
   </div>
 
   <main id="main">
@@ -215,14 +212,7 @@
             the
             <strong>Unicorn entry model</strong>, and the timing &amp; liquidity logic that actually moves Gold and the
             majors.
-          </p>
-          <div class="tg-cta-pair">
-            <a class="btn-tg btn-tg-free" href="#join">
-              Join us now
-            </a>
-          </div>
-
-          <div class="hero-meta">
+          </p><div class="hero-meta">
             <span class="hero-meta-item"><span class="dot"></span> For Serious &amp; Dedicated Traders Only</span>
             <span class="hero-meta-item mono">XAUUSD &middot; FX MAJORS</span>
             <span class="hero-meta-item mono">LONDON &middot; NEW YORK</span>
@@ -236,7 +226,7 @@
     <div class="ticker" aria-hidden="true">
       <div class="ticker-track">
         <!-- duplicated content for seamless loop -->
-        <span class="ticker-item">XAUUSD <span class="up tkr-pulse">▲ 4,657.59</span></span>
+        <span class="ticker-item">XAUUSD <span class="up tkr-pulse">▲ PRIMARY MARKET</span></span>
         <span class="ticker-item sep">&bull;</span>
         <span class="ticker-item">CRT Model <span class="up">▲ FOUNDATIONS &middot; CONFIRMATIONS &middot;
             EXECUTION</span></span>
@@ -250,7 +240,7 @@
         <span class="ticker-item">4&ndash;5 Signals Daily <span class="up">▲ FULL COURSE</span></span>
         <span class="ticker-item sep">&bull;</span>
         <!-- duplicate -->
-        <span class="ticker-item">XAUUSD <span class="up tkr-pulse">▲ 4,657.59</span></span>
+        <span class="ticker-item">XAUUSD <span class="up tkr-pulse">▲ PRIMARY MARKET</span></span>
         <span class="ticker-item sep">&bull;</span>
         <span class="ticker-item">CRT Model <span class="up">▲ FOUNDATIONS &middot; CONFIRMATIONS &middot;
             EXECUTION</span></span>
@@ -409,10 +399,10 @@
 
         <div class="stats reveal" style="margin-bottom:60px">
           <div class="stat">
-            <div class="stat-num"><span data-count="7">0</span><svg class="sparkline" viewBox="0 0 100 30">
+            <div class="stat-num"><span data-count="4">0</span><svg class="sparkline" viewBox="0 0 100 30">
                 <path d="M0 25 Q15 25 20 15 T40 10 T60 20 T80 5 T100 0" />
               </svg></div>
-            <div class="stat-label">CRT modules</div>
+            <div class="stat-label">CRT entry steps</div>
           </div>
           <div class="stat">
             <div class="stat-num"><span data-count="500">0</span><span class="unit">+</span><svg class="sparkline"
@@ -422,7 +412,7 @@
             <div class="stat-label">Trades reviewed</div>
           </div>
           <div class="stat">
-            <div class="stat-num"><span data-count="1">0</span><span class="unit">:5+</span><svg class="sparkline"
+            <div class="stat-num"><span data-count="1">0</span><span class="unit">:3+</span><svg class="sparkline"
                 viewBox="0 0 100 30">
                 <path d="M0 30 Q20 30 30 15 T60 25 T80 5 T100 0" />
               </svg></div>
@@ -446,8 +436,8 @@
               </svg>
             </div>
             <h3 style="font-size:1.15rem">Mentor-led</h3>
-            <p style="font-size:0.93rem;margin:10px 0 0">Direct guidance inside the Telegram channels — not a course you
-              watch alone.</p>
+            <p style="font-size:0.93rem;margin:10px 0 0">Direct guidance inside the Telegram channels and private
+              Discord — not a course you watch alone.</p>
           </article>
 
           <article class="card">
@@ -589,7 +579,7 @@
           <div class="marquee-group">
             <article class="quote-card">
                 <svg class="qmark-svg" viewBox="0 0 60 50" aria-hidden="true"><path class="qmark-path" d="M 8 38 Q 8 22 22 16 M 36 38 Q 36 22 50 16" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" /></svg>
-                <p>The CRT modules finally made the ICT material click. I stopped second-guessing entries and started executing with a checklist.</p>
+                <p>The CRT model finally made the ICT material click. I stopped second-guessing entries and started executing with a checklist.</p>
                 <div class="who">
                   <div class="avatar">AH</div>
                   <div><div class="name">A. Hassan</div><div class="role">XAUUSD trader</div></div>
@@ -640,7 +630,7 @@
             <div class="marquee-group" aria-hidden="true">
               <article class="quote-card">
                 <svg class="qmark-svg" viewBox="0 0 60 50" aria-hidden="true"><path class="qmark-path" d="M 8 38 Q 8 22 22 16 M 36 38 Q 36 22 50 16" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" /></svg>
-                <p>The CRT modules finally made the ICT material click. I stopped second-guessing entries and started executing with a checklist.</p>
+                <p>The CRT model finally made the ICT material click. I stopped second-guessing entries and started executing with a checklist.</p>
                 <div class="who">
                   <div class="avatar">AH</div>
                   <div><div class="name">A. Hassan</div><div class="role">XAUUSD trader</div></div>
@@ -691,7 +681,7 @@
             <div class="marquee-group" aria-hidden="true">
               <article class="quote-card">
                 <svg class="qmark-svg" viewBox="0 0 60 50" aria-hidden="true"><path class="qmark-path" d="M 8 38 Q 8 22 22 16 M 36 38 Q 36 22 50 16" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" /></svg>
-                <p>The CRT modules finally made the ICT material click. I stopped second-guessing entries and started executing with a checklist.</p>
+                <p>The CRT model finally made the ICT material click. I stopped second-guessing entries and started executing with a checklist.</p>
                 <div class="who">
                   <div class="avatar">AH</div>
                   <div><div class="name">A. Hassan</div><div class="role">XAUUSD trader</div></div>
@@ -742,7 +732,7 @@
             <div class="marquee-group" aria-hidden="true">
               <article class="quote-card">
                 <svg class="qmark-svg" viewBox="0 0 60 50" aria-hidden="true"><path class="qmark-path" d="M 8 38 Q 8 22 22 16 M 36 38 Q 36 22 50 16" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" /></svg>
-                <p>The CRT modules finally made the ICT material click. I stopped second-guessing entries and started executing with a checklist.</p>
+                <p>The CRT model finally made the ICT material click. I stopped second-guessing entries and started executing with a checklist.</p>
                 <div class="who">
                   <div class="avatar">AH</div>
                   <div><div class="name">A. Hassan</div><div class="role">XAUUSD trader</div></div>
@@ -875,23 +865,6 @@
 
           <div class="faq-item">
             <button class="faq-q">
-              How much does it cost?
-              <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                  stroke-linecap="round">
-                  <path d="M12 5v14M5 12h14" />
-                </svg></span>
-            </button>
-            <div class="faq-a">
-              <div class="faq-a-inner">
-                Premium Telegram is $20 a month, or $300 for lifetime access. The Full Course + Discord is $50 a month,
-                or $500 for life. Pay monthly or lock it in once; the full breakdown is on the
-                <a href="pricing.html">Pricing page</a>.
-              </div>
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button class="faq-q">
               Is this financial advice?
               <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                   stroke-linecap="round">
@@ -915,136 +888,37 @@
         <div class="section-header">
           <span class="eyebrow">Join the channels</span>
           <h2 id="join-h">Pick where you want to start.</h2>
-          <p>Start free on Telegram, step up for faster signals, or go all in with the full course and private Discord.</p>
+          <p>Three tiers — free Telegram, daily signals, or the full course with private Discord. Full details and
+            comparisons on the pricing page.</p>
         </div>
 
-        <div class="plans plans-3">
+        <div class="join-tiers stagger-group">
+          <a class="join-tier" href="pricing.html">
+            <span class="join-tier-name">Free Plan</span>
+            <span class="join-tier-price">$0 <em>forever</em></span>
+            <span class="join-tier-hook">Open Telegram channel &middot; ICT &amp; CRT basics and public setup
+              breakdowns</span>
+          </a>
+          <a class="join-tier" href="pricing.html">
+            <span class="join-tier-name">Premium Telegram</span>
+            <span class="join-tier-price">$20<em>/mo</em> &middot; $300 <em>lifetime</em></span>
+            <span class="join-tier-hook">2&ndash;3 signals daily with entry, stop-loss &amp; take-profit</span>
+          </a>
+          <a class="join-tier featured" href="pricing.html">
+            <span class="join-tier-name">Full Course + Discord</span>
+            <span class="join-tier-price">$50<em>/mo</em> &middot; $500 <em>lifetime</em></span>
+            <span class="join-tier-hook">4&ndash;5 signals daily + the full curriculum &amp; private Discord</span>
+            <span class="join-tier-badge">Best value</span>
+          </a>
+        </div>
 
-          <article class="plan">
-            <span class="plan-tier">Free plan</span>
-            <h3>Open channel</h3>
-            <div class="plan-price">Free<span class="per">/ forever</span></div>
-            <div class="plan-divider"></div>
-            <ul>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M5 12l5 5L20 7" />
-                </svg> ICT &amp; CRT basics</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M5 12l5 5L20 7" />
-                </svg> Weekly market commentary</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M5 12l5 5L20 7" />
-                </svg> Public setup breakdowns</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M5 12l5 5L20 7" />
-                </svg> Community of serious traders</li>
-            </ul>
-            <a class="btn-tg btn-tg-free" href="https://t.me/" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M21.5 2.5 2.7 9.9c-.9.3-.8 1.6.1 1.9l4.6 1.4 1.7 5.4c.2.7 1.1.9 1.6.3l2.5-2.5 4.6 3.4c.6.4 1.4.1 1.6-.6l3-15c.2-.8-.7-1.5-1.5-1.2Zm-3.7 4.6L9.3 13.4l-.4 4.1-1.5-4.6 12.3-7.4-1.9 1.6Z" />
-              </svg>
-              Join Free Channel
-            </a>
-          </article>
-
-          <article class="plan">
-            <span class="plan-tier">Signals</span>
-            <h3>Premium Telegram</h3>
-            <div class="plan-price">$20<span class="per">/ mo</span></div>
-            <div style="font-family:var(--font-mono);font-size:0.9rem;color:var(--gold);margin-top:4px">or $300 lifetime</div>
-            <div class="plan-divider"></div>
-            <ul>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M5 12l5 5L20 7" />
-                </svg> Everything in Free, plus&hellip;</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M5 12l5 5L20 7" />
-                </svg> 2&ndash;3 active signals daily</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M5 12l5 5L20 7" />
-                </svg> Faster, real-time signals</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M5 12l5 5L20 7" />
-                </svg> Entry, stop-loss &amp; take-profit on every call</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M5 12l5 5L20 7" />
-                </svg> Priority over the free channel</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M5 12l5 5L20 7" />
-                </svg> Full review of your progress</li>
-            </ul>
-            <a class="btn-tg btn-tg-premium" href="register.html">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round">
-                <rect x="3" y="11" width="18" height="11" rx="2" />
-                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-              </svg>
-              Join Premium Telegram
-            </a>
-          </article>
-
-          <article class="plan premium">
-            <span class="plan-badge">Best value</span>
-            <span class="plan-tier">Complete</span>
-            <h3>Full Course + Discord</h3>
-            <div class="plan-price">$50<span class="per">/ mo</span></div>
-            <div style="font-family:var(--font-mono);font-size:0.9rem;color:var(--gold);margin-top:4px">or $500 lifetime</div>
-            <div class="plan-divider"></div>
-            <ul>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M5 12l5 5L20 7" />
-                </svg> Everything in Premium Telegram, plus&hellip;</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M5 12l5 5L20 7" />
-                </svg> 4&ndash;5 active signals daily</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M5 12l5 5L20 7" />
-                </svg> Full trading course: ICT, CRT &amp; the Unicorn entry framework</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M5 12l5 5L20 7" />
-                </svg> Private Premium Discord group</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M5 12l5 5L20 7" />
-                </svg> Daily market-strategy updates</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M5 12l5 5L20 7" />
-                </svg> Direct conversation with a team member</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M5 12l5 5L20 7" />
-                </svg> Structured, step-by-step curriculum</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M5 12l5 5L20 7" />
-                </svg> Lifetime course updates &amp; members-only Q&amp;A</li>
-            </ul>
-            <a class="btn-tg btn-tg-premium" href="register.html">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round">
-                <rect x="3" y="11" width="18" height="11" rx="2" />
-                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-              </svg>
-              Get the Full Course
-            </a>
-          </article>
-
+        <div class="join-ctas">
+          <a class="btn-tg btn-tg-premium" href="pricing.html">
+            Compare plans &amp; join
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M5 12h14M13 5l7 7-7 7" />
+            </svg>
+          </a>
         </div>
 
         <p style="text-align:center;margin-top:40px;font-size:0.95rem">
@@ -1098,27 +972,7 @@
       </p>
     </div>
   </footer>
-
-  <!-- Mobile sticky bottom CTA -->
-  <div class="mobile-sticky">
-    <a class="btn-tg btn-tg-free" href="https://t.me/" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" fill="currentColor">
-        <path
-          d="M21.5 2.5 2.7 9.9c-.9.3-.8 1.6.1 1.9l4.6 1.4 1.7 5.4c.2.7 1.1.9 1.6.3l2.5-2.5 4.6 3.4c.6.4 1.4.1 1.6-.6l3-15c.2-.8-.7-1.5-1.5-1.2Zm-3.7 4.6L9.3 13.4l-.4 4.1-1.5-4.6 12.3-7.4-1.9 1.6Z" />
-      </svg>
-      Free
-    </a>
-    <a class="btn-tg btn-tg-premium" href="https://t.me/" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-        stroke-linejoin="round">
-        <rect x="3" y="11" width="18" height="11" rx="2" />
-        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-      </svg>
-      Premium
-    </a>
-  </div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="js/main.js"></script>
   <script src="js/animations.js"></script>

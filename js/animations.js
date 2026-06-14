@@ -234,45 +234,4 @@
     });
   });
 
-  // --- Lightweight counters, FAQ toggles, and year fallback for non-GSAP flows
-  (function () {
-    // set footer year
-    const y = document.querySelector('[data-year]');
-    if (y) y.textContent = new Date().getFullYear();
-
-    // animate numeric counters when visible
-    document.querySelectorAll('[data-count]').forEach(el => {
-      const target = parseInt(el.getAttribute('data-count'), 10) || 0;
-      el.textContent = '0';
-      const obs = new IntersectionObserver((entries, o) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            let start = null;
-            const dur = 900;
-            function step(ts) {
-              if (!start) start = ts;
-              const t = Math.min((ts - start) / dur, 1);
-              el.textContent = Math.floor(t * target);
-              if (t < 1) requestAnimationFrame(step);
-              else el.textContent = target;
-            }
-            requestAnimationFrame(step);
-            o.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.2 });
-      obs.observe(el);
-    });
-
-    // simple FAQ toggle (graceful if GSAP already handles visuals)
-    document.querySelectorAll('.faq-q').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const item = btn.closest('.faq-item');
-        const panel = item.querySelector('.faq-a');
-        const open = item.classList.toggle('open');
-        if (open) panel.style.maxHeight = panel.scrollHeight + 'px';
-        else panel.style.maxHeight = null;
-      });
-    });
-  })();
 })();

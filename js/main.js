@@ -40,6 +40,22 @@
   closeBtn?.addEventListener('click', closeMenu);
   menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
 
+  // ---- Mobile "Learn" collapsible group (tap the header to expand the sub-pages)
+  const learnSection = menu?.querySelector('.mobile-learn-section');
+  const learnToggle = learnSection?.querySelector('.mobile-learn-toggle');
+  if (learnSection && learnToggle) {
+    const setLearn = (open) => {
+      learnSection.classList.toggle('open', open);
+      learnToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
+    // Auto-expand when the current page is one of the Learn sub-pages
+    const here = location.pathname.split('/').pop();
+    const onLearnPage = [...learnSection.querySelectorAll('.mobile-learn-card')]
+      .some(a => a.getAttribute('href') === here);
+    setLearn(onLearnPage);
+    learnToggle.addEventListener('click', () => setLearn(!learnSection.classList.contains('open')));
+  }
+
   // ---- Theme switcher — Apple-style segmented pill (Light / System / Dark)
   // Stores the *preference*; resolves "system" against the OS at runtime and sets
   // data-theme (concrete) + data-theme-pref (choice) on <html>. An inline <head>
@@ -173,14 +189,17 @@
   };
   document.querySelectorAll('.faq-item').forEach(item => {
     const btn = item.querySelector('.faq-q');
+    btn?.setAttribute('aria-expanded', item.classList.contains('open') ? 'true' : 'false');
     btn?.addEventListener('click', () => {
       const wasOpen = item.classList.contains('open');
       item.parentElement?.querySelectorAll('.faq-item.open').forEach(o => {
         o.classList.remove('open');
+        o.querySelector('.faq-q')?.setAttribute('aria-expanded', 'false');
         setFaqHeight(o, false);
       });
       if (!wasOpen) {
         item.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
         setFaqHeight(item, true);
       }
     });
