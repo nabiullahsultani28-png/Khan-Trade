@@ -1,4 +1,4 @@
-/* The Khan Trading — main.js
+/* The Khan Trading - main.js
    Nav tint, mobile menu, FAQ accordion, lazy video autoplay,
    stat count-ups, scroll-reveal fallback. */
 
@@ -7,7 +7,7 @@
 
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // ---- Telegram links — single source of truth.
+  // ---- Telegram links - single source of truth.
   // When the real channels go live, set the two URLs below; every t.me CTA
   // site-wide is resolved from here (premium = .btn-tg-premium or "premium" text).
   const TG_LINKS = {
@@ -34,11 +34,77 @@
   const toggle = document.querySelector('.nav-mobile-toggle');
   const menu = document.querySelector('.mobile-menu');
   const closeBtn = document.querySelector('.mobile-menu-close');
-  const openMenu = () => { menu?.classList.add('open'); document.body.style.overflow = 'hidden'; };
-  const closeMenu = () => { menu?.classList.remove('open'); document.body.style.overflow = ''; };
+  const focusableSel = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  let lastFocused = null;
+  const openMenu = () => {
+    if (!menu) return;
+    lastFocused = document.activeElement;
+    menu.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    toggle?.setAttribute('aria-expanded', 'true');
+    toggle?.setAttribute('aria-label', 'Close menu');
+    requestAnimationFrame(() => menu.querySelector(focusableSel)?.focus());
+  };
+  const closeMenu = () => {
+    if (!menu) return;
+    menu.classList.remove('open');
+    document.body.style.overflow = '';
+    toggle?.setAttribute('aria-expanded', 'false');
+    toggle?.setAttribute('aria-label', 'Open menu');
+    learnSection?.classList.remove('open');
+    learnToggle?.setAttribute('aria-expanded', 'false');
+    if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+  };
   toggle?.addEventListener('click', openMenu);
   closeBtn?.addEventListener('click', closeMenu);
   menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+  menu?.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeMenu();
+      return;
+    }
+    if (e.key !== 'Tab' || !menu.classList.contains('open')) return;
+    const focusables = [...menu.querySelectorAll(focusableSel)].filter(el => el.offsetParent !== null);
+    if (!focusables.length) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menu?.classList.contains('open')) {
+      e.preventDefault();
+      closeMenu();
+    }
+  });
+
+  // ---- Desktop Learn dropdown
+  document.querySelectorAll('.nav-dropdown-group').forEach(group => {
+    const trigger = group.querySelector('.nav-dropdown-trigger');
+    const setOpen = (open) => {
+      group.classList.toggle('open', open);
+      trigger?.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
+    trigger?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setOpen(!group.classList.contains('open'));
+    });
+    group.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        setOpen(false);
+        trigger?.focus();
+      }
+    });
+    document.addEventListener('click', (e) => {
+      if (!group.contains(e.target)) setOpen(false);
+    });
+  });
 
   // ---- Mobile "Learn" collapsible group (tap the header to expand the sub-pages)
   const learnSection = menu?.querySelector('.mobile-learn-section');
@@ -56,7 +122,7 @@
     learnToggle.addEventListener('click', () => setLearn(!learnSection.classList.contains('open')));
   }
 
-  // ---- Theme switcher — Apple-style segmented pill (Light / System / Dark)
+  // ---- Theme switcher - Apple-style segmented pill (Light / System / Dark)
   // Stores the *preference*; resolves "system" against the OS at runtime and sets
   // data-theme (concrete) + data-theme-pref (choice) on <html>. An inline <head>
   // script applies the same on first paint to avoid a flash. The control itself is
@@ -168,25 +234,7 @@
   // Flag the nav when it overlaps the dark hero (home page) for light-theme legibility
   if (document.querySelector('.hero')) nav?.classList.add('over-hero');
 
-  // ---- Ticker pause-on-hover
-  const tickerTrack = document.querySelector('.ticker-track');
-  if (tickerTrack) {
-    tickerTrack.parentElement.addEventListener('mouseenter', () => tickerTrack.style.animationPlayState = 'paused');
-    tickerTrack.parentElement.addEventListener('mouseleave', () => tickerTrack.style.animationPlayState = 'running');
-  }
-
-  // ---- FAQ accordion (smooth height via measured inline max-height)
-  const setFaqHeight = (item, open) => {
-    const a = item.querySelector('.faq-a');
-    if (!a) return;
-    if (open) {
-      const inner = a.querySelector('.faq-a-inner');
-      const h = inner ? inner.scrollHeight + 2 : a.scrollHeight;
-      a.style.maxHeight = h + 'px';
-    } else {
-      a.style.maxHeight = '0px';
-    }
-  };
+  // ---- FAQ accordion
   document.querySelectorAll('.faq-item').forEach(item => {
     const btn = item.querySelector('.faq-q');
     btn?.setAttribute('aria-expanded', item.classList.contains('open') ? 'true' : 'false');
@@ -195,18 +243,12 @@
       item.parentElement?.querySelectorAll('.faq-item.open').forEach(o => {
         o.classList.remove('open');
         o.querySelector('.faq-q')?.setAttribute('aria-expanded', 'false');
-        setFaqHeight(o, false);
       });
       if (!wasOpen) {
         item.classList.add('open');
         btn.setAttribute('aria-expanded', 'true');
-        setFaqHeight(item, true);
       }
     });
-  });
-  // Recompute open item heights on viewport resize (line-wrap can change height)
-  window.addEventListener('resize', () => {
-    document.querySelectorAll('.faq-item.open').forEach(o => setFaqHeight(o, true));
   });
 
   // ---- Scroll reveal (IntersectionObserver fallback if GSAP not loaded)
@@ -223,6 +265,66 @@
     revealEls.forEach(el => io.observe(el));
   } else {
     revealEls.forEach(el => el.classList.add('in'));
+  }
+
+  // ---- Pricing cards: pointer spotlight
+  const pricingCards = document.querySelectorAll('[data-pricing-card]');
+  if (pricingCards.length) {
+    const finePointer = window.matchMedia('(pointer: fine)').matches;
+    const resetCard = (card) => {
+      card.style.setProperty('--mx', '50%');
+      card.style.setProperty('--my', '24%');
+      card.classList.remove('is-spotlit');
+    };
+
+    pricingCards.forEach((card) => {
+      if (reduce || !finePointer) {
+        resetCard(card);
+        return;
+      }
+
+      let raf = 0;
+      let lastX = 0;
+      let lastY = 0;
+
+      const render = () => {
+        raf = 0;
+        const rect = card.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+        const x = Math.max(0, Math.min(1, (lastX - rect.left) / rect.width));
+        const y = Math.max(0, Math.min(1, (lastY - rect.top) / rect.height));
+        card.style.setProperty('--mx', (x * 100).toFixed(2) + '%');
+        card.style.setProperty('--my', (y * 100).toFixed(2) + '%');
+      };
+
+      card.addEventListener('pointerenter', (event) => {
+        card.classList.add('is-spotlit');
+        lastX = event.clientX;
+        lastY = event.clientY;
+        if (!raf) raf = requestAnimationFrame(render);
+      });
+
+      card.addEventListener('pointermove', (event) => {
+        card.classList.add('is-spotlit');
+        lastX = event.clientX;
+        lastY = event.clientY;
+        if (!raf) raf = requestAnimationFrame(render);
+      });
+
+      card.addEventListener('pointerleave', () => {
+        if (raf) cancelAnimationFrame(raf);
+        raf = 0;
+        resetCard(card);
+      });
+
+      card.addEventListener('focusin', () => {
+        card.classList.add('is-spotlit');
+      });
+
+      card.addEventListener('focusout', () => {
+        resetCard(card);
+      });
+    });
   }
 
   // ---- Lazy autoplay videos when in view, pause when out.
@@ -325,3 +427,4 @@
     el.textContent = new Date().getFullYear();
   });
 })();
+

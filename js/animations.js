@@ -1,4 +1,4 @@
-/* The Khan Trading — animations.js
+/* The Khan Trading - animations.js
    GSAP + ScrollTrigger timelines: hero entrance, section reveals,
    chart parallax, module timeline stagger. Disabled on reduced motion. */
 
@@ -30,7 +30,7 @@
   if (heroMeta) {
     gsap.from(heroMeta.children, { y: 14, opacity: 0, duration: 0.8, ease: 'expo.out', delay: 0.85, stagger: 0.08 });
   }
-  const heroPanel = document.querySelector('.hero-chart-panel');
+  const heroPanel = document.querySelector('.hero-chart-panel, .hero-market-card');
   if (heroPanel) {
     gsap.from(heroPanel, { y: 40, opacity: 0, scale: 0.97, duration: 1.2, ease: 'expo.out', delay: 0.4 });
   }
@@ -114,6 +114,7 @@
 
     // --- Testimonial SVG quote-mark draw-in + slow float
     gsap.utils.toArray('.qmark-svg .qmark-path').forEach(path => {
+      path.style.strokeDasharray = 200;
       gsap.fromTo(path, { strokeDashoffset: 200 }, {
         strokeDashoffset: 0,
         duration: 1.4,
@@ -130,7 +131,7 @@
       });
     });
 
-    // --- Unicorn vertical connecting line — draws as section scrolls
+    // --- Unicorn vertical connecting line - draws as section scrolls
     const uLine = document.querySelector('.unicorn-line-path');
     if (uLine) {
       gsap.fromTo(uLine, { strokeDashoffset: 100 }, {
@@ -162,7 +163,7 @@
       });
     }
 
-    // --- CRT / ICT anatomy diagrams — each builds itself as it scrolls into view.
+    // --- CRT / ICT anatomy diagrams - each builds itself as it scrolls into view.
     // SVG-safe: only opacity + translate tweens (scale/transformOrigin on
     // <g>/<line> is unreliable across browsers), plus a stroke-dash arrow draw.
     gsap.utils.toArray('.crt-diagram svg').forEach((crtDiagram) => {
@@ -200,7 +201,7 @@
     });
   }
 
-  // --- Hero drifting candle backdrop — slow infinite drift
+  // --- Hero drifting candle backdrop - slow infinite drift
   const heroCandlesRow = document.querySelector('.hero-candles-row');
   if (heroCandlesRow) {
     gsap.to(heroCandlesRow, {
@@ -221,17 +222,27 @@
   }
 
   // --- Module-card 3D tilt on hover
-  document.querySelectorAll('[data-tilt]').forEach(card => {
+  if (!window.matchMedia('(pointer: coarse)').matches) document.querySelectorAll('[data-tilt]').forEach(card => {
     const max = 6;
+    let frame = 0;
+    let nextTransform = '';
     card.addEventListener('mousemove', (e) => {
       const r = card.getBoundingClientRect();
       const px = (e.clientX - r.left) / r.width - 0.5;
       const py = (e.clientY - r.top) / r.height - 0.5;
-      card.style.transform = `perspective(800px) rotateY(${px * max}deg) rotateX(${-py * max}deg) translateY(-3px)`;
+      nextTransform = `perspective(800px) rotateY(${px * max}deg) rotateX(${-py * max}deg)`;
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        card.style.transform = nextTransform;
+        frame = 0;
+      });
     });
     card.addEventListener('mouseleave', () => {
+      if (frame) cancelAnimationFrame(frame);
+      frame = 0;
       card.style.transform = '';
     });
   });
 
 })();
+

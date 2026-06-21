@@ -4,12 +4,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>The Khan Trading — ICT, CRT & Unicorn Forex Course</title>
+  <title>The Khan Trading: ICT, CRT & Unicorn Forex Course</title>
   <meta name="description"
     content="Master the forex market with ICT concepts, the full CRT model, and the Unicorn entry framework. Built for serious, dedicated traders. Join the free Telegram channel today." />
   <meta name="theme-color" content="#0A0E14" />
 
-  <meta property="og:title" content="The Khan Trading — ICT, CRT & Unicorn Forex Course" />
+  <meta property="og:title" content="The Khan Trading: ICT, CRT & Unicorn Forex Course" />
   <meta property="og:description"
     content="A complete forex execution system: CRT, Unicorn entries, liquidity & timing. Serious traders only." />
   <meta property="og:type" content="website" />
@@ -39,6 +39,68 @@
 }
 </script>
 
+  <style>
+    @keyframes khanPulse { 0%,100%{ box-shadow:0 0 0 0 rgba(212,175,55,.4) } 50%{ box-shadow:0 0 0 12px rgba(212,175,55,0) } }
+    @keyframes khanShimmer { 0%{ background-position:-160% 0 } 100%{ background-position:160% 0 } }
+    #ict[data-js] [data-reveal]{ opacity:0; transition:opacity .9s cubic-bezier(.22,.61,.36,1), transform .9s cubic-bezier(.22,.61,.36,1); }
+    #ict[data-js] [data-reveal][data-dir="left"]{ transform:translateX(-70px) }
+    #ict[data-js] [data-reveal][data-dir="right"]{ transform:translateX(70px) }
+    #ict[data-js] [data-reveal][data-dir="up"]{ transform:translateY(52px) }
+    #ict[data-js] [data-reveal][data-dir="left-far"]{ transform:translateX(-104px) }
+    #ict[data-js] [data-reveal][data-dir="right-far"]{ transform:translateX(104px) }
+    #ict[data-js] [data-reveal][data-dir="pop"]{ transform:scale(.6) }
+    #ict[data-js] [data-reveal][data-in]{ opacity:1; transform:none }
+    @media (prefers-reduced-motion:reduce){ #ict[data-js] [data-reveal]{ opacity:1 !important; transform:none !important; transition:none } }
+    .edu-inner-card{ transition:border-color .35s ease, box-shadow .35s ease, transform .35s ease; }
+    .edu-inner-card.hover-gold:hover{ border-color:rgba(212,175,55,.5) !important; box-shadow:0 20px 50px -22px rgba(212,175,55,.3); transform:translateY(-5px); }
+    .edu-inner-card.hover-red:hover{ border-color:rgba(239,68,68,.5) !important; box-shadow:0 20px 50px -22px rgba(239,68,68,.28); transform:translateY(-5px); }
+    .edu-inner-card.hover-green:hover{ border-color:rgba(34,197,94,.5) !important; box-shadow:0 20px 50px -22px rgba(34,197,94,.28); transform:translateY(-5px); }
+    .edu-inner-card.hover-bb:hover{ border-color:rgba(212,175,55,.45) !important; box-shadow:0 20px 50px -24px rgba(212,175,55,.28); transform:translateY(-5px); }
+    .edu-inner-card.hover-pillar:hover{ border-color:rgba(212,175,55,.55) !important; box-shadow:0 28px 70px -28px rgba(212,175,55,.34); transform:translateY(-6px); }
+    .edu-link-arrow{ transition:gap .25s ease; }
+    .edu-link-arrow:hover{ gap:12px !important; }
+
+    /* ===== Why Different / Honest Filter (design: WhyDifferent.dc.html) ===== */
+    @keyframes khanWhyPop { 0%{transform:scale(.55);opacity:0} 62%{transform:scale(1.12)} 100%{transform:scale(1);opacity:1} }
+    #khan-why[data-js] [data-reveal]{ opacity:0; transition:opacity .8s cubic-bezier(.22,.61,.36,1), transform .8s cubic-bezier(.22,.61,.36,1); will-change:transform,opacity; }
+    #khan-why[data-js] [data-reveal][data-dir="up"]{ transform:translateY(46px) }
+    #khan-why[data-js] [data-reveal][data-dir="left"]{ transform:translateX(-56px) }
+    #khan-why[data-js] [data-reveal][data-dir="right"]{ transform:translateX(56px) }
+    #khan-why[data-js] [data-reveal][data-in]{ opacity:1; transform:none }
+    /* Safety net: after the entrance has played, pin the visible resting state. */
+    #khan-why [data-reveal][data-shown]{ opacity:1 !important; transform:none !important; transition:none !important; }
+    #khan-why [data-reveal][data-shown] .khan-glyph path,
+    #khan-why [data-reveal][data-shown] .khan-spark path{ stroke-dashoffset:0 !important; transition:none !important; }
+    #khan-why .khan-spark path{ stroke-dasharray:160; stroke-dashoffset:160; }
+    #khan-why [data-in] .khan-spark path{ transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1) .25s; stroke-dashoffset:0; }
+    #khan-why .khan-glyph path{ stroke-dasharray:36; stroke-dashoffset:36; }
+    #khan-why [data-in] .khan-glyph path{ transition:stroke-dashoffset .55s ease .2s; stroke-dashoffset:0; }
+    #khan-why .khan-card{ transition:border-color .4s ease, box-shadow .5s cubic-bezier(.16,1,.3,1), transform .5s cubic-bezier(.16,1,.3,1); }
+    #khan-why .khan-card:hover{ border-color:rgba(var(--ka,212,175,55),.55); box-shadow:0 30px 64px -26px rgba(var(--ka,212,175,55),.32); transform:translateY(-8px); }
+    #khan-why .khan-card:hover .khan-icon{ transform:translateY(-2px) scale(1.06); }
+    #khan-why .khan-icon{ transition:transform .45s cubic-bezier(.34,1.5,.5,1); }
+    #khan-why .khan-stat{ transition:background .35s ease; }
+    #khan-why .khan-stat:hover{ background:rgba(255,255,255,.025); }
+    #khan-why .khan-panel{ transition:border-color .4s ease, box-shadow .5s cubic-bezier(.16,1,.3,1), transform .5s cubic-bezier(.16,1,.3,1); }
+    #khan-why .khan-panel-yes:hover{ border-color:rgba(34,197,94,.5); box-shadow:0 30px 64px -30px rgba(34,197,94,.42); transform:translateY(-6px); }
+    #khan-why .khan-panel-no:hover{ border-color:rgba(239,68,68,.45); box-shadow:0 30px 64px -30px rgba(239,68,68,.38); transform:translateY(-6px); }
+    #khan-why .khan-fitrow{ position:relative; border-radius:13px; transition:background .3s ease, border-color .3s ease, transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s ease; }
+    #khan-why .khan-panel-yes .khan-fitrow:hover{ background:rgba(34,197,94,.07); border-color:rgba(34,197,94,.32); transform:translateX(5px); box-shadow:-9px 0 24px -16px rgba(34,197,94,.6); }
+    #khan-why .khan-panel-no .khan-fitrow:hover{ background:rgba(239,68,68,.07); border-color:rgba(239,68,68,.3); transform:translateX(5px); box-shadow:-9px 0 24px -16px rgba(239,68,68,.55); }
+    #khan-why .khan-fitrow:hover .khan-glyph{ transform:scale(1.12) rotate(-5deg); }
+    #khan-why .khan-glyph{ transition:transform .4s cubic-bezier(.34,1.5,.5,1); }
+    @media (max-width:760px){
+      #khan-why .khan-strip{ grid-template-columns:repeat(2,1fr) !important; }
+      #khan-why .khan-strip > .khan-stat:nth-child(2n){ border-right:none !important; }
+      #khan-why .khan-strip > .khan-stat:nth-child(-n+2){ border-bottom:1px solid #1E2632; }
+      #khan-why .khan-fitgrid{ grid-template-columns:1fr !important; gap:18px !important; }
+    }
+    @media (prefers-reduced-motion: reduce){
+      #khan-why[data-js] [data-reveal]{ opacity:1 !important; transform:none !important; transition:none }
+      #khan-why .khan-spark path, #khan-why .khan-glyph path{ stroke-dashoffset:0 !important; }
+    }
+  </style>
+
   <script>
     /* Apply saved theme before first paint to avoid a flash */
     (function () {
@@ -64,15 +126,17 @@
       </a>
       <nav class="nav-links" aria-label="Primary">
         <a href="index.html" class="active">Home</a>
-        <div class="nav-dropdown-group" tabindex="0">
-          <span>Learn 
+        <div class="nav-dropdown-group">
+          <button class="nav-dropdown-trigger" type="button" aria-haspopup="true" aria-expanded="false">
+            <span>Learn</span>
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: -2px;">
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
-          </span>
+          </button>
           <div class="nav-dropdown-menu">
-            <a href="ict.html">ICT Concepts</a>
+            <a href="#ict">ICT Concepts</a>
             <a href="crt.html">CRT Model</a>
+            <a href="unicorn.html">Unicorn Model</a>
           </div>
         </div>
         <a href="about.html">About</a>
@@ -90,7 +154,7 @@
         <svg class="ic-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
         <svg class="ic-system" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
       </button>
-      <button class="nav-mobile-toggle" aria-label="Open menu" aria-controls="mobile-menu">
+      <button class="nav-mobile-toggle" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
           <path d="M4 7h16M4 12h16M4 17h16" />
         </svg>
@@ -127,7 +191,7 @@
           <svg class="mlt-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div class="mobile-learn-panel" id="mobile-learn-panel">
-          <a href="ict.html" class="mobile-learn-card">
+          <a href="#ict" class="mobile-learn-card">
             <span class="mlc-num">02</span>
             <span class="mlc-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
@@ -149,10 +213,21 @@
             </span>
             <svg class="nav-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
           </a>
+          <a href="unicorn.html" class="mobile-learn-card">
+            <span class="mlc-num">04</span>
+            <span class="mlc-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z"/></svg>
+            </span>
+            <span class="mlc-text">
+              <span class="mlc-title">Unicorn Model</span>
+              <span class="mlc-sub">High-confluence entry</span>
+            </span>
+            <svg class="nav-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
         </div>
       </div>
       <a href="about.html">
-        <span class="nav-num" aria-hidden="true">04</span>
+        <span class="nav-num" aria-hidden="true">05</span>
         <span class="nav-label">About</span>
         <svg class="nav-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" aria-hidden="true">
@@ -160,7 +235,7 @@
         </svg>
       </a>
       <a href="pricing.html">
-        <span class="nav-num" aria-hidden="true">05</span>
+        <span class="nav-num" aria-hidden="true">06</span>
         <span class="nav-label">Pricing</span>
         <svg class="nav-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" aria-hidden="true">
@@ -168,7 +243,7 @@
         </svg>
       </a>
       <a href="contact.html">
-        <span class="nav-num" aria-hidden="true">06</span>
+        <span class="nav-num" aria-hidden="true">07</span>
         <span class="nav-label">Contact</span>
         <svg class="nav-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" aria-hidden="true">
@@ -189,40 +264,62 @@
       <a href="register.html" class="btn-join btn-join-mobile">Join Now <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></div>
   </div>
 
+  <div class="mobile-sticky" aria-label="Quick actions">
+    <a class="btn-tg btn-tg-free" href="https://t.me/">
+      Free channel
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <path d="M5 12h14M13 5l7 7-7 7" />
+      </svg>
+    </a>
+    <a class="btn-tg btn-tg-premium" href="pricing.html">
+      Plans
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <path d="M5 12h14M13 5l7 7-7 7" />
+      </svg>
+    </a>
+  </div>
+
   <main id="main">
 
     <!-- ============ HERO ============ -->
     <section class="hero" aria-label="Introduction">
       <div class="hero-bg" aria-hidden="true"></div>
-      <video class="hero-video" aria-hidden="true" autoplay loop muted playsinline preload="metadata" poster="assets/img/hero-poster.jpg">
-        <source src="assets/video/hero-bg.mp4" type="video/mp4">
-      </video>
+      <!-- Video loads/plays on desktop only; mobile shows the .hero-bg poster (saves ~8MB + battery). Wired by js/hero-video.js -->
+      <video class="hero-video" aria-hidden="true" autoplay loop muted playsinline preload="none" poster="assets/img/hero-poster-v2.jpg" data-src="assets/video/hero-bg.mp4"></video>
       <div class="hero-overlay"></div>
 
-      <div class="container hero-inner">
+      <div class="container hero-inner hero-inner--solo">
         <div class="hero-copy">
           <span class="eyebrow">ICT &middot; CRT &middot; Unicorn</span>
-          <h1 style="margin-top:24px" class="hero-h1" aria-label="Master the market the ICT way.">
-            <span aria-hidden="true">Master</span> <span aria-hidden="true">the</span> <span
-              aria-hidden="true">market</span><br><span aria-hidden="true">the</span> <span class="accent"
-              aria-hidden="true">ICT</span> <span aria-hidden="true">way.</span>
+          <h1 class="hero-h1" aria-label="Master the market the ICT way.">
+            <span class="hero-h1-line" aria-hidden="true">Master the market</span>
+            <span class="hero-h1-line" aria-hidden="true">the <span class="accent">ICT</span> way.</span>
           </h1>
           <p class="lead">
             A complete forex execution system for serious traders. Built around <strong>Candle Range Theory</strong>,
             the
             <strong>Unicorn entry model</strong>, and the timing &amp; liquidity logic that actually moves Gold and the
             majors.
-          </p><div class="hero-meta">
+          </p>
+          <div class="tg-cta-pair hero-ctas">
+            <a class="btn-tg btn-tg-free" href="#join">
+              Join Us Now
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                <path d="M5 12h14M13 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+          <div class="hero-meta">
             <span class="hero-meta-item"><span class="dot"></span> For Serious &amp; Dedicated Traders Only</span>
             <span class="hero-meta-item mono">XAUUSD &middot; FX MAJORS</span>
             <span class="hero-meta-item mono">LONDON &middot; NEW YORK</span>
           </div>
         </div>
-
       </div>
     </section>
 
     <!-- ============ TICKER ============ -->
+    <p class="sr-only">The Khan Trading focuses on XAUUSD and FX majors, CRT foundations, Unicorn entries, London and New York sessions, and daily educational signal examples.</p>
     <div class="ticker" aria-hidden="true">
       <div class="ticker-track">
         <!-- duplicated content for seamless loop -->
@@ -256,310 +353,287 @@
       </div>
     </div>
 
-    <!-- ============ PILLARS ============ -->
-    <section aria-labelledby="pillars-h">
-      <div class="container">
-        <div class="section-header">
-          <span class="eyebrow">What you'll learn</span>
-          <h2 id="pillars-h">Two pillars. One execution system.</h2>
-          <p>The Khan Trading is not "concepts and theory." It's the smallest set of patterns that consistently extracts
-            liquidity from Gold and the majors — taught in the order a real trader uses them.</p>
+    <!-- ============ ICT - MAIN CONCEPT ============ -->
+    <section id="ict" aria-labelledby="ict-h" style="position:relative;overflow:hidden;background:#0A0E14;font-family:'Inter',system-ui,sans-serif;color:#8A93A6;padding:96px 24px 112px;scroll-margin-top:96px;">
+
+      <canvas data-khan-bg style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+      <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,#0A0E14,rgba(10,14,20,0) 150px,rgba(10,14,20,0) calc(100% - 150px),#0A0E14);"></div>
+
+      <div style="position:relative;z-index:2;max-width:1180px;margin:0 auto;">
+
+        <!-- HEADER -->
+        <div data-reveal data-dir="up" style="text-align:center;max-width:760px;margin:0 auto;">
+          <span style="display:inline-flex;align-items:center;gap:8px;font:600 12px/1 'JetBrains Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:#D4AF37;background:rgba(212,175,55,.10);border:1px solid rgba(212,175,55,.28);padding:8px 15px;border-radius:999px;">What we teach</span>
+          <h2 id="ict-h" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(30px,4.4vw,52px);line-height:1.06;letter-spacing:-.02em;margin:22px 0 0;color:#F4F5F7;">
+            <span style="background:linear-gradient(120deg,#F4E7B8,#D4AF37 55%,#9C7C1E);-webkit-background-clip:text;background-clip:text;color:transparent;">ICT</span> is the framework.<br>CRT and Unicorn are how you trade it.
+          </h2>
+          <p style="font-size:16px;line-height:1.65;margin:22px auto 0;max-width:620px;">ICT (Inner Circle Trader) reads price the way institutions move it: every move is engineered to take <strong style="color:#D4AF37;font-weight:600;">liquidity</strong> and rebalance inefficiency. Learn that one idea and the chart stops looking random; it becomes a repeatable sequence.</p>
         </div>
 
-        <div class="pillars stagger-group">
-          <article class="card pillar" data-tilt>
-            <span class="pillar-num" aria-hidden="true">01</span>
-            <div class="card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="9" />
-                <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
-              </svg>
-            </div>
-            <span class="pillar-kicker">The foundation</span>
-            <h3>ICT Concepts</h3>
-            <p>Market structure, premium &amp; discount, order blocks, fair-value gaps, liquidity pools — the foundation
-              every higher-edge model is built on.</p>
-            <div class="pillar-tags">
-              <span class="crt-chip">Market structure</span>
-              <span class="crt-chip">Premium &amp; discount</span>
-              <span class="crt-chip">Order blocks</span>
-              <span class="crt-chip">Fair-value gaps</span>
-              <span class="crt-chip">Liquidity pools</span>
-            </div>
-            <div class="pillar-cta"><a class="link-arrow card-link" href="ict.html">See the ICT concepts
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                  stroke-linecap="round">
-                  <path d="M5 12h14M13 5l7 7-7 7" />
-                </svg>
-              </a></div>
-          </article>
+        <!-- FOUR-MOVE SEQUENCE -->
+        <div style="position:relative;margin-top:60px;">
+          <div style="position:absolute;top:60px;left:6%;right:6%;height:2px;z-index:0;background:linear-gradient(90deg,rgba(212,175,55,0),rgba(212,175,55,.42) 25%,rgba(212,175,55,.42) 75%,rgba(212,175,55,0));"></div>
+          <div style="position:absolute;top:59px;left:6%;right:6%;height:3px;z-index:0;background:linear-gradient(90deg,transparent 40%,rgba(244,231,184,.85) 50%,transparent 60%);background-size:220% 100%;animation:khanShimmer 4.5s linear infinite;border-radius:2px;"></div>
+          <div style="position:relative;z-index:1;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
 
-          <div class="pillar-bridge" aria-hidden="true">
-            <span class="pillar-bridge-line"></span>
-            <span class="pillar-bridge-node">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
-                stroke-linejoin="round">
-                <path d="M5 12h14M13 5l7 7-7 7" />
-              </svg>
-            </span>
-            <span class="pillar-bridge-line"></span>
+            <div data-reveal data-dir="left" style="transition-delay:.04s;">
+              <div class="edu-inner-card hover-gold" style="position:relative;height:100%;box-sizing:border-box;background:linear-gradient(180deg,rgba(22,29,41,.78),rgba(17,22,31,.62));border:1px solid #1E2632;border-radius:16px;padding:22px;backdrop-filter:blur(6px);">
+                <div style="width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.26);color:#22C55E;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h16M4 14h16M12 4v16" stroke-dasharray="2 2"/></svg></div>
+                <h3 style="font-family:'Space Grotesk',sans-serif;color:#F4F5F7;font-size:16px;font-weight:600;margin:14px 0 8px;"><span style="font-family:'JetBrains Mono',monospace;color:#D4AF37;">1</span> Liquidity</h3>
+                <p style="font-size:13.5px;line-height:1.55;margin:0;">Stops pile up above highs and below lows. That resting liquidity is the fuel price is drawn to.</p>
+              </div>
+            </div>
+
+            <div data-reveal data-dir="up" style="transition-delay:.12s;">
+              <div class="edu-inner-card hover-red" style="position:relative;height:100%;box-sizing:border-box;background:linear-gradient(180deg,rgba(22,29,41,.78),rgba(17,22,31,.62));border:1px solid #1E2632;border-radius:16px;padding:22px;backdrop-filter:blur(6px);">
+                <div style="width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.26);color:#EF4444;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5l-5-3-5 3"/></svg></div>
+                <h3 style="font-family:'Space Grotesk',sans-serif;color:#F4F5F7;font-size:16px;font-weight:600;margin:14px 0 8px;"><span style="font-family:'JetBrains Mono',monospace;color:#D4AF37;">2</span> The raid</h3>
+                <p style="font-size:13.5px;line-height:1.55;margin:0;">Price spikes through a high or low to <strong style="color:#F4F5F7;font-weight:600;">sweep</strong> that liquidity, trapping breakout traders. The trap is the setup.</p>
+              </div>
+            </div>
+
+            <div data-reveal data-dir="up" style="transition-delay:.2s;">
+              <div class="edu-inner-card hover-green" style="position:relative;height:100%;box-sizing:border-box;background:linear-gradient(180deg,rgba(22,29,41,.78),rgba(17,22,31,.62));border:1px solid #1E2632;border-radius:16px;padding:22px;backdrop-filter:blur(6px);">
+                <div style="width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.26);color:#22C55E;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V2M5 9l7-7 7 7"/></svg></div>
+                <h3 style="font-family:'Space Grotesk',sans-serif;color:#F4F5F7;font-size:16px;font-weight:600;margin:14px 0 8px;"><span style="font-family:'JetBrains Mono',monospace;color:#D4AF37;">3</span> Displacement</h3>
+                <p style="font-size:13.5px;line-height:1.55;margin:0;">A sharp, one-sided move breaks structure and leaves an inefficiency (a Fair Value Gap) behind.</p>
+              </div>
+            </div>
+
+            <div data-reveal data-dir="right" style="transition-delay:.28s;">
+              <div class="edu-inner-card hover-gold" style="position:relative;height:100%;box-sizing:border-box;background:linear-gradient(180deg,rgba(22,29,41,.78),rgba(17,22,31,.62));border:1px solid #1E2632;border-radius:16px;padding:22px;backdrop-filter:blur(6px);">
+                <div style="width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.28);color:#D4AF37;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h5l3 5 4-10 3 5h3"/></svg></div>
+                <h3 style="font-family:'Space Grotesk',sans-serif;color:#F4F5F7;font-size:16px;font-weight:600;margin:14px 0 8px;"><span style="font-family:'JetBrains Mono',monospace;color:#D4AF37;">4</span> The return</h3>
+                <p style="font-size:13.5px;line-height:1.55;margin:0;">Price retraces to the order block or FVG that caused the move. That retrace is your entry.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- BUILDING BLOCKS HEADER -->
+        <div data-reveal data-dir="up" style="text-align:center;max-width:680px;margin:88px auto 0;">
+          <span style="display:inline-flex;align-items:center;gap:8px;font:600 12px/1 'JetBrains Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:#D4AF37;background:rgba(212,175,55,.10);border:1px solid rgba(212,175,55,.28);padding:8px 15px;border-radius:999px;">The building blocks</span>
+          <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(24px,3vw,34px);letter-spacing:-.015em;margin:20px 0 0;color:#F4F5F7;">Six concepts do the heavy lifting.</h3>
+          <p style="font-size:15.5px;line-height:1.6;margin:16px auto 0;max-width:560px;">Every ICT setup, including CRT and the Unicorn, is assembled from these pieces. Learn each one, and the rest is just sequencing them.</p>
+        </div>
+
+        <!-- BUILDING BLOCKS GRID -->
+        <div style="margin-top:40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;">
+
+          <div data-reveal data-dir="left" style="transition-delay:.04s;">
+            <div class="edu-inner-card hover-bb" style="height:100%;box-sizing:border-box;background:linear-gradient(180deg,rgba(22,29,41,.72),rgba(17,22,31,.58));border:1px solid #1E2632;border-radius:16px;padding:24px;backdrop-filter:blur(6px);">
+              <div style="width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.26);color:#22C55E;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 4 3 5-7"/><path d="M17 6h4v4"/></svg></div>
+              <h3 style="font-family:'Space Grotesk',sans-serif;color:#F4F5F7;font-size:17px;font-weight:600;margin:16px 0 8px;">Market structure</h3>
+              <p style="font-size:13.5px;line-height:1.6;margin:0;">Higher highs and lows read bullish; a <strong style="color:#F4F5F7;font-weight:600;">Market Structure Shift</strong> is the first sign of a turn: the same accumulation → manipulation → distribution rhythm ICT calls the <strong style="color:#F4F5F7;font-weight:600;">Power of Three</strong>.</p>
+            </div>
           </div>
 
-          <article class="card pillar" data-tilt>
-            <span class="pillar-num" aria-hidden="true">02</span>
-            <div class="card-icon gold">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round" aria-hidden="true">
-                <rect x="4" y="6" width="4" height="12" />
-                <rect x="11" y="3" width="4" height="18" />
-                <rect x="18" y="9" width="3" height="6" />
-              </svg>
+          <div data-reveal data-dir="up" style="transition-delay:.12s;">
+            <div class="edu-inner-card hover-bb" style="height:100%;box-sizing:border-box;background:linear-gradient(180deg,rgba(22,29,41,.72),rgba(17,22,31,.58));border:1px solid #1E2632;border-radius:16px;padding:24px;backdrop-filter:blur(6px);">
+              <div style="width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.28);color:#D4AF37;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18M3 12h18M3 17h18"/><path d="M7 4v3M17 17v3"/></svg></div>
+              <h3 style="font-family:'Space Grotesk',sans-serif;color:#F4F5F7;font-size:17px;font-weight:600;margin:16px 0 8px;">Liquidity pools <span style="font-family:'JetBrains Mono',monospace;color:#7D8796;font-size:11px;">BSL / SSL</span></h3>
+              <p style="font-size:13.5px;line-height:1.6;margin:0;">Stops cluster above equal highs and below equal lows. Price is engineered to reach that resting liquidity before it reverses.</p>
             </div>
-            <span class="pillar-kicker gold">The execution</span>
-            <h3>CRT — Full Entry Model</h3>
-            <p>Candle Range Theory from foundation to execution: narrative, timing, purging delivery, confirmations, and
-              the advanced layer reserved for premium.</p>
-            <div class="pillar-tags">
-              <span class="crt-chip gold">Narrative</span>
-              <span class="crt-chip gold">Timing</span>
-              <span class="crt-chip gold">Purging delivery</span>
-              <span class="crt-chip gold">Confirmation</span>
-              <span class="crt-chip gold">Premium-only layer</span>
+          </div>
+
+          <div data-reveal data-dir="right" style="transition-delay:.2s;">
+            <div class="edu-inner-card hover-bb" style="height:100%;box-sizing:border-box;background:linear-gradient(180deg,rgba(22,29,41,.72),rgba(17,22,31,.58));border:1px solid #1E2632;border-radius:16px;padding:24px;backdrop-filter:blur(6px);">
+              <div style="width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.26);color:#22C55E;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="16" height="7" rx="1"/><path d="M9 9V6M15 16v3"/></svg></div>
+              <h3 style="font-family:'Space Grotesk',sans-serif;color:#F4F5F7;font-size:17px;font-weight:600;margin:16px 0 8px;">Order blocks</h3>
+              <p style="font-size:13.5px;line-height:1.6;margin:0;">The last opposing candle before a strong move marks where institutions loaded up, and price respects it on the return. A level that breaks and flips becomes a <strong style="color:#F4F5F7;font-weight:600;">Breaker Block</strong>.</p>
             </div>
-            <div class="pillar-cta"><a class="link-arrow" href="crt.html">See the CRT model
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                  stroke-linecap="round">
-                  <path d="M5 12h14M13 5l7 7-7 7" />
-                </svg>
-              </a></div>
-          </article>
+          </div>
+
+          <div data-reveal data-dir="left" style="transition-delay:.04s;">
+            <div class="edu-inner-card hover-bb" style="height:100%;box-sizing:border-box;background:linear-gradient(180deg,rgba(22,29,41,.72),rgba(17,22,31,.58));border:1px solid #1E2632;border-radius:16px;padding:24px;backdrop-filter:blur(6px);">
+              <div style="width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.28);color:#D4AF37;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4v16M18 4v16"/><path d="M9 10h6M9 14h6" stroke-dasharray="2 2"/></svg></div>
+              <h3 style="font-family:'Space Grotesk',sans-serif;color:#F4F5F7;font-size:17px;font-weight:600;margin:16px 0 8px;">Fair Value Gaps <span style="font-family:'JetBrains Mono',monospace;color:#7D8796;font-size:11px;">FVG</span></h3>
+              <p style="font-size:13.5px;line-height:1.6;margin:0;">A three-candle imbalance left by fast, one-sided movement. Price tends to return and rebalance it, so FVGs act as both entries and targets.</p>
+            </div>
+          </div>
+
+          <div data-reveal data-dir="up" style="transition-delay:.12s;">
+            <div class="edu-inner-card hover-bb" style="height:100%;box-sizing:border-box;background:linear-gradient(180deg,rgba(22,29,41,.72),rgba(17,22,31,.58));border:1px solid #1E2632;border-radius:16px;padding:24px;backdrop-filter:blur(6px);">
+              <div style="width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.26);color:#22C55E;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"/><path d="M7 7l-3 5 3 5M17 7l3 5-3 5"/></svg></div>
+              <h3 style="font-family:'Space Grotesk',sans-serif;color:#F4F5F7;font-size:17px;font-weight:600;margin:16px 0 8px;">Premium &amp; discount</h3>
+              <p style="font-size:13.5px;line-height:1.6;margin:0;">Split any range at its midpoint. Sell from the <strong style="color:#EF4444;font-weight:600;">premium</strong> half, buy from the <strong style="color:#22C55E;font-weight:600;">discount</strong> half, entering at fair value instead of chasing.</p>
+            </div>
+          </div>
+
+          <div data-reveal data-dir="right" style="transition-delay:.2s;">
+            <div class="edu-inner-card hover-bb" style="height:100%;box-sizing:border-box;background:linear-gradient(180deg,rgba(22,29,41,.72),rgba(17,22,31,.58));border:1px solid #1E2632;border-radius:16px;padding:24px;backdrop-filter:blur(6px);">
+              <div style="width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.28);color:#D4AF37;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+              <h3 style="font-family:'Space Grotesk',sans-serif;color:#F4F5F7;font-size:17px;font-weight:600;margin:16px 0 8px;">Kill zones <span style="font-family:'JetBrains Mono',monospace;color:#7D8796;font-size:11px;">timing</span></h3>
+              <p style="font-size:13.5px;line-height:1.6;margin:0;">ICT fires on schedule, during the London and New York sessions (the "Silver Bullet" windows). The same pattern outside them is mostly noise.</p>
+            </div>
+          </div>
+
         </div>
+
+        <!-- HANDOFF -->
+        <div data-reveal data-dir="up" style="text-align:center;max-width:680px;margin:96px auto 0;padding-top:56px;border-top:1px solid #1E2632;">
+          <span style="display:inline-flex;align-items:center;gap:8px;font:600 12px/1 'JetBrains Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:#D4AF37;background:rgba(212,175,55,.10);border:1px solid rgba(212,175,55,.28);padding:8px 15px;border-radius:999px;">From framework to execution</span>
+          <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(24px,3vw,34px);letter-spacing:-.015em;margin:20px 0 0;color:#F4F5F7;">ICT is the foundation. CRT &amp; Unicorn are the playbook.</h3>
+          <p style="font-size:15.5px;line-height:1.6;margin:16px auto 0;max-width:560px;">Master the building blocks above, then trade them two rules-based ways, each one a specific ICT sequence, session-tested and defined.</p>
+        </div>
+
+        <!-- TWO PILLARS -->
+        <div style="margin-top:44px;display:flex;flex-wrap:wrap;align-items:stretch;justify-content:center;gap:8px;">
+
+          <div data-reveal data-dir="left-far" style="flex:1 1 360px;max-width:480px;">
+            <div class="edu-inner-card hover-pillar" style="position:relative;overflow:hidden;height:100%;box-sizing:border-box;background:linear-gradient(180deg,rgba(22,29,41,.82),rgba(17,22,31,.64));border:1px solid #2A3445;border-radius:20px;padding:30px;backdrop-filter:blur(7px);">
+              <span style="position:absolute;top:14px;right:22px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:74px;line-height:1;color:rgba(212,175,55,.10);">01</span>
+              <div style="width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.3);color:#D4AF37;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="4" height="12"/><rect x="11" y="3" width="4" height="18"/><rect x="18" y="9" width="3" height="6"/></svg></div>
+              <span style="display:block;margin-top:16px;font:600 11px/1 'JetBrains Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#D4AF37;">Strategy one</span>
+              <h3 style="font-family:'Space Grotesk',sans-serif;color:#F4F5F7;font-size:22px;font-weight:600;margin:8px 0 10px;">CRT: Candle Range Theory</h3>
+              <p style="font-size:14px;line-height:1.6;margin:0 0 18px;">A precise, rule-based entry model built around the range of a single candle: narrative, timing, purge, confirmation.</p>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;">
+                <span style="font:600 11px/1 'JetBrains Mono',monospace;color:#D4AF37;background:rgba(212,175,55,.10);border:1px solid rgba(212,175,55,.26);padding:6px 11px;border-radius:999px;">Narrative</span>
+                <span style="font:600 11px/1 'JetBrains Mono',monospace;color:#D4AF37;background:rgba(212,175,55,.10);border:1px solid rgba(212,175,55,.26);padding:6px 11px;border-radius:999px;">Timing</span>
+                <span style="font:600 11px/1 'JetBrains Mono',monospace;color:#D4AF37;background:rgba(212,175,55,.10);border:1px solid rgba(212,175,55,.26);padding:6px 11px;border-radius:999px;">Purge</span>
+                <span style="font:600 11px/1 'JetBrains Mono',monospace;color:#D4AF37;background:rgba(212,175,55,.10);border:1px solid rgba(212,175,55,.26);padding:6px 11px;border-radius:999px;">Confirmation</span>
+              </div>
+              <a href="crt.html" class="edu-link-arrow" style="display:inline-flex;align-items:center;gap:7px;color:#22C55E;font-weight:600;font-size:13.5px;text-decoration:none;">See the CRT model <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            </div>
+          </div>
+
+          <div data-reveal data-dir="pop" style="display:flex;align-items:center;justify-content:center;flex:0 0 64px;transition-delay:.12s;">
+            <div style="display:flex;align-items:center;gap:6px;width:64px;">
+              <span style="height:2px;flex:1;background:linear-gradient(90deg,transparent,rgba(212,175,55,.55));"></span>
+              <span style="width:34px;height:34px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(212,175,55,.14);border:1px solid rgba(212,175,55,.5);color:#D4AF37;animation:khanPulse 2.8s ease-out infinite;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+              <span style="height:2px;flex:1;background:linear-gradient(270deg,transparent,rgba(212,175,55,.55));"></span>
+            </div>
+          </div>
+
+          <div data-reveal data-dir="right-far" style="flex:1 1 360px;max-width:480px;transition-delay:.08s;">
+            <div class="edu-inner-card hover-pillar" style="position:relative;overflow:hidden;height:100%;box-sizing:border-box;background:linear-gradient(180deg,rgba(22,29,41,.82),rgba(17,22,31,.64));border:1px solid #2A3445;border-radius:20px;padding:30px;backdrop-filter:blur(7px);">
+              <span style="position:absolute;top:14px;right:22px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:74px;line-height:1;color:rgba(212,175,55,.10);">02</span>
+              <div style="width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.3);color:#D4AF37;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z"/></svg></div>
+              <span style="display:block;margin-top:16px;font:600 11px/1 'JetBrains Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#D4AF37;">Strategy two</span>
+              <h3 style="font-family:'Space Grotesk',sans-serif;color:#F4F5F7;font-size:22px;font-weight:600;margin:8px 0 10px;">The Unicorn Entry Model</h3>
+              <p style="font-size:14px;line-height:1.6;margin:0 0 18px;">A multi-confluence ICT entry combining a Breaker Block, a Fair Value Gap and a liquidity sweep, all inside the kill zone.</p>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;">
+                <span style="font:600 11px/1 'JetBrains Mono',monospace;color:#D4AF37;background:rgba(212,175,55,.10);border:1px solid rgba(212,175,55,.26);padding:6px 11px;border-radius:999px;">Liquidity sweep</span>
+                <span style="font:600 11px/1 'JetBrains Mono',monospace;color:#D4AF37;background:rgba(212,175,55,.10);border:1px solid rgba(212,175,55,.26);padding:6px 11px;border-radius:999px;">Breaker Block</span>
+                <span style="font:600 11px/1 'JetBrains Mono',monospace;color:#D4AF37;background:rgba(212,175,55,.10);border:1px solid rgba(212,175,55,.26);padding:6px 11px;border-radius:999px;">FVG overlap</span>
+              </div>
+              <a href="unicorn.html" class="edu-link-arrow" style="display:inline-flex;align-items:center;gap:7px;color:#22C55E;font-weight:600;font-size:13.5px;text-decoration:none;">See the Unicorn model <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            </div>
+          </div>
+
+        </div>
+
       </div>
     </section>
 
-    <!-- ============ UNICORN MODEL ============ -->
-    <section id="unicorn" class="unicorn" aria-labelledby="unicorn-h">
-      <div class="container">
-        <div class="grid-2">
-          <div class="unicorn-visual">
-            <img src="assets/img/unicorn-example.jpeg" alt="ICT Forex Live Mentorship — Unicorn Edge curriculum poster" width="905" height="1280" />
-          </div>
-          <div>
-            <span class="eyebrow">ICT Forex Live Mentorship</span>
-            <h2 id="unicorn-h" style="margin-top:20px">Four levels. One complete edge.</h2>
-            <p style="margin-top:18px">Unicorn Edge is a live, mentor-led path through the full ICT system — four progressive levels that take you from the foundational concepts to engineering your own model, the Market Maker Model, and the risk and psychology that hold it all together.</p>
+    <!-- ============ WHY DIFFERENT / HONEST FILTER (design: WhyDifferent.dc.html) ============ -->
+    <section id="khan-why" aria-labelledby="why-h" style="position:relative;overflow:hidden;background:#0A0E14;font-family:'Inter',system-ui,sans-serif;color:#8A93A6;padding:104px 24px 120px;margin-top:-1px;">
 
-            <div style="margin-top:24px">
-              <div class="step">
-                <div class="step-num">01</div>
-                <div>
-                  <span class="crt-chip">Entry Level</span>
-                  <h4 style="margin-top:8px">Foundational Concepts</h4>
-                  <p>The ICT building blocks — market structure, liquidity, order blocks and fair-value gaps — the base every setup is built on.</p>
-                </div>
+      <!-- Animated canvas background (aurora orbs + particle constellation; grid & price-line off per design) -->
+      <canvas data-khan-why-bg aria-hidden="true" style="position:absolute;inset:0;z-index:0;width:100%;height:100%;display:block;pointer-events:none;"></canvas>
+      <!-- top + bottom fade so the section blends seamlessly into the page (top edge fully matches #0A0E14 to hide the canvas/aurora seam) -->
+      <div aria-hidden="true" style="position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(180deg,rgba(10,14,20,1) 0%,rgba(10,14,20,0) 18%,rgba(10,14,20,0) 80%,rgba(10,14,20,.9) 100%);"></div>
+
+      <div style="position:relative;z-index:1;max-width:1180px;margin:0 auto;">
+
+        <!-- ============ WHY DIFFERENT — HEADER ============ -->
+        <div data-reveal data-dir="up" style="text-align:center;max-width:780px;margin:0 auto;">
+          <span style="display:inline-flex;align-items:center;gap:8px;font:600 12px/1 'JetBrains Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:#D4AF37;background:rgba(212,175,55,.10);border:1px solid rgba(212,175,55,.28);padding:8px 15px;border-radius:999px;">Why this is different</span>
+          <h2 id="why-h" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(32px,4.6vw,54px);line-height:1.06;letter-spacing:-.022em;margin:24px 0 0;color:#F4F5F7;text-wrap:balance;">Built for traders who<br>are tired of theory.</h2>
+        </div>
+
+        <!-- ============ FEATURE CARDS ============ -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:54px;">
+
+          <div data-reveal data-dir="up" style="transition-delay:.04s;">
+            <article class="khan-card" style="height:100%;box-sizing:border-box;background:linear-gradient(180deg,rgba(22,29,41,.78),rgba(17,22,31,.62));border:1px solid #1E2632;border-radius:16px;padding:28px;backdrop-filter:blur(8px);">
+              <div class="khan-icon" style="width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.26);color:#22C55E;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div>
+              <h3 style="font-family:'Space Grotesk',sans-serif;color:#F4F5F7;font-size:1.16rem;font-weight:600;margin:18px 0 0;">Mentor-led</h3>
+              <p style="font-size:.93rem;line-height:1.6;margin:10px 0 0;">Direct guidance inside the Telegram channels and private Discord, not a course you watch alone.</p>
+            </article>
+          </div>
+
+          <div data-reveal data-dir="up" style="transition-delay:.12s;">
+            <article class="khan-card" style="height:100%;box-sizing:border-box;background:linear-gradient(180deg,rgba(22,29,41,.78),rgba(17,22,31,.62));border:1px solid #1E2632;border-radius:16px;padding:28px;backdrop-filter:blur(8px);">
+              <div class="khan-icon" style="width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.28);color:#D4AF37;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg></div>
+              <h3 style="font-family:'Space Grotesk',sans-serif;color:#F4F5F7;font-size:1.16rem;font-weight:600;margin:18px 0 0;">Live chart breakdowns</h3>
+              <p style="font-size:.93rem;line-height:1.6;margin:10px 0 0;">Real setups posted as they form. Real reasoning. Real entries and exits, not curated highlights.</p>
+            </article>
+          </div>
+
+          <div data-reveal data-dir="up" style="transition-delay:.2s;">
+            <article class="khan-card" style="height:100%;box-sizing:border-box;background:linear-gradient(180deg,rgba(22,29,41,.78),rgba(17,22,31,.62));border:1px solid #1E2632;border-radius:16px;padding:28px;backdrop-filter:blur(8px);">
+              <div class="khan-icon" style="width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.26);color:#22C55E;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></div>
+              <h3 style="font-family:'Space Grotesk',sans-serif;color:#F4F5F7;font-size:1.16rem;font-weight:600;margin:18px 0 0;">Gold &amp; Forex focused</h3>
+              <p style="font-size:.93rem;line-height:1.6;margin:10px 0 0;">No crypto distractions. XAUUSD and the FX majors, the markets where this system was forged.</p>
+            </article>
+          </div>
+
+          <div data-reveal data-dir="up" style="transition-delay:.28s;">
+            <article class="khan-card" style="height:100%;box-sizing:border-box;background:linear-gradient(180deg,rgba(22,29,41,.78),rgba(17,22,31,.62));border:1px solid #1E2632;border-radius:16px;padding:28px;backdrop-filter:blur(8px);">
+              <div class="khan-icon" style="width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.26);color:#EF4444;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg></div>
+              <h3 style="font-family:'Space Grotesk',sans-serif;color:#F4F5F7;font-size:1.16rem;font-weight:600;margin:18px 0 0;">Real entry models</h3>
+              <p style="font-size:.93rem;line-height:1.6;margin:10px 0 0;">CRT and Unicorn are taught as complete entry models, not vague concepts you have to assemble yourself.</p>
+            </article>
+          </div>
+
+        </div>
+
+        <!-- ============ HONEST FILTER — HEADER ============ -->
+        <div data-reveal data-dir="up" style="text-align:center;max-width:680px;margin:120px auto 0;">
+          <span style="display:inline-flex;align-items:center;gap:8px;font:600 12px/1 'JetBrains Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:#D4AF37;background:rgba(212,175,55,.10);border:1px solid rgba(212,175,55,.28);padding:8px 15px;border-radius:999px;">Honest filter</span>
+          <h2 id="fit-h" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(30px,4.2vw,48px);line-height:1.08;letter-spacing:-.02em;margin:22px 0 0;color:#F4F5F7;">This is not for everyone.</h2>
+          <p style="font-size:15.5px;line-height:1.65;margin:18px auto 0;max-width:540px;">Read both columns. If the right side describes you, the free channel is a better first step than premium.</p>
+        </div>
+
+        <!-- ============ FIT / NOT FIT — PANELS ============ -->
+        <div class="khan-fitgrid" style="margin-top:52px;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:stretch;">
+
+          <!-- YES PANEL -->
+          <div data-reveal data-dir="left" class="khan-panel khan-panel-yes" style="position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(34,197,94,.085),rgba(15,20,28,.5) 44%);border:1px solid rgba(34,197,94,.2);border-radius:22px;padding:34px 30px;">
+            <div aria-hidden="true" style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,rgba(34,197,94,0),#22C55E 50%,rgba(34,197,94,0));"></div>
+            <div aria-hidden="true" style="position:absolute;top:-90px;left:-40px;width:260px;height:200px;background:radial-gradient(closest-side,rgba(34,197,94,.22),transparent);pointer-events:none;"></div>
+            <div style="position:relative;display:flex;align-items:center;justify-content:space-between;gap:13px;">
+              <div style="display:flex;align-items:center;gap:14px;">
+              <span style="flex:none;width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,.16);border:1px solid rgba(34,197,94,.3);color:#22C55E;"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span>
+              <div>
+                <div style="font:600 11px/1 'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#22C55E;">You belong here</div>
+                <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.5rem;letter-spacing:-.01em;margin:7px 0 0;color:#F4F5F7;">This is for you if&hellip;</h3>
               </div>
-              <div class="step">
-                <div class="step-num">02</div>
-                <div>
-                  <span class="crt-chip">Graduation Level</span>
-                  <h4 style="margin-top:8px">Engineer the Model</h4>
-                  <p>Assemble the concepts into a repeatable, rules-based entry model you can execute from a checklist.</p>
-                </div>
-              </div>
-              <div class="step">
-                <div class="step-num">03</div>
-                <div>
-                  <span class="crt-chip">Intermediate Level</span>
-                  <h4 style="margin-top:8px">Market Maker Model (MXMM)</h4>
-                  <p>How price is delivered through accumulation, manipulation and distribution — reading the algorithm's playbook.</p>
-                </div>
-              </div>
-              <div class="step">
-                <div class="step-num">04</div>
-                <div>
-                  <span class="crt-chip">Professional Level</span>
-                  <h4 style="margin-top:8px">Account, Risk &amp; Psychology</h4>
-                  <p>Position sizing, risk control and the trader mindset that turn a working model into consistent results.</p>
-                </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ WHY DIFFERENT / STATS ============ -->
-    <section aria-labelledby="why-h">
-      <div class="container">
-        <div class="section-header">
-          <span class="eyebrow">Why this is different</span>
-          <h2 id="why-h">Built for traders who are tired of theory.</h2>
-        </div>
-
-        <div class="stats reveal" style="margin-bottom:60px">
-          <div class="stat">
-            <div class="stat-num"><span data-count="4">0</span><svg class="sparkline" viewBox="0 0 100 30">
-                <path d="M0 25 Q15 25 20 15 T40 10 T60 20 T80 5 T100 0" />
-              </svg></div>
-            <div class="stat-label">CRT entry steps</div>
-          </div>
-          <div class="stat">
-            <div class="stat-num"><span data-count="500">0</span><span class="unit">+</span><svg class="sparkline"
-                viewBox="0 0 100 30">
-                <path d="M0 20 Q10 20 25 10 T50 15 T75 5 T100 0" />
-              </svg></div>
-            <div class="stat-label">Trades reviewed</div>
-          </div>
-          <div class="stat">
-            <div class="stat-num"><span data-count="1">0</span><span class="unit">:3+</span><svg class="sparkline"
-                viewBox="0 0 100 30">
-                <path d="M0 30 Q20 30 30 15 T60 25 T80 5 T100 0" />
-              </svg></div>
-            <div class="stat-label">Avg RR taught</div>
-          </div>
-          <div class="stat">
-            <div class="stat-num"><span data-count="3">0</span><svg class="sparkline" viewBox="0 0 100 30">
-                <path d="M0 10 Q10 10 20 25 T40 15 T60 20 T80 5 T100 0" />
-              </svg></div>
-            <div class="stat-label">Active communities</div>
-          </div>
-        </div>
-
-        <div class="grid-4 stagger-group">
-          <article class="card">
-            <div class="card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round">
-                <circle cx="12" cy="8" r="4" />
-                <path d="M4 21a8 8 0 0 1 16 0" />
-              </svg>
-            </div>
-            <h3 style="font-size:1.15rem">Mentor-led</h3>
-            <p style="font-size:0.93rem;margin:10px 0 0">Direct guidance inside the Telegram channels and private
-              Discord — not a course you watch alone.</p>
-          </article>
-
-          <article class="card">
-            <div class="card-icon gold">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round">
-                <path d="M3 17l6-6 4 4 8-8" />
-                <path d="M14 7h7v7" />
-              </svg>
-            </div>
-            <h3 style="font-size:1.15rem">Live chart breakdowns</h3>
-            <p style="font-size:0.93rem;margin:10px 0 0">Real setups posted as they form. Real reasoning. Real entries
-              and exits — not curated highlights.</p>
-          </article>
-
-          <article class="card">
-            <div class="card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round">
-                <circle cx="12" cy="12" r="9" />
-                <circle cx="12" cy="12" r="4" />
-                <circle cx="12" cy="12" r="1" fill="currentColor" />
-              </svg>
-            </div>
-            <h3 style="font-size:1.15rem">Gold &amp; Forex focused</h3>
-            <p style="font-size:0.93rem;margin:10px 0 0">No crypto distractions. XAUUSD and the FX majors — the markets
-              where this system was forged.</p>
-          </article>
-
-          <article class="card">
-            <div class="card-icon bear">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round">
-                <path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z" />
-              </svg>
-            </div>
-            <h3 style="font-size:1.15rem">Real entry models</h3>
-            <p style="font-size:0.93rem;margin:10px 0 0">CRT and Unicorn are taught as complete entry models — not vague
-              concepts you have to assemble yourself.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ FIT / NOT FIT ============ -->
-    <section aria-labelledby="fit-h">
-      <div class="container">
-        <div class="section-header">
-          <span class="eyebrow">Honest filter</span>
-          <h2 id="fit-h">This is not for everyone.</h2>
-          <p>Read both columns. If the right side describes you, the free channel is a better first step than premium.
-          </p>
-        </div>
-
-        <div class="grid-2 stagger-group">
-          <div>
-            <h3 style="margin-bottom:18px;color:var(--bull)">This is for you if&hellip;</h3>
-            <ul class="fit-list yes">
-              <li>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M5 12l5 5L20 7" />
-                </svg>
-                <span>You're committed to forex/Gold and willing to put in screen-time.</span>
-              </li>
-              <li>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M5 12l5 5L20 7" />
-                </svg>
-                <span>You already understand basic market structure or are ready to learn it fast.</span>
-              </li>
-              <li>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M5 12l5 5L20 7" />
-                </svg>
-                <span>You want one system you stick with — not 10 indicators you change every week.</span>
-              </li>
-              <li>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M5 12l5 5L20 7" />
-                </svg>
-                <span>You can take losses as data, not as drama.</span>
-              </li>
+            <ul style="position:relative;list-style:none;margin:24px 0 0;padding:0;display:flex;flex-direction:column;gap:11px;">
+              <li data-reveal data-dir="up" style="transition-delay:.06s;"><div class="khan-fitrow yes" style="display:flex;align-items:flex-start;gap:13px;padding:14px 15px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.05);border-radius:13px;"><span class="khan-glyph" style="flex:none;width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,.14);color:#22C55E;margin-top:1px;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><span style="font-size:15.5px;line-height:1.55;color:#D4DAE4;font-weight:500;">You're committed to forex/Gold and willing to put in screen-time.</span></div></li>
+              <li data-reveal data-dir="up" style="transition-delay:.13s;"><div class="khan-fitrow yes" style="display:flex;align-items:flex-start;gap:13px;padding:14px 15px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.05);border-radius:13px;"><span class="khan-glyph" style="flex:none;width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,.14);color:#22C55E;margin-top:1px;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><span style="font-size:15.5px;line-height:1.55;color:#D4DAE4;font-weight:500;">You already understand basic market structure or are ready to learn it fast.</span></div></li>
+              <li data-reveal data-dir="up" style="transition-delay:.2s;"><div class="khan-fitrow yes" style="display:flex;align-items:flex-start;gap:13px;padding:14px 15px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.05);border-radius:13px;"><span class="khan-glyph" style="flex:none;width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,.14);color:#22C55E;margin-top:1px;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><span style="font-size:15.5px;line-height:1.55;color:#D4DAE4;font-weight:500;">You want one system you stick with, not 10 indicators you change every week.</span></div></li>
+              <li data-reveal data-dir="up" style="transition-delay:.27s;"><div class="khan-fitrow yes" style="display:flex;align-items:flex-start;gap:13px;padding:14px 15px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.05);border-radius:13px;"><span class="khan-glyph" style="flex:none;width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,.14);color:#22C55E;margin-top:1px;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><span style="font-size:15.5px;line-height:1.55;color:#D4DAE4;font-weight:500;">You can take losses as data, not as drama.</span></div></li>
             </ul>
           </div>
-          <div>
-            <h3 style="margin-bottom:18px;color:var(--bear)">Don't join if&hellip;</h3>
-            <ul class="fit-list no">
-              <li>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M6 6l12 12M18 6l-12 12" />
-                </svg>
-                <span>You want to blindly copy trades without ever learning why they work.</span>
-              </li>
-              <li>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M6 6l12 12M18 6l-12 12" />
-                </svg>
-                <span>You're hoping to "get rich quick" off a tiny account.</span>
-              </li>
-              <li>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M6 6l12 12M18 6l-12 12" />
-                </svg>
-                <span>You jump between strategies every time something doesn't work in a week.</span>
-              </li>
-              <li>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M6 6l12 12M18 6l-12 12" />
-                </svg>
-                <span>You don't have the time or patience to actually learn a model.</span>
-              </li>
+
+          <!-- NO PANEL -->
+          <div data-reveal data-dir="right" class="khan-panel khan-panel-no" style="position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(239,68,68,.07),rgba(15,20,28,.5) 44%);border:1px solid rgba(239,68,68,.18);border-radius:22px;padding:34px 30px;">
+            <div aria-hidden="true" style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,rgba(239,68,68,0),#EF4444 50%,rgba(239,68,68,0));"></div>
+            <div aria-hidden="true" style="position:absolute;top:-90px;right:-40px;width:260px;height:200px;background:radial-gradient(closest-side,rgba(239,68,68,.18),transparent);pointer-events:none;"></div>
+            <div style="position:relative;display:flex;align-items:center;justify-content:space-between;gap:13px;">
+              <div style="display:flex;align-items:center;gap:14px;">
+              <span style="flex:none;width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(239,68,68,.16);border:1px solid rgba(239,68,68,.3);color:#EF4444;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6l-12 12"/></svg></span>
+              <div>
+                <div style="font:600 11px/1 'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#EF4444;">Look elsewhere</div>
+                <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.5rem;letter-spacing:-.01em;margin:7px 0 0;color:#F4F5F7;">Don't join if&hellip;</h3>
+              </div>
+              </div>
+            </div>
+            <ul style="position:relative;list-style:none;margin:24px 0 0;padding:0;display:flex;flex-direction:column;gap:11px;">
+              <li data-reveal data-dir="up" style="transition-delay:.06s;"><div class="khan-fitrow no" style="display:flex;align-items:flex-start;gap:13px;padding:14px 15px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.05);border-radius:13px;"><span class="khan-glyph" style="flex:none;width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(239,68,68,.14);color:#EF4444;margin-top:1px;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6l-12 12"/></svg></span><span style="font-size:15.5px;line-height:1.55;color:#9CA3AF;font-weight:500;">You want to blindly copy trades without ever learning why they work.</span></div></li>
+              <li data-reveal data-dir="up" style="transition-delay:.13s;"><div class="khan-fitrow no" style="display:flex;align-items:flex-start;gap:13px;padding:14px 15px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.05);border-radius:13px;"><span class="khan-glyph" style="flex:none;width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(239,68,68,.14);color:#EF4444;margin-top:1px;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6l-12 12"/></svg></span><span style="font-size:15.5px;line-height:1.55;color:#9CA3AF;font-weight:500;">You're hoping to "get rich quick" off a tiny account.</span></div></li>
+              <li data-reveal data-dir="up" style="transition-delay:.2s;"><div class="khan-fitrow no" style="display:flex;align-items:flex-start;gap:13px;padding:14px 15px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.05);border-radius:13px;"><span class="khan-glyph" style="flex:none;width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(239,68,68,.14);color:#EF4444;margin-top:1px;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6l-12 12"/></svg></span><span style="font-size:15.5px;line-height:1.55;color:#9CA3AF;font-weight:500;">You jump between strategies every time something doesn't work in a week.</span></div></li>
+              <li data-reveal data-dir="up" style="transition-delay:.27s;"><div class="khan-fitrow no" style="display:flex;align-items:flex-start;gap:13px;padding:14px 15px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.05);border-radius:13px;"><span class="khan-glyph" style="flex:none;width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(239,68,68,.14);color:#EF4444;margin-top:1px;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6l-12 12"/></svg></span><span style="font-size:15.5px;line-height:1.55;color:#9CA3AF;font-weight:500;">You don't have the time or patience to actually learn a model.</span></div></li>
             </ul>
           </div>
+
         </div>
+
       </div>
     </section>
 
@@ -825,7 +899,7 @@
             <div class="faq-a">
               <div class="faq-a-inner">
                 Realistically, plan to spend at least 1–2 hours during the London or New York session. CRT is a
-                session-based system — outside the kill-zones, there's nothing to do but study.
+                session-based system; outside the kill-zones, there's nothing to do but study.
               </div>
             </div>
           </div>
@@ -841,7 +915,7 @@
             <div class="faq-a">
               <div class="faq-a-inner">
                 Helpful but not required. If you understand candles, support/resistance, and basic risk management you
-                have enough. The free channel is the on-ramp — start there.
+                have enough. The free channel is the on-ramp, so start there.
               </div>
             </div>
           </div>
@@ -888,7 +962,7 @@
         <div class="section-header">
           <span class="eyebrow">Join the channels</span>
           <h2 id="join-h">Pick where you want to start.</h2>
-          <p>Three tiers — free Telegram, daily signals, or the full course with private Discord. Full details and
+          <p>Three tiers: free Telegram, daily signals, or the full course with private Discord. Full details and
             comparisons on the pricing page.</p>
         </div>
 
@@ -944,14 +1018,15 @@
             <span>The Khan Trading</span>
           </a>
           <p style="max-width:46ch;margin-top:18px;font-size:0.92rem">ICT-based forex education for serious traders.
-            CRT, Unicorn, and a personal edge — taught the way it's actually traded.</p>
+            CRT, Unicorn, and a personal edge, taught the way it's actually traded.</p>
         </div>
         <div>
           <h4>Site</h4>
           <ul>
             <li><a href="index.html">Home</a></li>
-            <li><a href="ict.html">ICT Concepts</a></li>
+            <li><a href="#ict">ICT Concepts</a></li>
             <li><a href="crt.html">CRT Model</a></li>
+            <li><a href="unicorn.html">Unicorn Model</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="pricing.html">Pricing</a></li>
             <li><a href="contact.html">Contact</a></li>
@@ -976,6 +1051,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="js/main.js"></script>
   <script src="js/animations.js"></script>
+  <script src="js/hero-video.js"></script>
+  <script src="js/edu-section.js"></script>
+  <script src="js/why-section.js"></script>
 </body>
 
 </html>

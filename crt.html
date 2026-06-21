@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>CRT — Candle Range Theory Explained | The Khan Trading</title>
-<meta name="description" content="Candle Range Theory (CRT) explained from scratch: how a higher-timeframe candle's range, liquidity sweep, and expansion combine into a complete entry model — with a live XAUUSD walk-through." />
+<title>CRT - Candle Range Theory Explained | The Khan Trading</title>
+<meta name="description" content="Candle Range Theory (CRT) explained from scratch: how a higher-timeframe candle's range, liquidity sweep, and expansion combine into a complete entry model - with a live XAUUSD walk-through." />
 <meta name="theme-color" content="#0A0E14" />
 
-<meta property="og:title" content="CRT — Candle Range Theory Explained | The Khan Trading" />
-<meta property="og:description" content="How Candle Range Theory actually works: range, sweep, expansion — taught the way it's traded, with a live Gold example." />
+<meta property="og:title" content="CRT - Candle Range Theory Explained | The Khan Trading" />
+<meta property="og:description" content="How Candle Range Theory actually works: range, sweep, expansion - taught the way it's traded, with a live Gold example." />
 <meta property="og:type" content="article" />
 <meta property="og:image" content="https://thekhantrading.com/assets/img/chart-crt.jpg" />
 <meta name="twitter:card" content="summary_large_image" />
@@ -47,8 +47,9 @@
             </svg>
           </span>
           <div class="nav-dropdown-menu">
-            <a href="ict.html">ICT Concepts</a>
+            <a href="index.html#ict">ICT Concepts</a>
             <a href="crt.html" class="active">CRT Model</a>
+            <a href="unicorn.html">Unicorn Model</a>
           </div>
         </div>
       <a href="about.html">About</a>
@@ -95,7 +96,7 @@
           <svg class="mlt-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div class="mobile-learn-panel" id="mobile-learn-panel">
-          <a href="ict.html" class="mobile-learn-card">
+          <a href="index.html#ict" class="mobile-learn-card">
             <span class="mlc-num">02</span>
             <span class="mlc-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
@@ -117,20 +118,31 @@
             </span>
             <svg class="nav-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
           </a>
+          <a href="unicorn.html" class="mobile-learn-card">
+            <span class="mlc-num">04</span>
+            <span class="mlc-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z"/></svg>
+            </span>
+            <span class="mlc-text">
+              <span class="mlc-title">Unicorn Model</span>
+              <span class="mlc-sub">High-confluence entry</span>
+            </span>
+            <svg class="nav-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
         </div>
       </div>
     <a href="about.html">
-      <span class="nav-num" aria-hidden="true">04</span>
+      <span class="nav-num" aria-hidden="true">05</span>
       <span class="nav-label">About</span>
       <svg class="nav-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
     </a>
     <a href="pricing.html">
-      <span class="nav-num" aria-hidden="true">05</span>
+      <span class="nav-num" aria-hidden="true">06</span>
       <span class="nav-label">Pricing</span>
       <svg class="nav-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
     </a>
     <a href="contact.html">
-      <span class="nav-num" aria-hidden="true">06</span>
+      <span class="nav-num" aria-hidden="true">07</span>
       <span class="nav-label">Contact</span>
       <svg class="nav-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
     </a>
@@ -158,8 +170,8 @@
     <div class="page-hero-overlay" aria-hidden="true"></div>
     <div class="container">
       <span class="eyebrow">The CRT Model</span>
-      <h1 style="margin-top:24px;max-width:20ch">Candle Range Theory, <span class="accent-gold">explained.</span></h1>
-      <p class="lead" style="max-width:62ch;margin-top:24px">A higher-timeframe candle draws a range. Price accumulates inside it, sweeps the liquidity resting just beyond it, then expands to the other side. That's CRT — a complete entry model, not a vague concept. Here's exactly how it works, and how to actually get results from it.</p>
+      <h1 style="margin-top:24px;max-width:22ch">Candle Range Theory. <span class="accent-gold">A precision entry model.</span></h1>
+      <p class="lead" style="max-width:64ch;margin-top:24px">CRT reads a single reference candle's range to predict where price will sweep, purge and reverse. Four defined steps, a session timing filter, no discretion - entry, stop and target are all drawn by the range itself. Here's exactly how it works.</p>
       <div class="crt-jump" style="margin-top:32px">
         <a class="link-arrow" href="#how">How it works <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
         <a class="link-arrow" href="#example">Live example <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
@@ -174,7 +186,11 @@
       <div class="section-header left">
         <span class="eyebrow">The idea in one minute</span>
         <h2 id="what-h">What is Candle Range Theory?</h2>
-        <p>A higher-timeframe candle's <strong>high</strong> and <strong>low</strong> draw a range — the <span class="mono" style="color:var(--gold)">CRH</span> and <span class="mono" style="color:var(--gold)">CRL</span>. Inside it, price runs the same three moves every session. Here it is on Gold:</p>
+        <p>CRT uses the range of a single <strong>reference candle</strong> - usually the previous session's or previous day's candle - to predict where price will sweep, purge and reverse. It's a rules-based model with <strong>four defined steps</strong> and no discretion needed. The candle's <strong>high</strong> and <strong>low</strong> draw the range - the <span class="mono" style="color:var(--gold)">CRH</span> and <span class="mono" style="color:var(--gold)">CRL</span>. Here it is on Gold:</p>
+      </div>
+
+      <div class="unicorn-visual unicorn-visual--glow reveal" style="margin-bottom:36px">
+        <img src="assets/img/crt-sweep.jpg" alt="A gold candlestick wick spiking above the Candle Range High then rejecting back inside - a CRT liquidity sweep" width="1920" height="1080" loading="lazy" />
       </div>
 
       <div class="grid-2" style="align-items:start">
@@ -196,7 +212,7 @@
                 <span class="crt-flow-num bear">2</span>
                 <div>
                   <h4>Manipulation <span class="crt-flow-tag bear">the trap</span></h4>
-                  <p>London spikes to <span class="crt-price">2,686</span> — just <em>above</em> the CRH — grabbing breakout buyers' stops, then snaps back inside. That's the sweep.</p>
+                  <p>London spikes to <span class="crt-price">2,686</span> - just <em>above</em> the CRH - grabbing breakout buyers' stops, then snaps back inside. That's the sweep.</p>
                 </div>
               </li>
               <li>
@@ -209,18 +225,18 @@
             </ol>
           </div>
 
-          <p class="crt-takeaway">Same three moves, every session — flip it for buys. Learn it on one candle and entry, stop and target are all drawn by the range itself.</p>
+          <p class="crt-takeaway">Same three moves, every session - flip it for buys. Learn it on one candle and entry, stop and target are all drawn by the range itself.</p>
         </div>
 
         <aside class="card crt-glossary" aria-label="CRT glossary">
           <h3 style="font-size:1.1rem;margin-bottom:6px">The vocabulary</h3>
           <dl class="crt-defs">
-            <div><dt><span class="crt-chip gold">CRH</span></dt><dd>Candle Range High — top of the range. Liquidity sits just above it.</dd></div>
-            <div><dt><span class="crt-chip gold">CRL</span></dt><dd>Candle Range Low — bottom of the range. Liquidity sits just below it.</dd></div>
-            <div><dt><span class="crt-chip bear">Sweep</span></dt><dd>A wick that pierces CRH or CRL to grab stops, then closes back inside — the trap.</dd></div>
-            <div><dt><span class="crt-chip bear">Premium</span></dt><dd>Upper half of the range — where you look to <strong style="color:var(--bear)">sell</strong> after a high sweep.</dd></div>
-            <div><dt><span class="crt-chip bull">Discount</span></dt><dd>Lower half of the range — where you look to <strong style="color:var(--bull)">buy</strong> after a low sweep.</dd></div>
-            <div><dt><span class="crt-chip bull">Expansion</span></dt><dd>The drive from the swept edge to the opposite edge — your target.</dd></div>
+            <div><dt><span class="crt-chip gold">CRH</span></dt><dd>Candle Range High - top of the range. Liquidity sits just above it.</dd></div>
+            <div><dt><span class="crt-chip gold">CRL</span></dt><dd>Candle Range Low - bottom of the range. Liquidity sits just below it.</dd></div>
+            <div><dt><span class="crt-chip bear">Sweep</span></dt><dd>A wick that pierces CRH or CRL to grab stops, then closes back inside - the trap.</dd></div>
+            <div><dt><span class="crt-chip bear">Premium</span></dt><dd>Upper half of the range - where you look to <strong style="color:var(--bear)">sell</strong> after a high sweep.</dd></div>
+            <div><dt><span class="crt-chip bull">Discount</span></dt><dd>Lower half of the range - where you look to <strong style="color:var(--bull)">buy</strong> after a low sweep.</dd></div>
+            <div><dt><span class="crt-chip bull">Expansion</span></dt><dd>The drive from the swept edge to the opposite edge - your target.</dd></div>
           </dl>
         </aside>
       </div>
@@ -233,7 +249,7 @@
       <div class="section-header">
         <span class="eyebrow">Anatomy of a range</span>
         <h2 id="anatomy-h">One range, three phases.</h2>
-        <p>Accumulate inside the range, sweep the high to trap breakout buyers, then expand down through the discount toward the opposite edge. This is a sell-side example — flip it for buys.</p>
+        <p>Accumulate inside the range, sweep the high to trap breakout buyers, then expand down through the discount toward the opposite edge. This is a sell-side example - flip it for buys.</p>
       </div>
 
       <figure class="crt-diagram reveal">
@@ -300,14 +316,14 @@
     </div>
   </section>
 
-  <!-- ============ HOW IT WORKS — STEP MODEL ============ -->
+  <!-- ============ HOW IT WORKS - STEP MODEL ============ -->
   <section id="how" class="unicorn" aria-labelledby="how-h">
     <div class="container">
       <div class="grid-2 crt-how">
         <div>
-          <span class="eyebrow">How to trade it</span>
-          <h2 id="how-h" style="margin-top:20px">From range to entry, step by step.</h2>
-          <p style="margin-top:18px">CRT is a checklist, not a feeling. Every trade is the same four moves — and if any step is missing, there's no trade. That's what makes it teachable and repeatable.</p>
+          <span class="eyebrow">The four CRT steps</span>
+          <h2 id="how-h" style="margin-top:20px">Narrative, timing, purge, confirmation.</h2>
+          <p style="margin-top:18px">CRT is a checklist, not a feeling. Every trade runs the same four steps - and if any step is missing, there's no trade. That's what makes it teachable and repeatable.</p>
 
           <div class="unicorn-steps crt-steps" style="margin-top:24px">
             <svg class="unicorn-line" viewBox="0 0 4 100" preserveAspectRatio="none" aria-hidden="true">
@@ -317,29 +333,29 @@
             <div class="step">
               <div class="step-num">01</div>
               <div>
-                <h4>Mark the range</h4>
-                <p>Take the high and low of your reference candle (weekly/daily). Draw the CRH and CRL — that's your map for the session.</p>
+                <h4>Narrative</h4>
+                <p>Determine the bias. Are we bullish or bearish? Use higher-timeframe structure and the current session's dealing range to decide which way you're hunting.</p>
               </div>
             </div>
             <div class="step">
               <div class="step-num">02</div>
               <div>
-                <h4>Wait for the sweep</h4>
-                <p>Do nothing until price runs liquidity beyond CRH or CRL. No sweep, no setup — the sweep is the signal, not the breakout.</p>
+                <h4>Timing</h4>
+                <p>Only trade the kill zones - London (02:00&ndash;05:00 NY) or New York (08:30&ndash;11:00 NY). The same pattern outside those windows is just noise.</p>
               </div>
             </div>
             <div class="step">
               <div class="step-num">03</div>
               <div>
-                <h4>Confirm the reversal</h4>
-                <p>Drop to a lower timeframe and wait for a market-structure shift back inside the range — a clean rejection that confirms the sweep was a trap.</p>
+                <h4>Purge - the liquidity sweep</h4>
+                <p>Wait for price to sweep the high or low of the reference candle, grabbing the stop orders resting beyond it. That purge is the trigger - not the breakout.</p>
               </div>
             </div>
             <div class="step">
               <div class="step-num">04</div>
               <div>
-                <h4>Target the opposite edge</h4>
-                <p>Enter on the confirmation, stop just beyond the swept wick, and target the other side of the range (the expansion). Defined risk, defined reward.</p>
+                <h4>Confirmation</h4>
+                <p>After the sweep, price must displace the opposite way, leaving a Fair Value Gap or tapping an Order Block. Enter there - stop beyond the swept wick, target the opposite edge.</p>
               </div>
             </div>
           </div>
@@ -359,26 +375,26 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3"/></svg>
               Why it works
             </h3>
-            <p style="font-size:0.95rem;margin-bottom:0">Breakout traders pile stops just beyond obvious highs and lows. CRT positions you on the <em>other</em> side of that crowd — entering exactly where their stops get hunted, with the expansion in your favour.</p>
+            <p style="font-size:0.95rem;margin-bottom:0">Breakout traders pile stops just beyond obvious highs and lows. CRT positions you on the <em>other</em> side of that crowd - entering exactly where their stops get hunted, with the expansion in your favour.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============ LIVE EXAMPLE — VIDEO ============ -->
+  <!-- ============ LIVE EXAMPLE - VIDEO ============ -->
   <section id="example" aria-labelledby="example-h" style="background:var(--bg-elev);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
     <div class="container">
       <div class="section-header">
         <span class="eyebrow">See it on a real chart</span>
-        <h2 id="example-h">CRT on XAUUSD, live.</h2>
-        <p>The same model, marked up on Gold. Watch the range form, the high get swept, and price expand down through the discount toward the opposite edge — exactly the three phases above.</p>
+        <h2 id="example-h">The CRT logic, live on a chart.</h2>
+        <p>The same liquidity logic, marked up on a real chart. Watch the range define itself, liquidity get swept beyond one edge, then price displace and expand back through the range toward the opposite side - the very same phases as above.</p>
       </div>
 
       <div class="unicorn-visual unicorn-visual--glow crt-video reveal">
-        <span class="badge"><span class="pulse"></span> Live example · XAUUSD</span>
-        <video data-lazy muted loop playsinline preload="metadata" poster="assets/img/chart-crt.jpg" aria-label="Candle Range Theory walk-through on XAUUSD (Gold)">
-          <source data-src="assets/video/chart-unicorn.mp4" type="video/mp4" />
+        <span class="badge"><span class="pulse"></span> Live example</span>
+        <video data-lazy muted loop playsinline preload="metadata" poster="assets/img/chart-crt.jpg" aria-label="Candle Range Theory concepts on a live chart">
+          <source data-src="assets/video/ict-concepts.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>
@@ -387,7 +403,7 @@
         <li><span class="crt-chip gold">CRH / CRL</span> the weekly &amp; daily range highs and lows mapped on the chart</li>
         <li><span class="crt-chip">Liquidity sweep</span> the wick that pierces the range edge to take stops</li>
         <li><span class="crt-chip">Premium / Discount</span> the shaded zones that frame where to sell and buy</li>
-        <li><span class="crt-chip">Expansion</span> the drive toward the opposite edge — the move you're paid for</li>
+        <li><span class="crt-chip">Expansion</span> the drive toward the opposite edge - the move you're paid for</li>
       </ul>
     </div>
   </section>
@@ -398,7 +414,7 @@
       <div class="section-header">
         <span class="eyebrow">How you actually get results</span>
         <h2 id="results-h">The model is the easy part.</h2>
-        <p>Knowing CRT and profiting from CRT are two different skills. Results don't come from finding more setups — they come from how you manage risk, expectancy, and yourself across a large sample of trades.</p>
+        <p>Knowing CRT and profiting from CRT are two different skills. Results don't come from finding more setups - they come from how you manage risk, expectancy, and yourself across a large sample of trades.</p>
       </div>
 
       <div class="grid-3 stagger-group">
@@ -409,7 +425,7 @@
             </svg>
           </div>
           <h3>Define risk first</h3>
-          <p>Decide what one trade is allowed to lose <em>before</em> you enter — a fixed fraction of the account per trade (your "1R"). The CRT stop sits just beyond the swept wick, so risk is defined by the chart, not by hope.</p>
+          <p>Decide what one trade is allowed to lose <em>before</em> you enter - a fixed fraction of the account per trade (your "1R"). The CRT stop sits just beyond the swept wick, so risk is defined by the chart, not by hope.</p>
         </article>
 
         <article class="card" data-tilt>
@@ -419,7 +435,7 @@
             </svg>
           </div>
           <h3>Let expectancy compound</h3>
-          <p>Because the target is the opposite edge of the range, clean CRT trades routinely pay <strong>1:3+ R</strong>. At that reward-to-risk you don't need to be right often — a modest win rate across a big sample still grows the account. Think in R, not in dollars.</p>
+          <p>Because the target is the opposite edge of the range, clean CRT trades routinely pay <strong>1:3+ R</strong>. At that reward-to-risk you don't need to be right often - a modest win rate across a big sample still grows the account. Think in R, not in dollars.</p>
         </article>
 
         <article class="card" data-tilt>
@@ -429,17 +445,33 @@
             </svg>
           </div>
           <h3>Journal every range</h3>
-          <p>Screenshot each CRH/CRL, whether the sweep and confirmation appeared, and the outcome in R. Over 50–100 trades the data — not your memory — tells you which ranges and sessions are your real edge.</p>
+          <p>Screenshot each CRH/CRL, whether the sweep and confirmation appeared, and the outcome in R. Over 50–100 trades the data - not your memory - tells you which ranges and sessions are your real edge.</p>
         </article>
       </div>
 
       <div class="crt-results-note reveal">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
-        <p><strong>The honest part:</strong> CRT removes guesswork from <em>where</em> to trade — it can't remove drawdowns, losing streaks, or the discipline to wait. Results are a function of repeating a defined process over a large sample, not of any single trade. Everything here is educational, not financial advice.</p>
+        <p><strong>The honest part:</strong> CRT removes guesswork from <em>where</em> to trade - it can't remove drawdowns, losing streaks, or the discipline to wait. Results are a function of repeating a defined process over a large sample, not of any single trade. Everything here is educational, not financial advice.</p>
       </div>
     </div>
   </section>
 
+  <!-- ============ WHY CRT WORKS + CTA ============ -->
+  <section aria-labelledby="why-h" style="background:var(--bg-elev);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Why it works</span>
+        <h2 id="why-h">Three ICT principles, one filter.</h2>
+        <p>CRT works because it combines three ICT principles at once - <strong>liquidity</strong>, <strong>displacement</strong> and <strong>precision entry</strong> - behind a defined session-timing filter. The purge takes the liquidity, the displacement confirms the turn, and the Fair Value Gap or Order Block gives a tight, repeatable entry. There's no guessing.</p>
+      </div>
+
+      <div class="crt-jump">
+        <a class="link-arrow" href="unicorn.html">See the Unicorn model <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        <a class="link-arrow" href="pricing.html">Get the full course <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        <a class="link-arrow" href="index.html#ict">Back to ICT concepts <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+  </section>
 
 </main>
 
@@ -448,14 +480,15 @@
     <div class="footer-top">
       <div>
         <a class="brand" href="index.html"><span class="brand-mark"><img src="assets/img/logo.jpg" alt="" loading="lazy" /></span><span>The Khan Trading</span></a>
-        <p style="max-width:46ch;margin-top:18px;font-size:0.92rem">ICT-based forex education for serious traders. CRT, Unicorn, and a personal edge — taught the way it's actually traded.</p>
+        <p style="max-width:46ch;margin-top:18px;font-size:0.92rem">ICT-based forex education for serious traders. CRT, Unicorn, and a personal edge - taught the way it's actually traded.</p>
       </div>
       <div>
         <h4>Site</h4>
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="ict.html">ICT Concepts</a></li>
+          <li><a href="index.html#ict">ICT Concepts</a></li>
           <li><a href="crt.html">CRT Model</a></li>
+          <li><a href="unicorn.html">Unicorn Model</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="pricing.html">Pricing</a></li>
           <li><a href="contact.html">Contact</a></li>
@@ -478,3 +511,4 @@
 <script src="js/animations.js"></script>
 </body>
 </html>
+
