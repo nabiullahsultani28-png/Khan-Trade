@@ -4,10 +4,10 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>About - The Khan Trading</title>
-<meta name="description" content="About The Khan Trading: ICT-based forex education, CRT execution, Premium Telegram signals, the full course, and private Discord support for serious traders." />
+<meta name="description" content="How The Khan Trading works: the ICT, CRT and Unicorn system, our story, the plans, plus our privacy, terms and risk policies. Forex education for serious traders." />
 <meta name="theme-color" content="#0A0E14" />
 <meta property="og:title" content="About - The Khan Trading" />
-<meta property="og:description" content="ICT-based forex education, CRT execution, Premium Telegram signals, the full course, and private Discord support for serious traders." />
+<meta property="og:description" content="How The Khan Trading works — the ICT, CRT and Unicorn system, our story, the plans, and our privacy, terms and risk policies." />
 <meta property="og:type" content="website" />
 <meta property="og:image" content="https://thekhantrading.com/assets/img/chart-crt.jpg" />
 <link rel="canonical" href="https://thekhantrading.com/about.html" />
@@ -28,6 +28,72 @@
     } catch (e) {}
   })();
 </script>
+<style>
+  /* ===== About — animated backdrops + new-section styles (token-based, design-ready) ===== */
+
+  /* Smooth anchor jumps clear of the sticky nav */
+  #top, #story, #how, #principles, #markets, #fit, #legal, #join { scroll-margin-top: 90px; }
+
+  /* Canvas backdrop (aurora orbs + magnetic dot matrix) — hero only, for performance */
+  .bg-fx {
+    position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+    -webkit-mask-image: radial-gradient(150% 135% at 60% 38%, #000 0%, #000 60%, transparent 100%);
+    mask-image: radial-gradient(150% 135% at 60% 38%, #000 0%, #000 60%, transparent 100%);
+  }
+  .bg-canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+  .about-hero > .container { position: relative; z-index: 2; }
+
+  /* CSS-only drifting gold grid + breathing glow for content sections */
+  .fx-grid-glow { position: relative; isolation: isolate; }
+  .fx-grid-glow > .container { position: relative; z-index: 1; }
+  .fx-grid-glow::before {
+    content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(212,175,55,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212,175,55,0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+    -webkit-mask-image: radial-gradient(118% 92% at 74% 10%, #000 0%, rgba(0,0,0,0.4) 46%, transparent 80%);
+    mask-image: radial-gradient(118% 92% at 74% 10%, #000 0%, rgba(0,0,0,0.4) 46%, transparent 80%);
+    animation: aboutGridDrift 26s linear infinite;
+  }
+  @keyframes aboutGridDrift { to { background-position: 48px 48px, 48px 48px; } }
+  .fx-grid-glow::after {
+    content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(38% 46% at 82% 12%, rgba(212,175,55,0.10), transparent 70%),
+      radial-gradient(44% 54% at 6% 90%, rgba(34,197,94,0.06), transparent 72%);
+    animation: aboutGlowBreath 16s ease-in-out infinite alternate;
+  }
+  @keyframes aboutGlowBreath {
+    0% { opacity: 0.5; transform: translate3d(0,0,0) scale(1); }
+    100% { opacity: 1; transform: translate3d(0,-14px,0) scale(1.05); }
+  }
+
+  /* How-it-works: "where to start" tier strip */
+  .how-tiers { margin-top: 44px; display: grid; gap: 14px; grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 760px) { .how-tiers { grid-template-columns: 1fr; } }
+  .how-tier { background: var(--bg-base); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; }
+  .how-tier .ht-name { font-family: var(--font-display); font-weight: 600; color: var(--ink); font-size: 1rem; }
+  .how-tier .ht-price { display: block; margin-top: 4px; font-family: var(--font-mono); font-size: 0.76rem; letter-spacing: 0.02em; color: var(--gold); }
+  .how-tier .ht-desc { margin-top: 10px; font-size: 0.9rem; line-height: 1.55; color: var(--ink-mute); }
+  .how-tier.featured { border-color: rgba(212,175,55,0.4); box-shadow: 0 0 0 1px rgba(212,175,55,0.16), 0 24px 60px -40px rgba(212,175,55,0.4); }
+
+  /* Legal & privacy accordion bodies */
+  .legal-note { max-width: 820px; margin: 0 auto 18px; text-align: center; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.02em; color: var(--ink-dim); }
+  .legal-doc { color: var(--ink-mute); font-size: 0.95rem; line-height: 1.66; }
+  .legal-doc p { margin: 0 0 12px; }
+  .legal-doc p:last-child { margin-bottom: 0; }
+  .legal-doc strong { color: var(--ink); font-weight: 600; }
+  .legal-doc ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+  .legal-doc ul li { position: relative; padding-left: 18px; }
+  .legal-doc ul li::before { content: ''; position: absolute; left: 0; top: 0.62em; width: 6px; height: 6px; border-radius: 2px; background: var(--gold); }
+  .faq-item[id] { scroll-margin-top: 96px; }
+  #legal .faq { max-width: 900px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fx-grid-glow::before, .fx-grid-glow::after { animation: none; }
+  }
+</style>
 </head>
 <body>
 <a class="skip-to-main" href="#main">Skip to main content</a>
@@ -160,16 +226,17 @@
 <main id="main">
 
   <!-- ============ HERO ============ -->
-  <section class="page-hero about-hero" aria-label="About The Khan Trading">
+  <section id="top" class="page-hero about-hero" aria-label="About The Khan Trading">
+    <div class="bg-fx" aria-hidden="true"><canvas class="bg-canvas"></canvas></div>
     <div class="container about-hero-grid">
       <div class="about-hero-copy">
         <span class="eyebrow">About</span>
-        <h1>A focused forex execution system for serious traders.</h1>
-        <p class="lead">The Khan Trading brings ICT concepts, Candle Range Theory, the Unicorn entry model, live signals, and private community support into one practical trading workflow.</p>
+        <h1>One market. One system. No hype.</h1>
+        <p class="lead">The Khan Trading turns ICT theory into something you can actually execute — Candle Range Theory, the Unicorn entry, live signals, and a room of traders who treat losses as data. Here's where it came from and how it works.</p>
         <div class="crt-jump about-hero-links">
-          <a class="link-arrow" href="#story">Why this exists <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-          <a class="link-arrow" href="#system">The system <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-          <a class="link-arrow" href="#fit">Who it's for <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          <a class="link-arrow" href="#story">Story <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          <a class="link-arrow" href="#how">How it works <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          <a class="link-arrow" href="#legal">Legal <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
         </div>
       </div>
 
@@ -196,15 +263,15 @@
   </section>
 
   <!-- ============ STORY ============ -->
-  <section id="story" style="padding-top:80px">
+  <section id="story" class="fx-grid-glow" style="padding-top:80px">
     <div class="container">
       <div class="grid-2" style="align-items:start">
         <div>
-          <span class="eyebrow">The story</span>
-          <h2 style="margin-top:18px">Why this exists.</h2>
-          <p style="margin-top:24px">Most traders do not fail because they lack information. They fail because their information is scattered across too many concepts, timeframes, sessions, and entry styles.</p>
-          <p>The Khan Trading was built to solve that problem. We organize ICT foundations into a clear execution process, then turn that process into CRT setups, Unicorn entries, signal delivery, and guided study.</p>
-          <p>The aim is not to make trading look exciting. The aim is to make it repeatable: one market focus, one checklist, one risk framework, and the patience to wait for a clean model.</p>
+          <span class="eyebrow">Where we came from</span>
+          <h2 style="margin-top:18px">Built to cut through the noise.</h2>
+          <p style="margin-top:24px">Most traders don't drown for lack of information. They drown <em>in</em> it — ten indicators, five timeframes, a new strategy every week.</p>
+          <p>The Khan Trading started as one answer to that mess: strip ICT down to the handful of ideas that actually move Gold, and build one repeatable process around them. <strong>CRT</strong> to frame the trade. <strong>Unicorn</strong> for the cleanest entries. A checklist instead of a feeling.</p>
+          <p>How we perform: no moon-shot screenshots, no &ldquo;secret&rdquo; indicator. Live setups posted as they form, the reasoning behind each one, entries and exits you can check &mdash; and the honesty to call a flat day a flat day.</p>
         </div>
           <div class="card" style="padding:0;overflow:hidden;border-radius:var(--radius-lg)">
             <div style="aspect-ratio:4/5;background:linear-gradient(135deg, var(--bg-elev-2), var(--bg-base));display:grid;place-items:center;position:relative">
@@ -219,51 +286,13 @@
     </div>
   </section>
 
-  <!-- ============ SYSTEM AT A GLANCE (stats) ============ -->
-  <section id="system">
+  <!-- ============ HOW IT WORKS ============ -->
+  <section id="how" class="fx-grid-glow" style="background:var(--bg-elev);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
     <div class="container">
       <div class="section-header">
-        <span class="eyebrow">The system at a glance</span>
-        <h2>One framework. A few moving parts.</h2>
-        <p>No sprawling curriculum to get lost in. Just a deliberate set of pieces taught in the order a real trader uses them: understand liquidity, mark the range, wait for displacement, manage risk, and review the outcome.</p>
-      </div>
-
-      <div class="stats reveal">
-        <div class="stat">
-          <div class="stat-num"><span data-count="2">0</span><svg class="sparkline" viewBox="0 0 100 30">
-              <path d="M0 25 Q15 25 20 15 T40 10 T60 20 T80 5 T100 0" />
-            </svg></div>
-          <div class="stat-label">Core pillars · ICT + CRT</div>
-        </div>
-        <div class="stat">
-          <div class="stat-num"><span data-count="4">0</span><svg class="sparkline" viewBox="0 0 100 30">
-              <path d="M0 20 Q10 20 25 10 T50 15 T75 5 T100 0" />
-            </svg></div>
-          <div class="stat-label">Unicorn levels</div>
-        </div>
-        <div class="stat">
-          <div class="stat-num"><span data-count="4">0</span><svg class="sparkline" viewBox="0 0 100 30">
-              <path d="M0 30 Q20 30 30 15 T60 25 T80 5 T100 0" />
-            </svg></div>
-          <div class="stat-label">Guiding principles</div>
-        </div>
-        <div class="stat">
-          <div class="stat-num"><span data-count="3">0</span><svg class="sparkline" viewBox="0 0 100 30">
-              <path d="M0 10 Q10 10 20 25 T40 15 T60 20 T80 5 T100 0" />
-            </svg></div>
-          <div class="stat-label">Access paths</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ HOW THE PIECES FIT ============ -->
-  <section style="background:var(--bg-elev);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
-    <div class="container">
-      <div class="section-header">
-        <span class="eyebrow">How the pieces fit</span>
-        <h2>ICT, CRT &amp; Unicorn in order.</h2>
-        <p>Three layers, each building on the one before it: the path from raw concepts to a model you can execute from a checklist.</p>
+        <span class="eyebrow">How the whole thing works</span>
+        <h2>Three layers, in order.</h2>
+        <p>Skip one and the rest stops working &mdash; concepts first, execution second, screen-time third.</p>
       </div>
 
       <div class="grid-2" style="align-items:center">
@@ -275,34 +304,82 @@
           <div class="step">
             <div class="step-num">01</div>
             <div>
-              <span class="crt-chip">The foundation</span>
-              <h4 style="margin-top:8px">ICT Concepts</h4>
-              <p>Market structure, liquidity, order blocks and fair-value gaps, the language every higher-edge model is written in.</p>
+              <span class="crt-chip">The why</span>
+              <h4 style="margin-top:8px">ICT concepts</h4>
+              <p>Price is engineered to take liquidity and rebalance inefficiency. Six building blocks &mdash; structure, liquidity, order blocks, fair-value gaps, premium/discount, kill zones &mdash; and the chart stops looking random.</p>
             </div>
           </div>
           <div class="step">
             <div class="step-num">02</div>
             <div>
-              <span class="crt-chip gold">The execution</span>
-              <h4 style="margin-top:8px">CRT: Candle Range Theory</h4>
-              <p>The concepts assembled into one repeatable entry model: mark the range, wait for the sweep, confirm the reversal, target the opposite edge.</p>
+              <span class="crt-chip gold">The how</span>
+              <h4 style="margin-top:8px">CRT &amp; Unicorn</h4>
+              <p>CRT reads one candle's range and hands you entry, stop and target in four steps. The Unicorn stacks a breaker block, an FVG and a liquidity sweep into the highest-confluence entry there is &mdash; rare on purpose.</p>
             </div>
           </div>
           <div class="step">
             <div class="step-num">03</div>
             <div>
-              <span class="crt-chip">The mentorship</span>
-              <h4 style="margin-top:8px">Unicorn: Live ICT Mentorship</h4>
-              <p>The high-confluence entry model that brings breaker blocks, fair-value gaps and liquidity sweeps into one precise setup.</p>
+              <span class="crt-chip">The reps</span>
+              <h4 style="margin-top:8px">Signals &amp; community</h4>
+              <p>Daily setups in Telegram; the full curriculum and a private Discord in the course. You get the model and the screen-time to wire it in.</p>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div class="how-tiers reveal">
+        <div class="how-tier">
+          <span class="ht-name">Free</span>
+          <span class="ht-price">$0 forever</span>
+          <p class="ht-desc">ICT &amp; CRT basics, weekly commentary, and public setup breakdowns.</p>
+        </div>
+        <div class="how-tier">
+          <span class="ht-name">Premium Telegram</span>
+          <span class="ht-price">$20/mo · $300 lifetime</span>
+          <p class="ht-desc">2&ndash;3 signals a day, each with entry, stop-loss &amp; take-profit.</p>
+        </div>
+        <div class="how-tier featured">
+          <span class="ht-name">Full Course + Discord</span>
+          <span class="ht-price">$50/mo · $500 lifetime</span>
+          <p class="ht-desc">4&ndash;5 signals a day + the full ICT/CRT/Unicorn curriculum &amp; private Discord.</p>
+        </div>
+      </div>
+      <p style="text-align:center;margin-top:22px;font-size:0.95rem">
+        <a class="link-arrow" href="pricing.html">See full pricing <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </p>
+
+      <div class="stats reveal" style="margin-top:44px">
+        <div class="stat">
+          <div class="stat-num"><span data-count="2">0</span><svg class="sparkline" viewBox="0 0 100 30">
+              <path d="M0 25 Q15 25 20 15 T40 10 T60 20 T80 5 T100 0" />
+            </svg></div>
+          <div class="stat-label">Core pillars · ICT + CRT</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num"><span data-count="4">0</span><svg class="sparkline" viewBox="0 0 100 30">
+              <path d="M0 20 Q10 20 25 10 T50 15 T75 5 T100 0" />
+            </svg></div>
+          <div class="stat-label">Unicorn steps</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num"><span data-count="4">0</span><svg class="sparkline" viewBox="0 0 100 30">
+              <path d="M0 30 Q20 30 30 15 T60 25 T80 5 T100 0" />
+            </svg></div>
+          <div class="stat-label">Guiding principles</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num"><span data-count="3">0</span><svg class="sparkline" viewBox="0 0 100 30">
+              <path d="M0 10 Q10 10 20 25 T40 15 T60 20 T80 5 T100 0" />
+            </svg></div>
+          <div class="stat-label">Ways in</div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Philosophy -->
-  <section class="about-pattern">
+  <section class="about-pattern" id="principles">
     <div class="container">
       <div class="section-header">
         <span class="eyebrow">Philosophy</span>
@@ -343,7 +420,7 @@
   </section>
 
   <!-- ============ FOCUS: GOLD & MAJORS ============ -->
-  <section>
+  <section id="markets">
     <div class="container">
       <div class="grid-2" style="align-items:center">
         <div>
@@ -366,33 +443,64 @@
     </div>
   </section>
 
-  <!-- ============ WHO IT'S FOR ============ -->
-  <section id="fit" style="background:var(--bg-elev);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <!-- ============ LEGAL & PRIVACY ============ -->
+  <section id="legal" class="fx-grid-glow" style="background:var(--bg-elev);border-top:1px solid var(--line)">
     <div class="container">
       <div class="section-header">
-        <span class="eyebrow">Who this is for</span>
-        <h2>Serious traders. Period.</h2>
-        <p>This is for people who want a structured process, not random alerts or motivational content. The free channel gives you a first look. Premium adds active signals. The full course and Discord give you the complete learning environment.</p>
+        <span class="eyebrow">Legal &amp; privacy</span>
+        <h2>The fine print, in plain English.</h2>
+        <p>Everything we share is educational &mdash; never financial advice. Tap any policy to read it.</p>
       </div>
+      <p class="legal-note">Plain-language summaries, not a substitute for professional legal advice.</p>
 
-      <div class="grid-2 stagger-group" style="align-items:start">
-        <div>
-          <h3 style="margin-bottom:18px;color:var(--bull)">You belong here if&hellip;</h3>
-          <ul class="fit-list yes">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg><span>You're building real trading skill, not just consuming content.</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg><span>You're focused on Gold and the FX majors.</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg><span>You can show up daily for the sessions.</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg><span>You're ready to follow a checklist, not chase setups.</span></li>
-          </ul>
+      <div class="faq">
+        <div class="faq-item" id="privacy">
+          <button class="faq-q">Privacy Policy <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button>
+          <div class="faq-a"><div class="faq-a-inner"><div class="legal-doc">
+            <ul>
+              <li><strong>What we collect.</strong> The details you give us when you register or get in touch &mdash; typically your name, email and country. If you join our Telegram or Discord, those platforms also process your data under their own policies.</li>
+              <li><strong>How we use it.</strong> To set up and manage your access, send the updates and signals you asked for, answer your questions, and improve what we offer. We don't sell your data.</li>
+              <li><strong>Sharing.</strong> Only with the services that run the business (e.g. Telegram, Discord, payment and email providers), as needed to deliver what you signed up for, or where the law requires it.</li>
+              <li><strong>Your rights.</strong> Ask us to show, correct or delete your data, or to stop contacting you, any time &mdash; just email us.</li>
+              <li><strong>Retention &amp; cookies.</strong> Kept only as long as needed for the above. The site uses minimal local storage (e.g. remembering your theme) &mdash; no advertising trackers.</li>
+            </ul>
+          </div></div></div>
         </div>
-        <div>
-          <h3 style="margin-bottom:18px;color:var(--bear)">You don't belong here if&hellip;</h3>
-          <ul class="fit-list no">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6l-12 12"/></svg><span>You want "magic" indicators, or to copy trades without ever learning the why.</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6l-12 12"/></svg><span>You're treating this as a get-rich-quick play.</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6l-12 12"/></svg><span>You can't risk what you trade with.</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6l-12 12"/></svg><span>You're not willing to study and screen-time.</span></li>
-          </ul>
+
+        <div class="faq-item" id="terms">
+          <button class="faq-q">Terms of Use <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button>
+          <div class="faq-a"><div class="faq-a-inner"><div class="legal-doc">
+            <p>Using this site and our channels means you accept these terms. The Khan Trading provides trading <strong>education and example setups</strong> &mdash; not a service that trades for you, manages money, or guarantees results.</p>
+            <p>Paid access is personal to you. Don't share, resell or redistribute paid content, signals or course material. We may suspend access for abuse, chargebacks, or breaking community rules.</p>
+            <p>All content and branding is ours, provided for your own learning use only. We may update the site, our offers, or these terms at any time; continued use means you accept the current version.</p>
+          </div></div></div>
+        </div>
+
+        <div class="faq-item" id="risk">
+          <button class="faq-q">Risk Disclaimer <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button>
+          <div class="faq-a"><div class="faq-a-inner"><div class="legal-doc">
+            <p>Trading forex and Gold carries <strong>substantial risk</strong> and isn't suitable for everyone &mdash; you can lose some or all of your capital.</p>
+            <p>Everything we publish &mdash; education, commentary, and example setups including entries, stops and targets &mdash; is for <strong>educational purposes only</strong>. It is not financial, investment or tax advice, and not a recommendation to buy or sell anything.</p>
+            <p>Past performance and example trades do not guarantee future results. You alone are responsible for your decisions and risk management. Only trade money you can afford to lose, and seek independent advice if you're unsure.</p>
+          </div></div></div>
+        </div>
+
+        <div class="faq-item" id="conflict">
+          <button class="faq-q">Conflict of Interest Policy <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button>
+          <div class="faq-a"><div class="faq-a-inner"><div class="legal-doc">
+            <p>We want you to know where our incentives sit. The Khan Trading earns from channel subscriptions and course sales &mdash; <strong>not from any broker</strong>. We are not a broker, fund, or signal-copying service.</p>
+            <p>We may hold or take positions in the same instruments we discuss (e.g. XAUUSD). Example setups are shared to teach a method &mdash; not to move price or push you into our positions.</p>
+            <p>If we ever recommend a third-party tool or service and receive any benefit for it, we'll say so.</p>
+          </div></div></div>
+        </div>
+
+        <div class="faq-item" id="consent">
+          <button class="faq-q">Declaration of Consent <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button>
+          <div class="faq-a"><div class="faq-a-inner"><div class="legal-doc">
+            <p>By registering, you confirm the details you provide are accurate, you're of legal age in your country, and you consent to us processing your data as described in the Privacy Policy above to deliver the services you requested.</p>
+            <p>You also confirm you've read the Risk Disclaimer and understand that all content is educational, that trading is risky, and that your results are your own responsibility.</p>
+            <p>You can withdraw consent or close your account at any time by emailing us; some records may be kept where the law requires.</p>
+          </div></div></div>
         </div>
       </div>
     </div>
@@ -455,6 +563,9 @@
         </ul>
       </div>
     </div>
+    <p class="footer-legal" style="text-align:center;margin-bottom:12px;font-size:0.82rem;color:var(--ink-dim)">
+      <a href="about.html#privacy">Privacy</a> &middot; <a href="about.html#terms">Terms</a> &middot; <a href="about.html#risk">Risk Disclaimer</a> &middot; <a href="about.html#conflict">Conflicts</a> &middot; <a href="about.html#consent">Consent</a>
+    </p>
     <p class="disclaimer">&copy; <span data-year></span> The Khan Trading. Trading carries risk. Past performance does not guarantee future results. All content is educational and not financial advice.</p>
   </div>
 </footer>
@@ -462,5 +573,152 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="js/main.js"></script>
 <script src="js/animations.js"></script>
+<script>
+  /* Legal accordion — open + scroll to a doc when linked via #hash (e.g. from register.html) */
+  (function () {
+    function openFromHash() {
+      var id = (location.hash || '').slice(1);
+      if (!id) return;
+      var el = document.getElementById(id);
+      if (!el || !el.classList.contains('faq-item')) return;
+      var parent = el.parentElement;
+      if (parent) Array.prototype.forEach.call(parent.querySelectorAll('.faq-item.open'), function (o) {
+        if (o !== el) { o.classList.remove('open'); var q0 = o.querySelector('.faq-q'); if (q0) q0.setAttribute('aria-expanded', 'false'); }
+      });
+      el.classList.add('open');
+      var q = el.querySelector('.faq-q');
+      if (q) q.setAttribute('aria-expanded', 'true');
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    window.addEventListener('hashchange', openFromHash);
+    if (location.hash) setTimeout(openFromHash, 80);
+  })();
+
+  /* Canvas backdrop — aurora orbs behind a magnetic dot matrix (mounts every .bg-canvas) */
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var canvases = Array.prototype.slice.call(document.querySelectorAll('.bg-canvas'));
+
+    function mount(canvas) {
+      var host = canvas.parentNode;
+      var ctx = canvas.getContext('2d');
+      var W = 0, H = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var dots = [], GAP = 34, cols = 0, rows = 0;
+      var ripples = [];
+      var mouse = { x: -9999, y: -9999, active: false };
+      var t = 0, raf = 0, visible = true;
+
+      var orbs = [
+        { hue: '212,175,55', cx: 0.20, cy: 0.14, r: 0.48, ax: 0.05, ay: 0.04, sx: 0.11, sy: 0.07, ph: 0.0, a: 0.28 },
+        { hue: '34,197,94',  cx: 0.82, cy: 0.28, r: 0.42, ax: 0.06, ay: 0.05, sx: 0.09, sy: 0.13, ph: 1.7, a: 0.20 },
+        { hue: '212,175,55', cx: 0.62, cy: 0.86, r: 0.44, ax: 0.07, ay: 0.04, sx: 0.07, sy: 0.10, ph: 3.1, a: 0.15 }
+      ];
+
+      function makeDots() {
+        dots = [];
+        cols = Math.ceil(W / GAP) + 1; rows = Math.ceil(H / GAP) + 1;
+        for (var r = 0; r < rows; r++) {
+          for (var c = 0; c < cols; c++) {
+            var hx = c * GAP, hy = r * GAP;
+            dots.push({ hx: hx, hy: hy, x: hx, y: hy, vx: 0, vy: 0, prox: 0, green: Math.random() < 0.10, ph: (hx * 0.013 + hy * 0.017) });
+          }
+        }
+      }
+
+      function resize() {
+        var b = host.getBoundingClientRect();
+        W = Math.max(1, b.width); H = Math.max(1, b.height);
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+        canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        ctx.globalCompositeOperation = 'lighter';
+        for (var k = 0; k < orbs.length; k++) {
+          var o = orbs[k];
+          var ox = (o.cx + Math.sin(t * o.sx + o.ph) * o.ax) * W;
+          var oy = (o.cy + Math.cos(t * o.sy + o.ph) * o.ay) * H;
+          var rad = o.r * Math.max(W, H);
+          var g = ctx.createRadialGradient(ox, oy, 0, ox, oy, rad);
+          g.addColorStop(0, 'rgba(' + o.hue + ',' + o.a + ')');
+          g.addColorStop(0.5, 'rgba(' + o.hue + ',' + (o.a * 0.35) + ')');
+          g.addColorStop(1, 'rgba(' + o.hue + ',0)');
+          ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+        }
+        var R = Math.min(190, Math.max(120, W * 0.14)), R2 = R * R;
+        var dt = reduce ? 0 : 1;
+        for (var s = ripples.length - 1; s >= 0; s--) { var rp = ripples[s]; rp.r += 9 * dt; if (rp.r > Math.max(W, H) * 1.25) ripples.splice(s, 1); }
+        for (var i = 0; i < dots.length; i++) {
+          var d = dots[i]; var prox = 0;
+          if (mouse.active && !reduce) {
+            var dx = d.x - mouse.x, dy = d.y - mouse.y, dist2 = dx * dx + dy * dy;
+            if (dist2 < R2) { var dd = Math.sqrt(dist2) || 1, fall = 1 - dd / R; prox = fall; var push = fall * fall * 15; d.vx += (dx / dd) * push * 0.05; d.vy += (dy / dd) * push * 0.05; }
+          }
+          for (var s2 = 0; s2 < ripples.length; s2++) {
+            var rp2 = ripples[s2]; var rx = d.hx - rp2.x, ry = d.hy - rp2.y; var rdist = Math.sqrt(rx * rx + ry * ry) || 1; var band = Math.abs(rdist - rp2.r);
+            if (band < 34) { var k2 = (1 - band / 34) * (1 - rp2.r / (Math.max(W, H) * 1.25)) * 3; d.vx += (rx / rdist) * k2; d.vy += (ry / rdist) * k2; if (k2 * 0.08 > prox) prox = k2 * 0.08; }
+          }
+          d.vx += (d.hx - d.x) * 0.06; d.vy += (d.hy - d.y) * 0.06; d.vx *= 0.82; d.vy *= 0.82; d.x += d.vx * dt; d.y += d.vy * dt; d.prox = prox;
+        }
+        for (var li = 0; li < dots.length; li++) {
+          var a = dots[li]; var col = li % cols;
+          var right = (col < cols - 1) ? dots[li + 1] : null;
+          var down = (li + cols < dots.length) ? dots[li + cols] : null;
+          for (var nn = 0; nn < 2; nn++) {
+            var b2 = nn === 0 ? right : down; if (!b2) continue;
+            var energy = Math.max(a.prox, b2.prox); if (energy < 0.02) continue;
+            ctx.strokeStyle = 'rgba(212,175,55,' + (energy * 0.3) + ')'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b2.x, b2.y); ctx.stroke();
+          }
+        }
+        for (var m = 0; m < dots.length; m++) {
+          var d2 = dots[m]; var prox2 = d2.prox;
+          var wave = 0.5 + 0.5 * Math.sin(t * 0.9 + d2.ph);
+          var alpha = (0.10 + wave * 0.12) + prox2 * 0.6;
+          var rr = 1.1 + wave * 0.5 + prox2 * 1.5;
+          var hue; if (prox2 > 0.04) hue = '212,175,55'; else if (d2.green) hue = '52,211,120'; else hue = '150,166,190';
+          if (prox2 > 0.22) {
+            var gg = ctx.createRadialGradient(d2.x, d2.y, 0, d2.x, d2.y, rr * 3.2);
+            gg.addColorStop(0, 'rgba(' + hue + ',' + (alpha * 0.4) + ')'); gg.addColorStop(1, 'rgba(' + hue + ',0)');
+            ctx.fillStyle = gg; ctx.beginPath(); ctx.arc(d2.x, d2.y, rr * 3.2, 0, Math.PI * 2); ctx.fill();
+          }
+          ctx.fillStyle = 'rgba(' + hue + ',' + alpha + ')'; ctx.beginPath(); ctx.arc(d2.x, d2.y, rr, 0, Math.PI * 2); ctx.fill();
+        }
+        for (var sr = 0; sr < ripples.length; sr++) {
+          var rp3 = ripples[sr]; var fade = 1 - rp3.r / (Math.max(W, H) * 1.25);
+          ctx.strokeStyle = 'rgba(212,175,55,' + (fade * 0.22) + ')'; ctx.lineWidth = 1.4;
+          ctx.beginPath(); ctx.arc(rp3.x, rp3.y, rp3.r, 0, Math.PI * 2); ctx.stroke();
+        }
+        ctx.globalCompositeOperation = 'source-over';
+      }
+
+      function loop() { if (visible) { t += 0.016; draw(); } raf = requestAnimationFrame(loop); }
+
+      resize(); makeDots();
+      var ro = new ResizeObserver(function () { resize(); makeDots(); }); ro.observe(host);
+      var io = new IntersectionObserver(function (es) { es.forEach(function (e) { visible = e.isIntersecting; }); }, { threshold: 0 }); io.observe(host);
+      window.addEventListener('pointermove', function (e) {
+        var b = host.getBoundingClientRect();
+        mouse.x = e.clientX - b.left; mouse.y = e.clientY - b.top;
+        mouse.active = e.clientX >= b.left && e.clientX <= b.right && e.clientY >= b.top && e.clientY <= b.bottom;
+      }, { passive: true });
+      window.addEventListener('blur', function () { mouse.active = false; });
+      if (!reduce) {
+        host.parentNode.addEventListener('pointerdown', function (e) {
+          var b = host.getBoundingClientRect();
+          if (e.clientX < b.left || e.clientX > b.right || e.clientY < b.top || e.clientY > b.bottom) return;
+          ripples.push({ x: e.clientX - b.left, y: e.clientY - b.top, r: 0 });
+          if (ripples.length > 4) ripples.shift();
+        }, { passive: true });
+      }
+      if (reduce) { t = 1.4; draw(); } else { draw(); raf = requestAnimationFrame(loop); }
+    }
+
+    canvases.forEach(mount);
+  })();
+</script>
 </body>
 </html>
