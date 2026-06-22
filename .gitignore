@@ -27,4 +27,7 @@ Images/
 IMPROVEMENT_PLAN.md
 
 # Local Claude Code config
-.cla
+.claude/
+
+# Local code-intelligence index
+.codegraph/
