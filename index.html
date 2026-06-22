@@ -99,6 +99,388 @@
       #khan-why[data-js] [data-reveal]{ opacity:1 !important; transform:none !important; transition:none }
       #khan-why .khan-spark path, #khan-why .khan-glyph path{ stroke-dashoffset:0 !important; }
     }
+
+    /* ===== FAQ "Support Desk" terminal + Final CTA (design: faq-cta-preview.html) ===== */
+    .faq-section, .join-section { position: relative; isolation: isolate; }
+    .faq-section > .container, .join-section > .container { position: relative; z-index: 1; }
+
+    .faq-section::before, .join-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(212, 175, 55, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212, 175, 55, 0.05) 1px, transparent 1px);
+      background-size: 48px 48px;
+      -webkit-mask-image: radial-gradient(118% 92% at 74% 10%, #000 0%, rgba(0,0,0,0.4) 46%, transparent 80%);
+      mask-image: radial-gradient(118% 92% at 74% 10%, #000 0%, rgba(0,0,0,0.4) 46%, transparent 80%);
+      animation: bgGridDrift 26s linear infinite;
+    }
+    @keyframes bgGridDrift { to { background-position: 48px 48px, 48px 48px; } }
+
+    .faq-section::after, .join-section::after {
+      content: '';
+      position: absolute; inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(38% 46% at 82% 12%, rgba(212, 175, 55, 0.13), transparent 70%),
+        radial-gradient(44% 54% at 6% 90%, rgba(34, 197, 94, 0.07), transparent 72%);
+      animation: bgGlowBreath 16s ease-in-out infinite alternate;
+    }
+    @keyframes bgGlowBreath {
+      0% { opacity: 0.5; transform: translate3d(0, 0, 0) scale(1); }
+      100% { opacity: 1; transform: translate3d(0, -14px, 0) scale(1.05); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .faq-section::before, .join-section::before,
+      .faq-section::after, .join-section::after { animation: none; }
+    }
+
+    /* ---- Canvas backdrop (aurora orbs + magnetic dot matrix) ---- */
+    .bg-fx {
+      position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+      -webkit-mask-image: radial-gradient(150% 135% at 60% 38%, #000 0%, #000 60%, transparent 100%);
+      mask-image: radial-gradient(150% 135% at 60% 38%, #000 0%, #000 60%, transparent 100%);
+    }
+    .bg-canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+
+    /* ===== FAQ v3 — "Support Desk" terminal (master / detail) ===== */
+    .faq-section { padding: clamp(64px, 7vw, 112px) 0 clamp(40px, 4vw, 72px); }
+
+    .faq2-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 32px;
+      flex-wrap: wrap;
+      max-width: 1180px;
+      margin: 0 auto clamp(26px, 3vw, 42px);
+    }
+    .faq2-head .eyebrow { margin-bottom: 18px; }
+    .faq2-head h2 { font-size: clamp(2.1rem, 3.6vw, 3.4rem); }
+    .faq2-head-aside {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 15px;
+      padding-bottom: 6px;
+    }
+    .faq2 {
+      position: relative;
+      max-width: 1180px;
+      margin: 0 auto;
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius-lg) + 4px);
+      background: var(--bg-elev);
+      overflow: hidden;
+      box-shadow: 0 44px 100px -54px rgba(0, 0, 0, 0.85);
+    }
+    .faq2::before {
+      content: '';
+      position: absolute; top: 0; left: 26px; right: 26px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.65), rgba(34, 197, 94, 0.32), transparent);
+    }
+
+    .faq2-bar {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      padding: 15px 22px;
+      border-bottom: 1px solid var(--line);
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+    }
+    .faq2-bar-title { display: inline-flex; align-items: center; gap: 11px; color: var(--ink-mute); }
+    .faq2-bar-title::before {
+      content: '';
+      width: 9px; height: 9px; border-radius: 2px;
+      background: var(--gold); box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+    }
+    .faq2-bar-meta .hl { color: var(--gold); }
+
+    .faq2-body { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.2fr); }
+    .faq2-list { border-right: 1px solid var(--line); }
+
+    .faq2-item { border-bottom: 1px solid var(--line); }
+    .faq2-item:last-child { border-bottom: 0; }
+
+    .faq2-q {
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      background: transparent;
+      border: 0;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 16px;
+      padding: 22px 22px;
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1.02rem;
+      line-height: 1.34;
+      position: relative;
+      transition: background 0.3s, padding-left 0.45s var(--ease-out), color 0.25s;
+    }
+    .faq2-q::before {
+      content: '';
+      position: absolute; left: 0; top: 14px; bottom: 14px; width: 2px;
+      background: linear-gradient(var(--gold), rgba(212, 175, 55, 0.2));
+      border-radius: 2px;
+      transform: scaleY(0); transform-origin: top center; opacity: 0;
+      transition: transform 0.5s var(--ease-out), opacity 0.3s ease;
+    }
+    .faq2-num {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--ink-dim);
+      transition: color 0.25s ease;
+    }
+    .faq2-chev {
+      width: 16px; height: 16px;
+      color: var(--ink-dim);
+      flex-shrink: 0;
+      transition: transform 0.4s var(--ease-out), color 0.25s ease;
+    }
+    .faq2-q:hover { background: rgba(212, 175, 55, 0.05); padding-left: 30px; }
+    .faq2-q:hover .faq2-num { color: var(--gold); }
+    .faq2-item.active .faq2-q { background: var(--bg-elev-2); }
+    .faq2-item.active .faq2-q::before { transform: scaleY(1); opacity: 1; animation: railGlow 2.2s ease-in-out infinite; }
+    @keyframes railGlow { 0%, 100% { box-shadow: 0 0 7px -2px var(--gold); } 50% { box-shadow: 0 0 13px 0 var(--gold); } }
+    .faq2-item.active .faq2-num { color: var(--gold); }
+    .faq2-item.active .faq2-chev { color: var(--gold); transform: translateX(3px); }
+
+    .faq2-src { display: none; }
+
+    .faq2-detail {
+      position: relative;
+      padding: clamp(28px, 3vw, 44px) clamp(26px, 3vw, 46px);
+      min-height: 348px;
+    }
+    .faq2-detail::after {
+      content: attr(data-wm);
+      position: absolute; top: 16px; right: 26px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 5.5rem;
+      line-height: 1;
+      color: var(--gold);
+      opacity: 0.06;
+      pointer-events: none;
+      user-select: none;
+      animation: wmBreath 4.5s ease-in-out infinite;
+    }
+    @keyframes wmBreath { 0%, 100% { opacity: 0.05; } 50% { opacity: 0.1; } }
+    .faq2-detail.anim::after { animation: wmFlash 0.7s var(--ease-out) both, wmBreath 4.5s ease-in-out 0.7s infinite; }
+    @keyframes wmFlash {
+      0% { opacity: 0; transform: translateY(8px) scale(0.9); }
+      55% { opacity: 0.2; }
+      100% { opacity: 0.08; transform: none; }
+    }
+
+    .faq2-detail::before {
+      content: '';
+      position: absolute; top: 0; bottom: 0; width: 45%; left: -50%;
+      background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.10), transparent);
+      pointer-events: none; opacity: 0; z-index: 2;
+    }
+    .faq2-detail.anim::before { animation: paneSweep 0.85s cubic-bezier(0.4, 0, 0.1, 1); }
+    @keyframes paneSweep { 0% { left: -50%; opacity: 1; } 100% { left: 120%; opacity: 0; } }
+
+    .faq2-ans-tag {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: 24px;
+    }
+    .faq2-ans-name {
+      font-family: var(--font-mono); font-size: 0.74rem; font-weight: 500;
+      letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold);
+      white-space: nowrap;
+    }
+    .faq2-ans-rule {
+      flex: 1 1 auto; height: 1px;
+      background: linear-gradient(90deg, rgba(212, 175, 55, 0.45), rgba(212, 175, 55, 0.06));
+      transform-origin: left center;
+    }
+    .faq2-ans-coord {
+      font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.08em; color: var(--ink-dim); white-space: nowrap;
+    }
+    .faq2-ans-coord b { color: var(--gold); font-weight: 500; }
+    .faq2-detail h3 {
+      position: relative;
+      font-size: clamp(1.3rem, 2vw, 1.72rem);
+      margin-bottom: 20px; padding-bottom: 14px;
+      max-width: 22ch;
+    }
+    .faq2-detail h3::after {
+      content: ''; position: absolute; left: 0; bottom: 0;
+      width: 46px; height: 2px; transform-origin: left center;
+      background: linear-gradient(90deg, var(--gold), rgba(212, 175, 55, 0));
+    }
+    .faq2-detail-ans { color: var(--ink-mute); font-size: 1rem; line-height: 1.66; max-width: 54ch; }
+    .faq2-detail-ans p { margin: 0 0 0.9em; color: inherit; }
+    .faq2-detail-ans p:last-child { margin-bottom: 0; }
+    .faq2-detail-ans a { color: var(--gold); border-bottom: 1px solid rgba(212, 175, 55, 0.4); }
+
+    .faq2-detail.anim .faq2-ans-name { animation: tagIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+    .faq2-detail.anim .faq2-ans-rule { animation: ruleDraw 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both; }
+    .faq2-detail.anim .faq2-ans-coord { animation: tagIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.24s both; }
+    .faq2-detail.anim h3 { animation: h3Wipe 0.66s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both; }
+    .faq2-detail.anim h3::after { animation: ruleDraw 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.34s both; }
+    .faq2-detail.anim .faq2-detail-ans p { animation: pIn 0.62s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .faq2-detail.anim .faq2-detail-ans p:nth-child(1) { animation-delay: 0.22s; }
+    .faq2-detail.anim .faq2-detail-ans p:nth-child(2) { animation-delay: 0.34s; }
+    .faq2-detail.anim .faq2-detail-ans p:nth-child(3) { animation-delay: 0.46s; }
+    @keyframes tagIn { from { opacity: 0; transform: translateX(-14px); } to { opacity: 1; transform: none; } }
+    @keyframes ruleDraw { from { transform: scaleX(0); opacity: 0; } to { transform: scaleX(1); opacity: 1; } }
+    @keyframes h3Wipe {
+      from { opacity: 0; clip-path: inset(0 100% 0 0); transform: translateY(10px); filter: blur(4px); }
+      to { opacity: 1; clip-path: inset(0 0 0 0); transform: none; filter: blur(0); }
+    }
+    @keyframes pIn {
+      from { opacity: 0; transform: translateY(18px); filter: blur(5px); }
+      to { opacity: 1; transform: none; filter: blur(0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .faq2-detail.anim .faq2-ans-name,
+      .faq2-detail.anim .faq2-ans-rule,
+      .faq2-detail.anim .faq2-ans-coord,
+      .faq2-detail.anim h3,
+      .faq2-detail.anim h3::after,
+      .faq2-detail.anim::after,
+      .faq2-detail.anim .faq2-detail-ans p,
+      .faq2-item.active .faq2-q::before,
+      .faq2-detail::after,
+      .faq2-detail.anim::before { animation: none; }
+      .faq2-detail.anim h3 { clip-path: none; }
+    }
+
+    /* ===== Final CTA — anchored panel ===== */
+    .join-section { padding: clamp(36px, 4vw, 60px) 0 clamp(72px, 7vw, 112px); }
+    .join-panel {
+      position: relative;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: clamp(40px, 4vw, 60px) clamp(24px, 3vw, 52px) clamp(40px, 4vw, 56px);
+      background:
+        radial-gradient(120% 90% at 50% -10%, rgba(212, 175, 55, 0.06), transparent 55%),
+        var(--bg-elev);
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius-lg) + 8px);
+    }
+    .join-panel::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 30px; right: 30px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.65), rgba(34, 197, 94, 0.32), transparent);
+    }
+    .join-head { text-align: center; max-width: 640px; margin: 0 auto 44px; }
+    .join-head .eyebrow { margin-bottom: 18px; }
+    .join-head p { margin-top: 16px; }
+
+    .join-section .join-tiers { max-width: 1000px; }
+    .join-section .join-tier {
+      background: var(--bg-elev-2);
+      border-color: var(--line-strong);
+      padding-top: 30px;
+      will-change: transform;
+    }
+
+    .join-section .join-tier.reveal.in {
+      animation: tierFloat 6s ease-in-out infinite;
+      animation-delay: calc(1s + var(--i, 0) * 0.4s);
+    }
+    .join-section .join-tier.reveal.in:nth-of-type(2) { animation-duration: 6.8s; }
+    .join-section .join-tier.reveal.in:nth-of-type(3) { animation-duration: 5.4s; }
+    .join-section .join-tier:hover { animation-play-state: paused; }
+    @keyframes tierFloat {
+      0%   { transform: translateY(0); }
+      50%  { transform: translateY(-12px); }
+      100% { transform: translateY(0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .join-section .join-tier.reveal.in { animation: none; }
+    }
+    .join-section .join-tier-badge { white-space: nowrap; }
+    .join-tier-idx {
+      position: absolute;
+      top: 16px; right: 18px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--ink-dim);
+      letter-spacing: 0.06em;
+    }
+    .join-section .join-tier.featured {
+      box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.34), 0 26px 64px -30px rgba(212, 175, 55, 0.45);
+    }
+    .join-section .join-tier.featured:hover {
+      box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.5), 0 30px 70px -28px rgba(212, 175, 55, 0.55);
+    }
+    .join-tier-go {
+      margin-top: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      transition: gap 0.4s var(--ease-out), color 0.3s ease;
+    }
+    .join-tier-go svg { width: 13px; height: 13px; }
+    .join-tier:hover .join-tier-go { gap: 11px; color: var(--gold); }
+    .join-tier.featured .join-tier-go { color: var(--gold); }
+
+    .join-foot { margin-top: 40px; text-align: center; }
+    .join-foot .join-note { margin: 22px 0 0; font-size: 0.95rem; color: var(--ink-mute); }
+
+    .faq-section .reveal,
+    .join-section .reveal {
+      filter: blur(8px);
+      transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out), filter 0.9s var(--ease-out);
+      transition-delay: calc(var(--i, 0) * 80ms);
+    }
+    .faq-section .reveal.in,
+    .join-section .reveal.in { filter: blur(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .faq-section .reveal, .join-section .reveal { filter: none; }
+    }
+
+    @media (max-width: 900px) {
+      .faq2-head { flex-direction: column; align-items: flex-start; }
+      .faq2-head-aside { align-items: flex-start; }
+
+      .faq2-body { grid-template-columns: 1fr; }
+      .faq2-list { border-right: 0; }
+      .faq2-detail { display: none; }
+
+      .faq2-src {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.45s var(--ease-out);
+        background: var(--bg-elev-2);
+      }
+      .faq2-item.active .faq2-src { grid-template-rows: 1fr; }
+      .faq2-src-inner { overflow: hidden; }
+      .faq2-item.active .faq2-src-inner {
+        padding: 4px 22px 26px;
+        border-left: 2px solid var(--gold);
+      }
+      .faq2-src .faq2-ans-tag { margin-bottom: 12px; }
+      .faq2-src h3 { display: none; }
+      @media (prefers-reduced-motion: reduce) {
+        .faq2-src { transition: none; }
+      }
+    }
   </style>
 
   <script>
@@ -859,150 +1241,173 @@
     </section>
 
     <!-- ============ FAQ ============ -->
-    <section aria-labelledby="faq-h">
+    <section class="faq-section" aria-labelledby="faq-h">
+      <div class="bg-fx" aria-hidden="true"><canvas class="bg-canvas"></canvas></div>
       <div class="container">
-        <div class="section-header">
-          <span class="eyebrow">FAQ</span>
-          <h2 id="faq-h">Questions, answered.</h2>
+
+        <div class="faq2-head reveal" style="--i:0">
+          <div>
+            <span class="eyebrow">FAQ</span>
+            <h2 id="faq-h">Questions, answered.</h2>
+          </div>
+          <div class="faq2-head-aside">
+            <a class="link-arrow" href="contact.html">Email the desk
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7" /></svg>
+            </a>
+          </div>
         </div>
 
-        <div class="faq">
-          <div class="faq-item">
-            <button class="faq-q">
-              What's the difference between Free, Premium, and the full course?
-              <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                  stroke-linecap="round">
-                  <path d="M12 5v14M5 12h14" />
-                </svg></span>
-            </button>
-            <div class="faq-a">
-              <div class="faq-a-inner">
-                The free Telegram channel gives you the ICT and CRT basics, weekly market commentary, public setup
-                breakdowns, and the community. Premium Telegram ($20/mo, or $300 lifetime) is the same idea but faster:
-                2&ndash;3 active signals a day with entry, stop-loss and take-profit on every call, plus priority over
-                the free one. The Full Course + Discord ($50/mo, or $500 lifetime) is the full thing: 4&ndash;5 active
-                signals a day, the complete ICT, CRT and Unicorn course, a private Discord, daily market-strategy
-                updates, a structured curriculum, and direct conversation with the team. The
-                <a href="pricing.html">Pricing page</a> lays it out side by side.
-              </div>
-            </div>
+        <div class="faq2 reveal" style="--i:1">
+          <div class="faq2-bar">
+            <span class="faq2-bar-title">support.desk</span>
+            <span class="faq2-bar-meta"><span class="hl">05</span> topics &middot; the khan trading</span>
           </div>
 
-          <div class="faq-item">
-            <button class="faq-q">
-              How much time do I need each day?
-              <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                  stroke-linecap="round">
-                  <path d="M12 5v14M5 12h14" />
-                </svg></span>
-            </button>
-            <div class="faq-a">
-              <div class="faq-a-inner">
-                Realistically, plan to spend at least 1–2 hours during the London or New York session. CRT is a
-                session-based system; outside the kill-zones, there's nothing to do but study.
-              </div>
-            </div>
-          </div>
+          <div class="faq2-body">
+            <div class="faq2-list" role="tablist" aria-label="Frequently asked questions">
 
-          <div class="faq-item">
-            <button class="faq-q">
-              Do I need prior trading experience?
-              <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                  stroke-linecap="round">
-                  <path d="M12 5v14M5 12h14" />
-                </svg></span>
-            </button>
-            <div class="faq-a">
-              <div class="faq-a-inner">
-                Helpful but not required. If you understand candles, support/resistance, and basic risk management you
-                have enough. The free channel is the on-ramp, so start there.
+              <div class="faq2-item active">
+                <button class="faq2-q" aria-expanded="true">
+                  <span class="faq2-num">01</span>
+                  <span class="faq2-q-text">What's the difference between Free, Premium, and the full course?</span>
+                  <svg class="faq2-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6" /></svg>
+                </button>
+                <div class="faq2-src">
+                  <div class="faq2-src-inner">
+                    <span class="faq2-ans-tag"><span class="faq2-ans-name">Plans</span><span class="faq2-ans-rule"></span><span class="faq2-ans-coord"><b>01</b> / 05</span></span>
+                    <h3>What's the difference between Free, Premium, and the full course?</h3>
+                    <div class="faq2-detail-ans">
+                      <p>Free Telegram covers the ICT and CRT basics, weekly commentary, and public setup breakdowns. Premium Telegram ($20/mo, $300 lifetime) adds 2&ndash;3 active signals a day with entry, stop and target on every call.</p>
+                      <p>Full Course + Discord ($50/mo, $500 lifetime) is the complete thing: 4&ndash;5 daily signals, the full ICT, CRT and Unicorn curriculum, a private Discord, and direct time with the team. The <a href="pricing.html">Pricing page</a> lays it out side by side.</p>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <div class="faq-item">
-            <button class="faq-q">
-              Can I ask questions and get feedback?
-              <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                  stroke-linecap="round">
-                  <path d="M12 5v14M5 12h14" />
-                </svg></span>
-            </button>
-            <div class="faq-a">
-              <div class="faq-a-inner">
-                Yes, though it depends on the tier. Premium Telegram is mostly signals: full setups with entry, stop and
-                target. The real back-and-forth (posting your charts, asking about a setup, talking to the team
-                directly) happens in the private Discord that comes with the Full Course.
+              <div class="faq2-item">
+                <button class="faq2-q" aria-expanded="false">
+                  <span class="faq2-num">02</span>
+                  <span class="faq2-q-text">How much time do I need each day?</span>
+                  <svg class="faq2-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6" /></svg>
+                </button>
+                <div class="faq2-src">
+                  <div class="faq2-src-inner">
+                    <span class="faq2-ans-tag"><span class="faq2-ans-name">Time</span><span class="faq2-ans-rule"></span><span class="faq2-ans-coord"><b>02</b> / 05</span></span>
+                    <h3>How much time do I need each day?</h3>
+                    <div class="faq2-detail-ans">
+                      <p>Plan for 1&ndash;2 hours during the London or New York session. CRT is session-based &mdash; outside the kill-zones there's nothing to do but study.</p>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <div class="faq-item">
-            <button class="faq-q">
-              Is this financial advice?
-              <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                  stroke-linecap="round">
-                  <path d="M12 5v14M5 12h14" />
-                </svg></span>
-            </button>
-            <div class="faq-a">
-              <div class="faq-a-inner">
-                No. Everything shared in The Khan Trading channels is educational. You are responsible for your own
-                trading decisions and risk management.
+              <div class="faq2-item">
+                <button class="faq2-q" aria-expanded="false">
+                  <span class="faq2-num">03</span>
+                  <span class="faq2-q-text">Do I need prior trading experience?</span>
+                  <svg class="faq2-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6" /></svg>
+                </button>
+                <div class="faq2-src">
+                  <div class="faq2-src-inner">
+                    <span class="faq2-ans-tag"><span class="faq2-ans-name">Experience</span><span class="faq2-ans-rule"></span><span class="faq2-ans-coord"><b>03</b> / 05</span></span>
+                    <h3>Do I need prior trading experience?</h3>
+                    <div class="faq2-detail-ans">
+                      <p>Helpful but not required. If you know candles, support/resistance, and basic risk management, you have enough. The free channel is the on-ramp &mdash; start there.</p>
+                    </div>
+                  </div>
+                </div>
               </div>
+
+              <div class="faq2-item">
+                <button class="faq2-q" aria-expanded="false">
+                  <span class="faq2-num">04</span>
+                  <span class="faq2-q-text">Can I ask questions and get feedback?</span>
+                  <svg class="faq2-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6" /></svg>
+                </button>
+                <div class="faq2-src">
+                  <div class="faq2-src-inner">
+                    <span class="faq2-ans-tag"><span class="faq2-ans-name">Feedback</span><span class="faq2-ans-rule"></span><span class="faq2-ans-coord"><b>04</b> / 05</span></span>
+                    <h3>Can I ask questions and get feedback?</h3>
+                    <div class="faq2-detail-ans">
+                      <p>Yes, depending on tier. Premium Telegram is mostly signals. The real back-and-forth &mdash; posting your charts, talking to the team directly &mdash; lives in the private Discord that comes with the Full Course.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="faq2-item">
+                <button class="faq2-q" aria-expanded="false">
+                  <span class="faq2-num">05</span>
+                  <span class="faq2-q-text">Is this financial advice?</span>
+                  <svg class="faq2-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6" /></svg>
+                </button>
+                <div class="faq2-src">
+                  <div class="faq2-src-inner">
+                    <span class="faq2-ans-tag"><span class="faq2-ans-name">Disclaimer</span><span class="faq2-ans-rule"></span><span class="faq2-ans-coord"><b>05</b> / 05</span></span>
+                    <h3>Is this financial advice?</h3>
+                    <div class="faq2-detail-ans">
+                      <p>No. Everything shared in The Khan Trading channels is educational. You are responsible for your own trading decisions and risk management.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="faq2-detail" data-wm="01" aria-live="polite">
+              <div class="faq2-detail-content"></div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ============ PLAN COMPARISON / FINAL CTA ============ -->
-    <section id="join" aria-labelledby="join-h">
+    <!-- ============ FINAL CTA ============ -->
+    <section class="join-section" id="join" aria-labelledby="join-h">
+      <div class="bg-fx" aria-hidden="true"><canvas class="bg-canvas"></canvas></div>
       <div class="container">
-        <div class="section-header">
-          <span class="eyebrow">Join the channels</span>
-          <h2 id="join-h">Pick where you want to start.</h2>
-          <p>Three tiers: free Telegram, daily signals, or the full course with private Discord. Full details and
-            comparisons on the pricing page.</p>
-        </div>
+        <div class="join-panel">
+          <div class="join-head reveal" style="--i:0">
+            <span class="eyebrow">Join the channels</span>
+            <h2 id="join-h">Pick where you want to start.</h2>
+            <p>Three tiers: free Telegram, daily signals, or the full course with private Discord. Full comparison on the pricing page.</p>
+          </div>
 
-        <div class="join-tiers stagger-group">
-          <a class="join-tier" href="pricing.html">
-            <span class="join-tier-name">Free Plan</span>
-            <span class="join-tier-price">$0 <em>forever</em></span>
-            <span class="join-tier-hook">Open Telegram channel &middot; ICT &amp; CRT basics and public setup
-              breakdowns</span>
-          </a>
-          <a class="join-tier" href="pricing.html">
-            <span class="join-tier-name">Premium Telegram</span>
-            <span class="join-tier-price">$20<em>/mo</em> &middot; $300 <em>lifetime</em></span>
-            <span class="join-tier-hook">2&ndash;3 signals daily with entry, stop-loss &amp; take-profit</span>
-          </a>
-          <a class="join-tier featured" href="pricing.html">
-            <span class="join-tier-name">Full Course + Discord</span>
-            <span class="join-tier-price">$50<em>/mo</em> &middot; $500 <em>lifetime</em></span>
-            <span class="join-tier-hook">4&ndash;5 signals daily + the full curriculum &amp; private Discord</span>
-            <span class="join-tier-badge">Best value</span>
-          </a>
-        </div>
+          <div class="join-tiers">
+            <a class="join-tier reveal" href="pricing.html" style="--i:1">
+              <span class="join-tier-idx">01</span>
+              <span class="join-tier-name">Free Plan</span>
+              <span class="join-tier-price">$0 <em>forever</em></span>
+              <span class="join-tier-hook">Open Telegram &middot; ICT &amp; CRT basics and public setup breakdowns</span>
+              <span class="join-tier-go">Start free <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7" /></svg></span>
+            </a>
+            <a class="join-tier reveal" href="pricing.html" style="--i:2">
+              <span class="join-tier-idx">02</span>
+              <span class="join-tier-name">Premium Telegram</span>
+              <span class="join-tier-price">$20<em>/mo</em> &middot; $300 <em>lifetime</em></span>
+              <span class="join-tier-hook">2&ndash;3 signals a day, each with entry, stop-loss &amp; take-profit</span>
+              <span class="join-tier-go">Go premium <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7" /></svg></span>
+            </a>
+            <a class="join-tier featured reveal" href="pricing.html" style="--i:3">
+              <span class="join-tier-idx">03</span>
+              <span class="join-tier-name">Full Course + Discord</span>
+              <span class="join-tier-price">$50<em>/mo</em> &middot; $500 <em>lifetime</em></span>
+              <span class="join-tier-hook">4&ndash;5 signals a day + the full curriculum &amp; private Discord</span>
+              <span class="join-tier-go">Get everything <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7" /></svg></span>
+              <span class="join-tier-badge">Best value</span>
+            </a>
+          </div>
 
-        <div class="join-ctas">
-          <a class="btn-tg btn-tg-premium" href="pricing.html">
-            Compare plans &amp; join
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-              <path d="M5 12h14M13 5l7 7-7 7" />
-            </svg>
-          </a>
+          <div class="join-foot reveal" style="--i:2">
+            <a class="btn-tg btn-tg-premium" href="pricing.html">
+              Compare plans &amp; join
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7" /></svg>
+            </a>
+            <p class="join-note">Questions before joining? <a class="link-arrow" href="contact.html">Email us
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7" /></svg>
+            </a></p>
+          </div>
         </div>
-
-        <p style="text-align:center;margin-top:40px;font-size:0.95rem">
-          Questions before joining? <a class="link-arrow" href="contact.html">Email us
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round">
-              <path d="M5 12h14M13 5l7 7-7 7" />
-            </svg>
-          </a>
-        </p>
       </div>
     </section>
 
@@ -1054,6 +1459,243 @@
   <script src="js/hero-video.js"></script>
   <script src="js/edu-section.js"></script>
   <script src="js/why-section.js"></script>
+  <script>
+    /* FAQ "Support Desk" — master/detail on desktop, accordion on mobile */
+    (function () {
+      const root = document.querySelector('.faq2');
+      if (!root) return;
+      const items = Array.prototype.slice.call(root.querySelectorAll('.faq2-item'));
+      const detail = root.querySelector('.faq2-detail');
+      const content = detail.querySelector('.faq2-detail-content');
+      const mqMobile = window.matchMedia('(max-width: 900px)');
+      let current = 0;
+
+      function paintDetail(i) {
+        const inner = items[i].querySelector('.faq2-src-inner');
+        content.innerHTML = inner.innerHTML;
+        detail.setAttribute('data-wm', items[i].querySelector('.faq2-num').textContent.trim());
+        detail.classList.remove('anim');
+        void detail.offsetWidth;
+        detail.classList.add('anim');
+      }
+
+      function setActive(i) {
+        items.forEach(function (it, idx) {
+          const on = idx === i;
+          it.classList.toggle('active', on);
+          it.querySelector('.faq2-q').setAttribute('aria-expanded', on ? 'true' : 'false');
+        });
+      }
+
+      function select(i) {
+        current = i;
+        setActive(i);
+        if (!mqMobile.matches && i >= 0) paintDetail(i);
+      }
+
+      items.forEach(function (it, idx) {
+        it.querySelector('.faq2-q').addEventListener('click', function () {
+          if (mqMobile.matches) {
+            select(it.classList.contains('active') ? -1 : idx);
+          } else if (idx !== current) {
+            select(idx);
+          }
+        });
+      });
+
+      const onMqChange = function () {
+        if (!mqMobile.matches) {
+          if (current < 0) current = 0;
+          select(current);
+        }
+      };
+      if (mqMobile.addEventListener) mqMobile.addEventListener('change', onMqChange);
+      else mqMobile.addListener(onMqChange);
+
+      select(0);
+    })();
+
+    /* Canvas backdrop — aurora orbs behind a magnetic dot matrix that
+       ripples/repels from the cursor and brightens to gold near the pointer. */
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var canvases = Array.prototype.slice.call(document.querySelectorAll('.bg-canvas'));
+
+      function mount(canvas) {
+        var host = canvas.parentNode;
+        var ctx = canvas.getContext('2d');
+        var W = 0, H = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
+        var dots = [], GAP = 34, cols = 0, rows = 0;
+        var ripples = [];
+        var mouse = { x: -9999, y: -9999, active: false };
+        var t = 0, raf = 0, visible = true;
+
+        var orbs = [
+          { hue: '212,175,55', cx: 0.20, cy: 0.14, r: 0.48, ax: 0.05, ay: 0.04, sx: 0.11, sy: 0.07, ph: 0.0, a: 0.28 },
+          { hue: '34,197,94',  cx: 0.82, cy: 0.28, r: 0.42, ax: 0.06, ay: 0.05, sx: 0.09, sy: 0.13, ph: 1.7, a: 0.20 },
+          { hue: '212,175,55', cx: 0.62, cy: 0.86, r: 0.44, ax: 0.07, ay: 0.04, sx: 0.07, sy: 0.10, ph: 3.1, a: 0.15 }
+        ];
+
+        function makeDots() {
+          dots = [];
+          cols = Math.ceil(W / GAP) + 1; rows = Math.ceil(H / GAP) + 1;
+          for (var r = 0; r < rows; r++) {
+            for (var c = 0; c < cols; c++) {
+              var hx = c * GAP, hy = r * GAP;
+              dots.push({
+                hx: hx, hy: hy, x: hx, y: hy, vx: 0, vy: 0, prox: 0,
+                green: Math.random() < 0.10,
+                ph: (hx * 0.013 + hy * 0.017)
+              });
+            }
+          }
+        }
+
+        function resize() {
+          var b = host.getBoundingClientRect();
+          W = Math.max(1, b.width); H = Math.max(1, b.height);
+          dpr = Math.min(window.devicePixelRatio || 1, 2);
+          canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+          canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        function draw() {
+          ctx.clearRect(0, 0, W, H);
+
+          ctx.globalCompositeOperation = 'lighter';
+          for (var k = 0; k < orbs.length; k++) {
+            var o = orbs[k];
+            var ox = (o.cx + Math.sin(t * o.sx + o.ph) * o.ax) * W;
+            var oy = (o.cy + Math.cos(t * o.sy + o.ph) * o.ay) * H;
+            var rad = o.r * Math.max(W, H);
+            var g = ctx.createRadialGradient(ox, oy, 0, ox, oy, rad);
+            g.addColorStop(0, 'rgba(' + o.hue + ',' + o.a + ')');
+            g.addColorStop(0.5, 'rgba(' + o.hue + ',' + (o.a * 0.35) + ')');
+            g.addColorStop(1, 'rgba(' + o.hue + ',0)');
+            ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+          }
+
+          var R = Math.min(190, Math.max(120, W * 0.14)), R2 = R * R;
+          var dt = reduce ? 0 : 1;
+
+          for (var s = ripples.length - 1; s >= 0; s--) {
+            var rp = ripples[s];
+            rp.r += 9 * dt;
+            if (rp.r > Math.max(W, H) * 1.25) ripples.splice(s, 1);
+          }
+
+          for (var i = 0; i < dots.length; i++) {
+            var d = dots[i];
+            var prox = 0;
+            if (mouse.active && !reduce) {
+              var dx = d.x - mouse.x, dy = d.y - mouse.y, dist2 = dx * dx + dy * dy;
+              if (dist2 < R2) {
+                var dd = Math.sqrt(dist2) || 1, fall = 1 - dd / R;
+                prox = fall;
+                var push = fall * fall * 15;
+                d.vx += (dx / dd) * push * 0.05;
+                d.vy += (dy / dd) * push * 0.05;
+              }
+            }
+            for (var s2 = 0; s2 < ripples.length; s2++) {
+              var rp2 = ripples[s2];
+              var rx = d.hx - rp2.x, ry = d.hy - rp2.y;
+              var rdist = Math.sqrt(rx * rx + ry * ry) || 1;
+              var band = Math.abs(rdist - rp2.r);
+              if (band < 34) {
+                var k2 = (1 - band / 34) * (1 - rp2.r / (Math.max(W, H) * 1.25)) * 3;
+                d.vx += (rx / rdist) * k2;
+                d.vy += (ry / rdist) * k2;
+                if (k2 * 0.08 > prox) prox = k2 * 0.08;
+              }
+            }
+            d.vx += (d.hx - d.x) * 0.06; d.vy += (d.hy - d.y) * 0.06;
+            d.vx *= 0.82; d.vy *= 0.82;
+            d.x += d.vx * dt; d.y += d.vy * dt;
+            d.prox = prox;
+          }
+
+          for (var li = 0; li < dots.length; li++) {
+            var a = dots[li];
+            var col = li % cols;
+            var right = (col < cols - 1) ? dots[li + 1] : null;
+            var down = (li + cols < dots.length) ? dots[li + cols] : null;
+            for (var nn = 0; nn < 2; nn++) {
+              var b = nn === 0 ? right : down;
+              if (!b) continue;
+              var energy = Math.max(a.prox, b.prox);
+              if (energy < 0.02) continue;
+              var lalpha = energy * 0.3;
+              ctx.strokeStyle = 'rgba(212,175,55,' + lalpha + ')';
+              ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+            }
+          }
+
+          for (var m = 0; m < dots.length; m++) {
+            var d2 = dots[m];
+            var prox2 = d2.prox;
+            var wave = 0.5 + 0.5 * Math.sin(t * 0.9 + d2.ph);
+            var base = 0.10 + wave * 0.12;
+            var alpha = base + prox2 * 0.6;
+            var rr = 1.1 + wave * 0.5 + prox2 * 1.5;
+
+            var hue;
+            if (prox2 > 0.04) hue = '212,175,55';
+            else if (d2.green) hue = '52,211,120';
+            else hue = '150,166,190';
+
+            if (prox2 > 0.22) {
+              var gg = ctx.createRadialGradient(d2.x, d2.y, 0, d2.x, d2.y, rr * 3.2);
+              gg.addColorStop(0, 'rgba(' + hue + ',' + (alpha * 0.4) + ')');
+              gg.addColorStop(1, 'rgba(' + hue + ',0)');
+              ctx.fillStyle = gg;
+              ctx.beginPath(); ctx.arc(d2.x, d2.y, rr * 3.2, 0, Math.PI * 2); ctx.fill();
+            }
+            ctx.fillStyle = 'rgba(' + hue + ',' + alpha + ')';
+            ctx.beginPath(); ctx.arc(d2.x, d2.y, rr, 0, Math.PI * 2); ctx.fill();
+          }
+
+          for (var sr = 0; sr < ripples.length; sr++) {
+            var rp3 = ripples[sr];
+            var fade = 1 - rp3.r / (Math.max(W, H) * 1.25);
+            ctx.strokeStyle = 'rgba(212,175,55,' + (fade * 0.22) + ')';
+            ctx.lineWidth = 1.4;
+            ctx.beginPath(); ctx.arc(rp3.x, rp3.y, rp3.r, 0, Math.PI * 2); ctx.stroke();
+          }
+          ctx.globalCompositeOperation = 'source-over';
+        }
+
+        function loop() { if (visible) { t += 0.016; draw(); } raf = requestAnimationFrame(loop); }
+
+        resize(); makeDots();
+        var ro = new ResizeObserver(function () { resize(); makeDots(); });
+        ro.observe(host);
+        var io = new IntersectionObserver(function (es) { es.forEach(function (e) { visible = e.isIntersecting; }); }, { threshold: 0 });
+        io.observe(host);
+        window.addEventListener('pointermove', function (e) {
+          var b = host.getBoundingClientRect();
+          mouse.x = e.clientX - b.left; mouse.y = e.clientY - b.top;
+          mouse.active = e.clientX >= b.left && e.clientX <= b.right && e.clientY >= b.top && e.clientY <= b.bottom;
+        }, { passive: true });
+        window.addEventListener('blur', function () { mouse.active = false; });
+        if (!reduce) {
+          host.parentNode.addEventListener('pointerdown', function (e) {
+            var b = host.getBoundingClientRect();
+            if (e.clientX < b.left || e.clientX > b.right || e.clientY < b.top || e.clientY > b.bottom) return;
+            ripples.push({ x: e.clientX - b.left, y: e.clientY - b.top, r: 0 });
+            if (ripples.length > 4) ripples.shift();
+          }, { passive: true });
+        }
+
+        if (reduce) { t = 1.4; draw(); }
+        else { draw(); raf = requestAnimationFrame(loop); }
+      }
+
+      canvases.forEach(mount);
+    })();
+  </script>
 </body>
 
 </html>
