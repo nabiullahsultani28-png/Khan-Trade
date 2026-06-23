@@ -7949,14 +7949,14 @@ section {
 
 .contact-hero-shell {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
   align-items: center;
   gap: clamp(28px, 4vw, 64px);
 }
 
 .contact-hero-copy {
   min-width: 0;
-  max-width: 760px;
+  max-width: 600px;
 }
 
 .contact-hero .eyebrow {
@@ -7967,10 +7967,10 @@ section {
 }
 
 .contact-hero h1 {
-  max-width: 14ch;
+  max-width: 12ch;
   color: var(--ink);
-  font-size: clamp(3rem, 5.8vw, 5.8rem);
-  line-height: 0.95;
+  font-size: clamp(2.6rem, 4.2vw, 4.6rem);
+  line-height: 0.96;
   letter-spacing: -0.045em;
   text-shadow: 0 18px 46px rgba(0, 0, 0, 0.38);
 }
@@ -7983,56 +7983,6 @@ section {
   font-size: clamp(1.04rem, 1.2vw, 1.24rem);
   line-height: 1.6;
   text-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
-}
-
-.contact-hero-actions {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-top: 32px;
-}
-
-.contact-hero-actions .btn-tg {
-  min-height: 56px;
-  padding: 16px 26px;
-}
-
-/* ---- Contact band (intro + direct details, beside the form) ---- */
-.contact-form-section {
-  position: relative;
-  z-index: 1;
-  padding: clamp(12px, 2.5vw, 32px) 0 clamp(64px, 8vw, 110px);
-}
-
-.contact-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
-  gap: clamp(28px, 4vw, 60px);
-  align-items: center;
-}
-
-.contact-intro {
-  min-width: 0;
-}
-
-.contact-intro .eyebrow {
-  margin-bottom: 18px;
-}
-
-.contact-intro h2 {
-  color: var(--ink);
-  font-size: clamp(2rem, 3.4vw, 3rem);
-  letter-spacing: -0.035em;
-  line-height: 1.04;
-}
-
-.contact-intro > p {
-  margin: 16px 0 0;
-  max-width: 42ch;
-  color: var(--ink-mute);
-  font-size: 1.02rem;
-  line-height: 1.6;
 }
 
 /* Direct contact methods (email, Telegram) */
@@ -8296,17 +8246,21 @@ section {
 
 /* ---- Responsive ---- */
 @media (max-width: 920px) {
-  .contact-layout {
+  .contact-hero-shell {
     grid-template-columns: 1fr;
     gap: clamp(28px, 5vw, 40px);
     max-width: 600px;
     margin-inline: auto;
   }
+
+  .contact-hero-copy {
+    max-width: none;
+  }
 }
 
 @media (max-width: 720px) {
   .contact-hero {
-    padding: 112px 0 32px;
+    padding: 112px 0 48px;
   }
 
   .contact-hero h1 {
@@ -8317,11 +8271,6 @@ section {
   .contact-hero .lead {
     margin-top: 22px;
     font-size: 1.02rem;
-  }
-
-  .contact-hero-actions .btn-tg {
-    width: 100%;
-    justify-content: center;
   }
 }
 

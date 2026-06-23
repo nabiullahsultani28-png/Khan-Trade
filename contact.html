@@ -164,34 +164,15 @@
 <main id="main" class="contact-page-motion">
   <div class="contact-bg-fx" aria-hidden="true"><canvas class="contact-bg-canvas"></canvas></div>
 
-  <!-- ============ HERO ============ -->
+  <!-- ============ HERO + CONTACT ============ -->
   <section class="page-hero contact-hero">
     <div class="container">
       <div class="contact-hero-shell">
+        <!-- LEFT: intro + direct contact details -->
         <div class="contact-hero-copy">
           <span class="eyebrow reveal contact-line" style="--motion-index:0">Contact</span>
           <h1 class="reveal contact-line" style="--motion-index:1">Let's talk trading.</h1>
           <p class="lead reveal contact-line" style="--motion-index:2">Email is for questions only - the real action lives on Telegram. Ask about the channels, the course, or which tier fits you, and we'll reply within 24 hours. Usually faster.</p>
-          <div class="contact-hero-actions reveal contact-line" style="--motion-index:3">
-            <a class="btn-tg btn-tg-premium" href="#message">
-              Jump to the form
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ CONTACT ============ -->
-  <section class="contact-form-section" id="message">
-    <div class="container">
-      <div class="contact-layout">
-        <!-- Intro + direct contact details -->
-        <div class="contact-intro">
-          <span class="eyebrow reveal contact-line" style="--motion-index:0">Send a message</span>
-          <h2 class="reveal contact-line" style="--motion-index:1">Got a question first?</h2>
-          <p class="reveal contact-line" style="--motion-index:2">Pricing, curriculum, or which tier fits you - ask anything. Real humans, replying within 24 hours.</p>
 
           <div class="contact-methods reveal contact-line" style="--motion-index:3">
             <a class="contact-method" href="mailto:hello@thekhantrading.com">
@@ -235,8 +216,8 @@
           </ul>
         </div>
 
-        <!-- Message form -->
-        <div class="contact-form-panel reveal contact-line" style="--motion-index:3">
+        <!-- RIGHT: message form -->
+        <div class="contact-form-panel reveal contact-line" id="message" style="--motion-index:2">
           <div class="cfp-bar">
             <span class="cfp-dots" aria-hidden="true"><i></i><i></i><i></i></span>
             <span class="cfp-label">New message</span>
