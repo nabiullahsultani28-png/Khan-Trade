@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>CRT - Candle Range Theory Explained | The Khan Trading</title>
-<meta name="description" content="Candle Range Theory (CRT) explained from scratch: how a higher-timeframe candle's range, liquidity sweep, and expansion combine into a complete entry model - with a live XAUUSD walk-through." />
+<title>CRT Model - Candle Range Theory | The Khan Trading</title>
+<meta name="description" content="A clean guide to the CRT model: mark the candle range, wait for a liquidity sweep, confirm re-entry, then manage risk toward the opposite side of the range." />
 <meta name="theme-color" content="#0A0E14" />
 
-<meta property="og:title" content="CRT - Candle Range Theory Explained | The Khan Trading" />
-<meta property="og:description" content="How Candle Range Theory actually works: range, sweep, expansion - taught the way it's traded, with a live Gold example." />
+<meta property="og:title" content="CRT Model - Candle Range Theory | The Khan Trading" />
+<meta property="og:description" content="Mark the range, wait for the sweep, confirm re-entry, then manage risk toward the opposite side. A tighter CRT model guide." />
 <meta property="og:type" content="article" />
 <meta property="og:image" content="https://thekhantrading.com/assets/img/chart-crt.jpg" />
 <meta name="twitter:card" content="summary_large_image" />
@@ -37,37 +37,41 @@
 
 <header class="nav" id="nav">
   <div class="nav-inner">
-    <a class="brand" href="index.html"><span class="brand-mark"><img src="assets/img/logo.jpg" alt="" loading="lazy" /></span><span>The Khan Trading</span></a>
+    <a class="brand" href="index.html" aria-label="The Khan Trading home">
+      <span class="brand-mark"><img src="assets/img/logo.jpg" alt="The Khan Trading logo" loading="lazy" /></span>
+      <span>The Khan Trading</span>
+    </a>
     <nav class="nav-links" aria-label="Primary">
       <a href="index.html">Home</a>
-        <div class="nav-dropdown-group" tabindex="0">
-          <span>Learn 
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: -2px;">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </span>
-          <div class="nav-dropdown-menu">
-            <a href="index.html#ict">ICT Concepts</a>
-            <a href="crt.html" class="active">CRT Model</a>
-            <a href="unicorn.html">Unicorn Model</a>
-          </div>
+      <div class="nav-dropdown-group">
+        <button class="nav-dropdown-trigger" type="button" aria-haspopup="true" aria-expanded="false">
+          <span>Learn</span>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: -2px;">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="index.html#ict">ICT Concepts</a>
+          <a href="crt.html" class="active">CRT Model</a>
+          <a href="unicorn.html">Unicorn Model</a>
         </div>
+      </div>
       <a href="about.html">About</a>
       <a href="pricing.html">Pricing</a>
       <a href="contact.html">Contact</a>
     </nav>
-      <div class="nav-auth">
-        <a href="register.html" class="btn-join" aria-label="Join Now">
-          Join Now
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-        </a>
-      </div>
+    <div class="nav-auth">
+      <a href="register.html" class="btn-join" aria-label="Join Now">
+        Join Now
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+    </div>
     <button class="theme-toggle nav-theme" type="button" aria-label="Switch theme">
       <svg class="ic-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
       <svg class="ic-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
       <svg class="ic-system" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
     </button>
-    <button class="nav-mobile-toggle" aria-label="Open menu">
+    <button class="nav-mobile-toggle" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
     </button>
   </div>
@@ -160,315 +164,200 @@
       <a href="register.html" class="btn-join btn-join-mobile">Join Now <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></div>
 </div>
 
-<main>
-
+<main id="main" class="crt-page crt-page-clean">
   <!-- ============ HERO ============ -->
-  <section class="page-hero page-hero--video" aria-label="The CRT Model">
-    <video class="page-hero-video" aria-hidden="true" autoplay loop muted playsinline>
-      <source src="assets/video/crt-hero.mp4" type="video/mp4">
-    </video>
-    <div class="page-hero-overlay" aria-hidden="true"></div>
+  <section class="crt-hero-clean" aria-labelledby="crt-hero-h">
     <div class="container">
-      <span class="eyebrow">The CRT Model</span>
-      <h1 style="margin-top:24px;max-width:22ch">Candle Range Theory. <span class="accent-gold">A precision entry model.</span></h1>
-      <p class="lead" style="max-width:64ch;margin-top:24px">CRT reads a single reference candle's range to predict where price will sweep, purge and reverse. Four defined steps, a session timing filter, no discretion - entry, stop and target are all drawn by the range itself. Here's exactly how it works.</p>
-      <div class="crt-jump" style="margin-top:32px">
-        <a class="link-arrow" href="#how">How it works <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-        <a class="link-arrow" href="#example">Live example <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-        <a class="link-arrow" href="#results">Getting results <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ WHAT IS CRT ============ -->
-  <section aria-labelledby="what-h">
-    <div class="container">
-      <div class="section-header left">
-        <span class="eyebrow">The idea in one minute</span>
-        <h2 id="what-h">What is Candle Range Theory?</h2>
-        <p>CRT uses the range of a single <strong>reference candle</strong> - usually the previous session's or previous day's candle - to predict where price will sweep, purge and reverse. It's a rules-based model with <strong>four defined steps</strong> and no discretion needed. The candle's <strong>high</strong> and <strong>low</strong> draw the range - the <span class="mono" style="color:var(--gold)">CRH</span> and <span class="mono" style="color:var(--gold)">CRL</span>. Here it is on Gold:</p>
-      </div>
-
-      <div class="unicorn-visual unicorn-visual--glow reveal" style="margin-bottom:36px">
-        <img src="assets/img/crt-sweep.jpg" alt="A gold candlestick wick spiking above the Candle Range High then rejecting back inside - a CRT liquidity sweep" width="1920" height="1080" loading="lazy" />
-      </div>
-
-      <div class="grid-2" style="align-items:start">
-        <div>
-          <div class="crt-example">
-            <div class="crt-example-head">
-              <span class="crt-chip gold">Example · XAUUSD</span>
-              <span>Daily range <span class="crt-price">2,640</span> <span class="crt-price-tag">CRL</span> → <span class="crt-price">2,680</span> <span class="crt-price-tag">CRH</span></span>
-            </div>
-            <ol class="crt-flow">
-              <li>
-                <span class="crt-flow-num">1</span>
-                <div>
-                  <h4>Accumulation <span class="crt-flow-tag">wait</span></h4>
-                  <p>Price coils between <span class="crt-price">2,655</span>–<span class="crt-price">2,675</span> inside the range. Boring on purpose. Nothing to do.</p>
-                </div>
-              </li>
-              <li>
-                <span class="crt-flow-num bear">2</span>
-                <div>
-                  <h4>Manipulation <span class="crt-flow-tag bear">the trap</span></h4>
-                  <p>London spikes to <span class="crt-price">2,686</span> - just <em>above</em> the CRH - grabbing breakout buyers' stops, then snaps back inside. That's the sweep.</p>
-                </div>
-              </li>
-              <li>
-                <span class="crt-flow-num bull">3</span>
-                <div>
-                  <h4>Distribution <span class="crt-flow-tag bull">the trade</span></h4>
-                  <p>Rejected, price expands down toward <span class="crt-price">2,640</span> and beyond. You short the high, stop above the wick, target the low.</p>
-                </div>
-              </li>
-            </ol>
-          </div>
-
-          <p class="crt-takeaway">Same three moves, every session - flip it for buys. Learn it on one candle and entry, stop and target are all drawn by the range itself.</p>
-        </div>
-
-        <aside class="card crt-glossary" aria-label="CRT glossary">
-          <h3 style="font-size:1.1rem;margin-bottom:6px">The vocabulary</h3>
-          <dl class="crt-defs">
-            <div><dt><span class="crt-chip gold">CRH</span></dt><dd>Candle Range High - top of the range. Liquidity sits just above it.</dd></div>
-            <div><dt><span class="crt-chip gold">CRL</span></dt><dd>Candle Range Low - bottom of the range. Liquidity sits just below it.</dd></div>
-            <div><dt><span class="crt-chip bear">Sweep</span></dt><dd>A wick that pierces CRH or CRL to grab stops, then closes back inside - the trap.</dd></div>
-            <div><dt><span class="crt-chip bear">Premium</span></dt><dd>Upper half of the range - where you look to <strong style="color:var(--bear)">sell</strong> after a high sweep.</dd></div>
-            <div><dt><span class="crt-chip bull">Discount</span></dt><dd>Lower half of the range - where you look to <strong style="color:var(--bull)">buy</strong> after a low sweep.</dd></div>
-            <div><dt><span class="crt-chip bull">Expansion</span></dt><dd>The drive from the swept edge to the opposite edge - your target.</dd></div>
-          </dl>
-        </aside>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ ANIMATED CRT DIAGRAM ============ -->
-  <section aria-labelledby="anatomy-h" style="background:var(--bg-elev);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
-    <div class="container">
-      <div class="section-header">
-        <span class="eyebrow">Anatomy of a range</span>
-        <h2 id="anatomy-h">One range, three phases.</h2>
-        <p>Accumulate inside the range, sweep the high to trap breakout buyers, then expand down through the discount toward the opposite edge. This is a sell-side example - flip it for buys.</p>
-      </div>
-
-      <figure class="crt-diagram reveal">
-        <svg viewBox="0 0 880 460" role="img" aria-label="Diagram of a Candle Range Theory setup: price accumulates inside the range, sweeps above the Candle Range High to take liquidity, then expands down toward the Candle Range Low and beyond.">
-          <!-- zones -->
-          <rect class="crt-zone crt-zone-prem" x="80" y="110" width="740" height="125" />
-          <rect class="crt-zone crt-zone-disc" x="80" y="235" width="740" height="125" />
-          <!-- range box outline -->
-          <rect class="crt-rangebox" x="80" y="110" width="740" height="250" rx="4" />
-
-          <!-- levels -->
-          <line class="crt-level crt-level-crh" x1="80" y1="110" x2="820" y2="110" />
-          <line class="crt-level crt-eq" x1="80" y1="235" x2="820" y2="235" stroke-dasharray="3 7" />
-          <line class="crt-level crt-level-crl" x1="80" y1="360" x2="820" y2="360" />
-          <line class="crt-level crt-target" x1="80" y1="418" x2="820" y2="418" stroke-dasharray="2 8" />
-
-          <!-- level labels -->
-          <text class="crt-lab crt-lab-gold" x="824" y="114">CRH</text>
-          <text class="crt-lab crt-lab-mute" x="824" y="239">EQ</text>
-          <text class="crt-lab crt-lab-gold" x="824" y="364">CRL</text>
-          <text class="crt-lab crt-lab-mute" x="824" y="422">Target</text>
-          <text class="crt-phase-lab" x="120" y="98">ACCUMULATION</text>
-          <text class="crt-phase-lab" x="392" y="98">MANIPULATION</text>
-          <text class="crt-phase-lab" x="560" y="98">DISTRIBUTION</text>
-
-          <!-- candles: accumulation (coiling near EQ) -->
-          <g class="crt-candle"><line class="wk" x1="130" y1="205" x2="130" y2="262"/><rect class="bd bull" x="121" y="220" width="18" height="30"/></g>
-          <g class="crt-candle"><line class="wk" x1="170" y1="200" x2="170" y2="258"/><rect class="bd bear" x="161" y="215" width="18" height="30"/></g>
-          <g class="crt-candle"><line class="wk" x1="210" y1="210" x2="210" y2="268"/><rect class="bd bull" x="201" y="225" width="18" height="30"/></g>
-          <g class="crt-candle"><line class="wk" x1="250" y1="205" x2="250" y2="260"/><rect class="bd bear" x="241" y="218" width="18" height="30"/></g>
-          <g class="crt-candle"><line class="wk" x1="290" y1="208" x2="290" y2="264"/><rect class="bd bull" x="281" y="222" width="18" height="30"/></g>
-          <g class="crt-candle"><line class="wk" x1="330" y1="202" x2="330" y2="258"/><rect class="bd bear" x="321" y="215" width="18" height="32"/></g>
-
-          <!-- manipulation: sweep candle spikes above CRH then rejects -->
-          <g class="crt-candle crt-sweep-candle"><line class="wk" x1="378" y1="74" x2="378" y2="232"/><rect class="bd bull" x="369" y="180" width="18" height="42"/></g>
-          <g class="crt-candle"><line class="wk" x1="418" y1="150" x2="418" y2="262"/><rect class="bd bear" x="409" y="198" width="18" height="52"/></g>
-
-          <!-- distribution: expansion down through CRL -->
-          <g class="crt-candle"><line class="wk" x1="466" y1="232" x2="466" y2="300"/><rect class="bd bear" x="457" y="245" width="18" height="46"/></g>
-          <g class="crt-candle"><line class="wk" x1="506" y1="278" x2="506" y2="342"/><rect class="bd bear" x="497" y="288" width="18" height="48"/></g>
-          <g class="crt-candle"><line class="wk" x1="546" y1="320" x2="546" y2="388"/><rect class="bd bear" x="537" y="330" width="18" height="50"/></g>
-          <g class="crt-candle"><line class="wk" x1="586" y1="360" x2="586" y2="424"/><rect class="bd bear" x="577" y="372" width="18" height="44"/></g>
-
-          <!-- sweep marker + label -->
-          <circle class="crt-sweep-dot" cx="378" cy="78" r="5"/>
-          <text class="crt-lab crt-lab-bear" x="378" y="62" text-anchor="middle">Liquidity sweep</text>
-
-          <!-- expansion arrow -->
-          <path class="crt-arrow-path" d="M 392 150 C 470 250 540 360 612 408" fill="none" marker-end="url(#crt-arrow)" />
-          <defs>
-            <marker id="crt-arrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-              <path d="M0 0 L10 5 L0 10 z" class="crt-arrow-head" />
-            </marker>
-          </defs>
-          <text class="crt-lab crt-lab-bull" x="556" y="300" transform="rotate(34 556 300)">Expansion</text>
-        </svg>
-        <figcaption class="crt-legend" aria-hidden="true">
-          <span><i class="dot bull"></i> Bullish candle</span>
-          <span><i class="dot bear"></i> Bearish candle</span>
-          <span><i class="dot prem"></i> Premium (sell)</span>
-          <span><i class="dot disc"></i> Discount (buy)</span>
-        </figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <!-- ============ HOW IT WORKS - STEP MODEL ============ -->
-  <section id="how" class="unicorn" aria-labelledby="how-h">
-    <div class="container">
-      <div class="grid-2 crt-how">
-        <div>
-          <span class="eyebrow">The four CRT steps</span>
-          <h2 id="how-h" style="margin-top:20px">Narrative, timing, purge, confirmation.</h2>
-          <p style="margin-top:18px">CRT is a checklist, not a feeling. Every trade runs the same four steps - and if any step is missing, there's no trade. That's what makes it teachable and repeatable.</p>
-
-          <div class="unicorn-steps crt-steps" style="margin-top:24px">
-            <svg class="unicorn-line" viewBox="0 0 4 100" preserveAspectRatio="none" aria-hidden="true">
-              <line class="unicorn-line-path" x1="2" y1="0" x2="2" y2="100" stroke-linecap="round" />
-            </svg>
-            <span class="unicorn-line-node" aria-hidden="true"></span>
-            <div class="step">
-              <div class="step-num">01</div>
-              <div>
-                <h4>Narrative</h4>
-                <p>Determine the bias. Are we bullish or bearish? Use higher-timeframe structure and the current session's dealing range to decide which way you're hunting.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-num">02</div>
-              <div>
-                <h4>Timing</h4>
-                <p>Only trade the kill zones - London (02:00&ndash;05:00 NY) or New York (08:30&ndash;11:00 NY). The same pattern outside those windows is just noise.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-num">03</div>
-              <div>
-                <h4>Purge - the liquidity sweep</h4>
-                <p>Wait for price to sweep the high or low of the reference candle, grabbing the stop orders resting beyond it. That purge is the trigger - not the breakout.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-num">04</div>
-              <div>
-                <h4>Confirmation</h4>
-                <p>After the sweep, price must displace the opposite way, leaving a Fair Value Gap or tapping an Order Block. Enter there - stop beyond the swept wick, target the opposite edge.</p>
-              </div>
-            </div>
+      <div class="crt-hero-shell">
+        <div class="crt-hero-copy reveal">
+          <span class="eyebrow">Candle Range Theory</span>
+          <h1 id="crt-hero-h">A range model for cleaner decisions.</h1>
+          <p class="lead">CRT starts with one reference candle. Its high and low become the map, the sweep shows where liquidity was taken, and the re-entry decides whether the trade is worth planning.</p>
+          <div class="crt-jump" aria-label="CRT page sections">
+            <a class="link-arrow" href="#model">Read the rules <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <a class="link-arrow" href="#diagram">View anatomy <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <a class="link-arrow" href="#checklist">Use the filter <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
           </div>
         </div>
+        <ol class="crt-hero-rulebar reveal" aria-label="CRT decision flow">
+          <li><span>01</span> Mark range</li>
+          <li><span>02</span> Wait for sweep</li>
+          <li><span>03</span> Confirm re-entry</li>
+          <li><span>04</span> Define risk</li>
+        </ol>
+      </div>
+    </div>
+  </section>
 
-        <div>
-          <div class="card crt-callout">
-            <span class="crt-chip">Timing</span>
-            <h3 class="crt-callout-h">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-              When CRT fires
-            </h3>
-            <p style="font-size:0.95rem">CRT is a session model. The sweep and expansion almost always happen inside the <strong>London</strong> and <strong>New York</strong> kill-zones, when real liquidity enters the market. Outside those windows there's usually nothing to do but study.</p>
-            <div class="plan-divider" style="margin:22px 0"></div>
-            <span class="crt-chip gold">The edge</span>
-            <h3 class="crt-callout-h">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3"/></svg>
-              Why it works
-            </h3>
-            <p style="font-size:0.95rem;margin-bottom:0">Breakout traders pile stops just beyond obvious highs and lows. CRT positions you on the <em>other</em> side of that crowd - entering exactly where their stops get hunted, with the expansion in your favour.</p>
+  <!-- ============ MODEL ============ -->
+  <section id="model" class="crt-section crt-rules-section" aria-labelledby="model-h">
+    <div class="container">
+      <div class="crt-section-head reveal">
+        <span class="eyebrow">CRT in 4 rules</span>
+        <h2 id="model-h">The model is simple on purpose.</h2>
+        <p>The point is not to decorate a chart. The point is to create a repeatable decision: identify the range, wait for liquidity to be taken, require proof back inside the range, then manage risk before entry.</p>
+      </div>
+
+      <ol class="crt-rule-list">
+        <li class="reveal">
+          <span class="crt-rule-num">01</span>
+          <div>
+            <h3>Choose a clean candle</h3>
+            <p>Use a reference candle that actually matters: previous day, active session, or a higher-timeframe candle. Its high is CRH. Its low is CRL.</p>
           </div>
+        </li>
+        <li class="reveal">
+          <span class="crt-rule-num">02</span>
+          <div>
+            <h3>Let price take liquidity</h3>
+            <p>Price should pierce one side of the range first. A breakout that keeps running is information, not an automatic entry.</p>
+          </div>
+        </li>
+        <li class="reveal">
+          <span class="crt-rule-num">03</span>
+          <div>
+            <h3>Require re-entry</h3>
+            <p>The swept move needs to trade back inside the range and show intent away from the trapped side before a plan is valid.</p>
+          </div>
+        </li>
+        <li class="reveal">
+          <span class="crt-rule-num">04</span>
+          <div>
+            <h3>Decide risk first</h3>
+            <p>Risk belongs beyond the swept wick. Targets usually start at equilibrium or the opposite side of the candle range.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ RANGE ANATOMY ============ -->
+  <section id="diagram" class="crt-section crt-diagram-section" aria-labelledby="diagram-h">
+    <div class="container">
+      <div class="crt-diagram-clean-grid">
+        <div class="crt-diagram-copy reveal">
+          <span class="eyebrow">Range anatomy</span>
+          <h2 id="diagram-h">One reference candle. Three levels.</h2>
+          <p>Keep the markup quiet. The high, midpoint, and low are enough to see whether price is sweeping liquidity or simply expanding away without you.</p>
+          <ul class="crt-micro-list">
+            <li><span>CRH</span> Candle Range High</li>
+            <li><span>EQ</span> Range midpoint</li>
+            <li><span>CRL</span> Candle Range Low</li>
+          </ul>
+        </div>
+
+        <figure class="crt-diagram crt-diagram-clean reveal">
+          <svg viewBox="0 0 880 460" role="img" aria-label="Diagram of a Candle Range Theory setup: price ranges, sweeps above Candle Range High, re-enters, then expands toward Candle Range Low.">
+            <rect class="crt-zone crt-zone-prem" x="80" y="110" width="740" height="125" />
+            <rect class="crt-zone crt-zone-disc" x="80" y="235" width="740" height="125" />
+            <rect class="crt-rangebox" x="80" y="110" width="740" height="250" rx="4" />
+
+            <line class="crt-level crt-level-crh" x1="80" y1="110" x2="820" y2="110" />
+            <line class="crt-level crt-eq" x1="80" y1="235" x2="820" y2="235" stroke-dasharray="3 7" />
+            <line class="crt-level crt-level-crl" x1="80" y1="360" x2="820" y2="360" />
+            <line class="crt-level crt-target" x1="80" y1="418" x2="820" y2="418" stroke-dasharray="2 8" />
+
+            <text class="crt-lab crt-lab-gold" x="824" y="114">CRH</text>
+            <text class="crt-lab crt-lab-mute" x="824" y="239">EQ</text>
+            <text class="crt-lab crt-lab-gold" x="824" y="364">CRL</text>
+            <text class="crt-lab crt-lab-mute" x="824" y="422">Target</text>
+            <text class="crt-phase-lab" x="120" y="98">RANGE</text>
+            <text class="crt-phase-lab" x="392" y="98">SWEEP</text>
+            <text class="crt-phase-lab" x="560" y="98">DELIVERY</text>
+
+            <g class="crt-candle"><line class="wk" x1="130" y1="205" x2="130" y2="262"/><rect class="bd bull" x="121" y="220" width="18" height="30"/></g>
+            <g class="crt-candle"><line class="wk" x1="170" y1="200" x2="170" y2="258"/><rect class="bd bear" x="161" y="215" width="18" height="30"/></g>
+            <g class="crt-candle"><line class="wk" x1="210" y1="210" x2="210" y2="268"/><rect class="bd bull" x="201" y="225" width="18" height="30"/></g>
+            <g class="crt-candle"><line class="wk" x1="250" y1="205" x2="250" y2="260"/><rect class="bd bear" x="241" y="218" width="18" height="30"/></g>
+            <g class="crt-candle"><line class="wk" x1="290" y1="208" x2="290" y2="264"/><rect class="bd bull" x="281" y="222" width="18" height="30"/></g>
+            <g class="crt-candle"><line class="wk" x1="330" y1="202" x2="330" y2="258"/><rect class="bd bear" x="321" y="215" width="18" height="32"/></g>
+
+            <g class="crt-candle crt-sweep-candle"><line class="wk" x1="378" y1="74" x2="378" y2="232"/><rect class="bd bull" x="369" y="180" width="18" height="42"/></g>
+            <g class="crt-candle"><line class="wk" x1="418" y1="150" x2="418" y2="262"/><rect class="bd bear" x="409" y="198" width="18" height="52"/></g>
+
+            <g class="crt-candle"><line class="wk" x1="466" y1="232" x2="466" y2="300"/><rect class="bd bear" x="457" y="245" width="18" height="46"/></g>
+            <g class="crt-candle"><line class="wk" x1="506" y1="278" x2="506" y2="342"/><rect class="bd bear" x="497" y="288" width="18" height="48"/></g>
+            <g class="crt-candle"><line class="wk" x1="546" y1="320" x2="546" y2="388"/><rect class="bd bear" x="537" y="330" width="18" height="50"/></g>
+            <g class="crt-candle"><line class="wk" x1="586" y1="360" x2="586" y2="424"/><rect class="bd bear" x="577" y="372" width="18" height="44"/></g>
+
+            <circle class="crt-sweep-dot" cx="378" cy="78" r="5"/>
+            <text class="crt-lab crt-lab-bear" x="378" y="62" text-anchor="middle">Sweep</text>
+
+            <path class="crt-arrow-path" d="M 392 150 C 470 250 540 360 612 408" fill="none" marker-end="url(#crt-arrow)" />
+            <defs>
+              <marker id="crt-arrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0 0 L10 5 L0 10 z" class="crt-arrow-head" />
+              </marker>
+            </defs>
+            <text class="crt-lab crt-lab-bull" x="556" y="300" transform="rotate(34 556 300)">Expansion</text>
+          </svg>
+          <figcaption class="crt-legend" aria-hidden="true">
+            <span><i class="dot bull"></i> Bullish candle</span>
+            <span><i class="dot bear"></i> Bearish candle</span>
+            <span><i class="dot prem"></i> Premium</span>
+            <span><i class="dot disc"></i> Discount</span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VALID VS INVALID ============ -->
+  <section id="checklist" class="crt-section crt-filter-section" aria-labelledby="check-h">
+    <div class="container">
+      <div class="crt-filter-layout">
+        <div class="crt-section-head reveal">
+          <span class="eyebrow">Valid vs invalid</span>
+          <h2 id="check-h">The filter should remove trades, not justify them.</h2>
+          <p>If one part of the sequence is missing, the trade does not need a story. It needs to be skipped.</p>
+        </div>
+
+        <div class="crt-filter-columns">
+          <article class="crt-filter-list crt-filter-list-good reveal">
+            <h3>Valid setup</h3>
+            <ul>
+              <li>Clear CRH and CRL from a meaningful candle</li>
+              <li>Liquidity sweep beyond one side of the range</li>
+              <li>Re-entry back inside the range</li>
+              <li>Risk defined before entry</li>
+            </ul>
+          </article>
+          <article class="crt-filter-list crt-filter-list-bad reveal">
+            <h3>Invalid setup</h3>
+            <ul>
+              <li>Range chosen after the move already happened</li>
+              <li>Clean breakout being forced into a reversal idea</li>
+              <li>No displacement after re-entry</li>
+              <li>Stop or target moved to make the trade fit</li>
+            </ul>
+          </article>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============ LIVE EXAMPLE - VIDEO ============ -->
-  <section id="example" aria-labelledby="example-h" style="background:var(--bg-elev);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <!-- ============ PRACTICE LOOP + CTA ============ -->
+  <section class="crt-section crt-practice-section" aria-labelledby="practice-h">
     <div class="container">
-      <div class="section-header">
-        <span class="eyebrow">See it on a real chart</span>
-        <h2 id="example-h">The CRT logic, live on a chart.</h2>
-        <p>The same liquidity logic, marked up on a real chart. Watch the range define itself, liquidity get swept beyond one edge, then price displace and expand back through the range toward the opposite side - the very same phases as above.</p>
-      </div>
-
-      <div class="unicorn-visual unicorn-visual--glow crt-video reveal">
-        <span class="badge"><span class="pulse"></span> Live example</span>
-        <video data-lazy muted loop playsinline preload="metadata" poster="assets/img/chart-crt.jpg" aria-label="Candle Range Theory concepts on a live chart">
-          <source data-src="assets/video/ict-concepts.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      </div>
-
-      <ul class="crt-legend crt-legend--wide" style="margin-top:24px">
-        <li><span class="crt-chip gold">CRH / CRL</span> the weekly &amp; daily range highs and lows mapped on the chart</li>
-        <li><span class="crt-chip">Liquidity sweep</span> the wick that pierces the range edge to take stops</li>
-        <li><span class="crt-chip">Premium / Discount</span> the shaded zones that frame where to sell and buy</li>
-        <li><span class="crt-chip">Expansion</span> the drive toward the opposite edge - the move you're paid for</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- ============ GETTING RESULTS ============ -->
-  <section id="results" aria-labelledby="results-h">
-    <div class="container">
-      <div class="section-header">
-        <span class="eyebrow">How you actually get results</span>
-        <h2 id="results-h">The model is the easy part.</h2>
-        <p>Knowing CRT and profiting from CRT are two different skills. Results don't come from finding more setups - they come from how you manage risk, expectancy, and yourself across a large sample of trades.</p>
-      </div>
-
-      <div class="grid-3 stagger-group">
-        <article class="card" data-tilt>
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="5"/>
-            </svg>
-          </div>
-          <h3>Define risk first</h3>
-          <p>Decide what one trade is allowed to lose <em>before</em> you enter - a fixed fraction of the account per trade (your "1R"). The CRT stop sits just beyond the swept wick, so risk is defined by the chart, not by hope.</p>
-        </article>
-
-        <article class="card" data-tilt>
-          <div class="card-icon gold">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/>
-            </svg>
-          </div>
-          <h3>Let expectancy compound</h3>
-          <p>Because the target is the opposite edge of the range, clean CRT trades routinely pay <strong>1:3+ R</strong>. At that reward-to-risk you don't need to be right often - a modest win rate across a big sample still grows the account. Think in R, not in dollars.</p>
-        </article>
-
-        <article class="card" data-tilt>
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M4 4h16v16H4z"/><path d="M8 4v16M4 9h4M4 14h4"/>
-            </svg>
-          </div>
-          <h3>Journal every range</h3>
-          <p>Screenshot each CRH/CRL, whether the sweep and confirmation appeared, and the outcome in R. Over 50–100 trades the data - not your memory - tells you which ranges and sessions are your real edge.</p>
-        </article>
-      </div>
-
-      <div class="crt-results-note reveal">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
-        <p><strong>The honest part:</strong> CRT removes guesswork from <em>where</em> to trade - it can't remove drawdowns, losing streaks, or the discipline to wait. Results are a function of repeating a defined process over a large sample, not of any single trade. Everything here is educational, not financial advice.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ WHY CRT WORKS + CTA ============ -->
-  <section aria-labelledby="why-h" style="background:var(--bg-elev);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
-    <div class="container">
-      <div class="section-header">
-        <span class="eyebrow">Why it works</span>
-        <h2 id="why-h">Three ICT principles, one filter.</h2>
-        <p>CRT works because it combines three ICT principles at once - <strong>liquidity</strong>, <strong>displacement</strong> and <strong>precision entry</strong> - behind a defined session-timing filter. The purge takes the liquidity, the displacement confirms the turn, and the Fair Value Gap or Order Block gives a tight, repeatable entry. There's no guessing.</p>
-      </div>
-
-      <div class="crt-jump">
-        <a class="link-arrow" href="unicorn.html">See the Unicorn model <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-        <a class="link-arrow" href="pricing.html">Get the full course <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-        <a class="link-arrow" href="index.html#ict">Back to ICT concepts <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <div class="crt-practice-clean reveal">
+        <div>
+          <span class="eyebrow">Practice loop</span>
+          <h2 id="practice-h">Build the eye before you risk money.</h2>
+          <p>Replay old sessions. Mark the range before the sweep. Save the chart. Score the result in R. After enough samples, the market tells you which sessions and ranges deserve attention.</p>
+        </div>
+        <ol class="crt-practice-steps">
+          <li><span>01</span> Mark 20 ranges</li>
+          <li><span>02</span> Screenshot every sweep</li>
+          <li><span>03</span> Track wins and misses in R</li>
+        </ol>
+        <div class="crt-honest-note">
+          <strong>Risk note:</strong> CRT is a planning model, not a promise. Drawdowns, execution mistakes, and losing streaks are part of trading. This page is educational only, not financial advice.
+        </div>
+        <div class="crt-jump">
+          <a class="link-arrow" href="unicorn.html">See the Unicorn model <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          <a class="link-arrow" href="pricing.html">Get the full course <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          <a class="link-arrow" href="index.html#ict">Back to ICT concepts <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
       </div>
     </div>
   </section>

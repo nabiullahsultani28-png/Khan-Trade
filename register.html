@@ -40,7 +40,7 @@
   <div class="auth-form-container reveal">
     <div class="auth-form-inner" style="max-width: 480px;">
       <h2>Create Account</h2>
-      <form class="form" action="#" method="POST">
+      <form class="form" action="register.html" method="GET" data-static-form data-static-message="Registration is not connected yet. Use Contact if you need help joining.">
         <div class="grid-2" style="gap: 20px; align-items: start; margin-bottom: 0;">
           <div>
             <label for="firstName">First Name</label>
@@ -88,8 +88,9 @@
             I have read and accept the <a href="about.html#terms">Terms of use</a>, <a href="about.html#privacy">Privacy Policy</a>, <a href="about.html#conflict">Conflict of Interest Policy</a>, <a href="about.html#consent">Declaration of Consent</a>, and <a href="about.html#risk">Risk Disclaimer</a>.
           </label>
         </div>
-        
+
         <button type="submit" style="width: 100%;">Create account</button>
+        <p class="form-status" role="status" aria-live="polite" tabindex="-1"></p>
       </form>
       
       <div class="auth-or">Or</div>

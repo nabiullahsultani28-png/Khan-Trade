@@ -231,7 +231,7 @@
   requestAnimationFrame(() => switchers.forEach((sw) => sw.classList.add('sw-ready')));
   mql.addEventListener('change', () => { if (getPref() === 'system') setMode('system', switchers[0]); });
 
-  // Flag the nav when it overlaps the dark hero (home page) for light-theme legibility
+  // Flag the nav when it overlaps a dark hero for light-theme legibility.
   if (document.querySelector('.hero')) nav?.classList.add('over-hero');
 
   // ---- FAQ accordion
@@ -326,6 +326,642 @@
       });
     });
   }
+
+  // ---- Pricing page animated backdrop: aurora + curved liquidity field
+  document.querySelectorAll('.pricing-bg-canvas').forEach((canvas) => {
+    const host = canvas.parentElement;
+    const ctx = canvas.getContext('2d');
+    if (!host || !ctx) return;
+
+    let width = 0;
+    let height = 0;
+    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let particles = [];
+    let ribbons = [];
+    let raf = 0;
+    let tick = 0;
+    let visible = true;
+    const pointer = { x: -9999, y: -9999, active: false };
+    const ripples = [];
+    const abort = new AbortController();
+    const orbs = [
+      { hue: '212,175,55', cx: 0.16, cy: 0.14, r: 0.48, ax: 0.05, ay: 0.04, sx: 0.10, sy: 0.07, ph: 0.0, a: 0.24 },
+      { hue: '34,197,94', cx: 0.82, cy: 0.30, r: 0.42, ax: 0.06, ay: 0.05, sx: 0.08, sy: 0.12, ph: 1.7, a: 0.16 },
+      { hue: '212,175,55', cx: 0.55, cy: 0.86, r: 0.46, ax: 0.07, ay: 0.04, sx: 0.06, sy: 0.10, ph: 3.1, a: 0.13 }
+    ];
+
+    const seeded = (seed) => {
+      const value = Math.sin(seed * 91.271 + 17.431) * 43758.5453123;
+      return value - Math.floor(value);
+    };
+
+    const makeField = () => {
+      const particleCount = Math.min(190, Math.max(74, Math.round((width * height) / 17000)));
+      particles = Array.from({ length: particleCount }, (_, index) => {
+        const baseX = (-0.08 + seeded(index + 3) * 1.16) * width;
+        const baseY = (0.08 + seeded(index + 17) * 0.86) * height;
+        const toneSeed = seeded(index + 71);
+        return {
+          baseX,
+          baseY,
+          x: baseX,
+          y: baseY,
+          prox: 0,
+          phase: seeded(index + 31) * Math.PI * 2,
+          speed: 0.22 + seeded(index + 43) * 0.34,
+          driftX: 12 + seeded(index + 53) * 34,
+          driftY: 8 + seeded(index + 61) * 24,
+          size: 0.75 + seeded(index + 89) * 1.35,
+          tone: toneSeed > 0.84 ? 'green' : (toneSeed > 0.58 ? 'gold' : 'silver')
+        };
+      });
+
+      const ribbonCount = Math.max(4, Math.min(7, Math.round(width / 280)));
+      ribbons = Array.from({ length: ribbonCount }, (_, index) => {
+        const lane = (index + 0.5) / ribbonCount;
+        return {
+          baseY: height * (0.16 + lane * 0.72) + (seeded(index + 101) - 0.5) * height * 0.1,
+          amp: height * (0.024 + seeded(index + 109) * 0.04),
+          phase: seeded(index + 127) * Math.PI * 2,
+          speed: 0.20 + seeded(index + 137) * 0.14,
+          hue: index % 3 === 1 ? '34,197,94' : '212,175,55',
+          alpha: index % 3 === 1 ? 0.052 : 0.07,
+          width: 1 + seeded(index + 149) * 1.4
+        };
+      });
+    };
+
+    const resize = () => {
+      const bounds = host.getBoundingClientRect();
+      width = Math.max(1, bounds.width);
+      height = Math.max(1, bounds.height);
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      makeField();
+    };
+
+    const ribbonY = (ribbon, x) =>
+      ribbon.baseY +
+      Math.sin(x * 0.0052 + tick * ribbon.speed + ribbon.phase) * ribbon.amp +
+      Math.sin(x * 0.014 + tick * (ribbon.speed * 0.72) + ribbon.phase * 0.7) * ribbon.amp * 0.42;
+
+    const drawRibbon = (ribbon, lineWidth, alphaScale) => {
+      ctx.beginPath();
+      for (let x = -90; x <= width + 90; x += 28) {
+        const y = ribbonY(ribbon, x);
+        if (x === -90) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = 'rgba(' + ribbon.hue + ',' + (ribbon.alpha * alphaScale) + ')';
+      ctx.lineWidth = lineWidth;
+      ctx.stroke();
+    };
+
+    const updateField = () => {
+      const pointerRadius = Math.min(210, Math.max(132, width * 0.16));
+      const pointerRadiusSquared = pointerRadius * pointerRadius;
+      const rippleLimit = Math.max(width, height) * 1.18;
+      const motionStep = reduce ? 0 : 1;
+
+      for (let index = ripples.length - 1; index >= 0; index -= 1) {
+        const ripple = ripples[index];
+        ripple.r += 9 * motionStep;
+        if (ripple.r > rippleLimit) ripples.splice(index, 1);
+      }
+
+      particles.forEach((particle) => {
+        let targetX = particle.baseX +
+          Math.sin(tick * particle.speed + particle.phase) * particle.driftX +
+          Math.cos(tick * 0.18 + particle.phase * 0.7) * particle.driftX * 0.36;
+        let targetY = particle.baseY +
+          Math.cos(tick * (particle.speed * 0.8) + particle.phase) * particle.driftY +
+          Math.sin(tick * 0.15 + particle.phase * 1.3) * particle.driftY * 0.42;
+        let proximity = 0;
+
+        if (pointer.active && !reduce) {
+          const dx = targetX - pointer.x;
+          const dy = targetY - pointer.y;
+          const distSquared = dx * dx + dy * dy;
+          if (distSquared < pointerRadiusSquared) {
+            const dist = Math.sqrt(distSquared) || 1;
+            const falloff = 1 - dist / pointerRadius;
+            proximity = falloff;
+            const push = falloff * falloff * 44;
+            targetX += (dx / dist) * push;
+            targetY += (dy / dist) * push;
+          }
+        }
+
+        ripples.forEach((ripple) => {
+          const rx = targetX - ripple.x;
+          const ry = targetY - ripple.y;
+          const rippleDist = Math.sqrt(rx * rx + ry * ry) || 1;
+          const band = Math.abs(rippleDist - ripple.r);
+          if (band < 42) {
+            const force = (1 - band / 42) * (1 - ripple.r / rippleLimit);
+            targetX += (rx / rippleDist) * force * 26;
+            targetY += (ry / rippleDist) * force * 26;
+            proximity = Math.max(proximity, force * 0.55);
+          }
+        });
+
+        particle.x += (targetX - particle.x) * (reduce ? 1 : 0.055);
+        particle.y += (targetY - particle.y) * (reduce ? 1 : 0.055);
+        particle.prox = proximity;
+      });
+    };
+
+    const draw = () => {
+      ctx.clearRect(0, 0, width, height);
+      ctx.globalCompositeOperation = 'lighter';
+
+      orbs.forEach((orb) => {
+        const ox = (orb.cx + Math.sin(tick * orb.sx + orb.ph) * orb.ax) * width;
+        const oy = (orb.cy + Math.cos(tick * orb.sy + orb.ph) * orb.ay) * height;
+        const radius = orb.r * Math.max(width, height);
+        const gradient = ctx.createRadialGradient(ox, oy, 0, ox, oy, radius);
+        gradient.addColorStop(0, 'rgba(' + orb.hue + ',' + orb.a + ')');
+        gradient.addColorStop(0.5, 'rgba(' + orb.hue + ',' + (orb.a * 0.35) + ')');
+        gradient.addColorStop(1, 'rgba(' + orb.hue + ',0)');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, width, height);
+      });
+
+      updateField();
+
+      ctx.save();
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ribbons.forEach((ribbon) => {
+        ctx.shadowBlur = 18;
+        ctx.shadowColor = 'rgba(' + ribbon.hue + ',0.28)';
+        drawRibbon(ribbon, ribbon.width + 8, 0.22);
+        ctx.shadowBlur = 0;
+        drawRibbon(ribbon, ribbon.width, 1);
+      });
+      ctx.restore();
+
+      particles.forEach((particle, index) => {
+        for (let step = 1; step <= 2; step += 1) {
+          const neighbor = particles[(index + step * 17) % particles.length];
+          const dx = particle.x - neighbor.x;
+          const dy = particle.y - neighbor.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist > 128) continue;
+          const energy = Math.max(particle.prox, neighbor.prox, 0.05) * (1 - dist / 128);
+          if (energy < 0.018) continue;
+          ctx.strokeStyle = 'rgba(212,175,55,' + (energy * 0.16) + ')';
+          ctx.lineWidth = 0.8;
+          ctx.beginPath();
+          ctx.moveTo(particle.x, particle.y);
+          ctx.lineTo(neighbor.x, neighbor.y);
+          ctx.stroke();
+        }
+      });
+
+      particles.forEach((particle) => {
+        const wave = 0.5 + 0.5 * Math.sin(tick * 0.9 + particle.phase);
+        const alpha = 0.08 + wave * 0.1 + particle.prox * 0.56;
+        const particleRadius = particle.size + wave * 0.4 + particle.prox * 1.35;
+        const hue = particle.prox > 0.04 ? '212,175,55' : (particle.tone === 'green' ? '52,211,120' : (particle.tone === 'gold' ? '212,175,55' : '150,166,190'));
+
+        if (particle.prox > 0.18) {
+          const glow = ctx.createRadialGradient(particle.x, particle.y, 0, particle.x, particle.y, particleRadius * 4);
+          glow.addColorStop(0, 'rgba(' + hue + ',' + (alpha * 0.4) + ')');
+          glow.addColorStop(1, 'rgba(' + hue + ',0)');
+          ctx.fillStyle = glow;
+          ctx.beginPath();
+          ctx.arc(particle.x, particle.y, particleRadius * 4, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.fillStyle = 'rgba(' + hue + ',' + alpha + ')';
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particleRadius, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      ripples.forEach((ripple) => {
+        const fade = 1 - ripple.r / (Math.max(width, height) * 1.18);
+        ctx.strokeStyle = 'rgba(212,175,55,' + (fade * 0.2) + ')';
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.arc(ripple.x, ripple.y, ripple.r, 0, Math.PI * 2);
+        ctx.stroke();
+      });
+
+      ctx.globalCompositeOperation = 'source-over';
+    };
+
+    const animate = () => {
+      if (visible) {
+        tick += 0.016;
+        draw();
+      }
+      raf = requestAnimationFrame(animate);
+    };
+
+    resize();
+    const ro = new ResizeObserver(resize);
+    ro.observe(host);
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => { visible = entry.isIntersecting; });
+    }, { threshold: 0 });
+    io.observe(host);
+
+    window.addEventListener('pointermove', (event) => {
+      const bounds = host.getBoundingClientRect();
+      pointer.x = event.clientX - bounds.left;
+      pointer.y = event.clientY - bounds.top;
+      pointer.active = event.clientX >= bounds.left && event.clientX <= bounds.right && event.clientY >= bounds.top && event.clientY <= bounds.bottom;
+    }, { passive: true, signal: abort.signal });
+
+    window.addEventListener('blur', () => {
+      pointer.active = false;
+    }, { signal: abort.signal });
+
+    if (!reduce) {
+      host.parentElement?.addEventListener('pointerdown', (event) => {
+        const bounds = host.getBoundingClientRect();
+        if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) return;
+        ripples.push({ x: event.clientX - bounds.left, y: event.clientY - bounds.top, r: 0 });
+        if (ripples.length > 4) ripples.shift();
+      }, { passive: true, signal: abort.signal });
+      raf = requestAnimationFrame(animate);
+    } else {
+      tick = 1.4;
+      draw();
+    }
+
+    window.addEventListener('pagehide', () => {
+      if (raf) cancelAnimationFrame(raf);
+      ro.disconnect();
+      io.disconnect();
+      abort.abort();
+    }, { once: true });
+  });
+
+  // ---- Contact cards: pointer tilt + spotlight (scoped to the contact page;
+  // the home/module pages have their own [data-tilt] handler in animations.js)
+  const tiltCards = document.querySelectorAll('.contact-page-motion [data-tilt]');
+  if (tiltCards.length) {
+    const finePointer = window.matchMedia('(pointer: fine)').matches;
+    const MAX_TILT = 6; // degrees
+
+    tiltCards.forEach((card) => {
+      const reset = () => {
+        card.style.setProperty('--rx', '0deg');
+        card.style.setProperty('--ry', '0deg');
+        card.style.setProperty('--mx', '50%');
+        card.style.setProperty('--my', '30%');
+        card.classList.remove('is-spotlit');
+      };
+
+      if (reduce || !finePointer) {
+        reset();
+        return;
+      }
+
+      let raf = 0;
+      let lastX = 0;
+      let lastY = 0;
+
+      const render = () => {
+        raf = 0;
+        const rect = card.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+        const x = Math.max(0, Math.min(1, (lastX - rect.left) / rect.width));
+        const y = Math.max(0, Math.min(1, (lastY - rect.top) / rect.height));
+        card.style.setProperty('--mx', (x * 100).toFixed(2) + '%');
+        card.style.setProperty('--my', (y * 100).toFixed(2) + '%');
+        card.style.setProperty('--ry', ((x - 0.5) * MAX_TILT * 2).toFixed(2) + 'deg');
+        card.style.setProperty('--rx', ((0.5 - y) * MAX_TILT * 2).toFixed(2) + 'deg');
+      };
+
+      const track = (event) => {
+        card.classList.add('is-spotlit');
+        lastX = event.clientX;
+        lastY = event.clientY;
+        if (!raf) raf = requestAnimationFrame(render);
+      };
+
+      card.addEventListener('pointerenter', track);
+      card.addEventListener('pointermove', track);
+      card.addEventListener('pointerleave', () => {
+        if (raf) cancelAnimationFrame(raf);
+        raf = 0;
+        reset();
+      });
+      card.addEventListener('focusin', () => card.classList.add('is-spotlit'));
+      card.addEventListener('focusout', reset);
+    });
+  }
+
+  // ---- Contact page animated backdrop: signal-relay network
+  // Nodes linked into a comms graph, with message "packets" travelling the
+  // links and radar "pings" rippling out. Pointer brightens + nudges nearby
+  // nodes; click emits a ping. Distinct from the pricing liquidity field.
+  document.querySelectorAll('.contact-bg-canvas').forEach((canvas) => {
+    const host = canvas.parentElement;
+    const ctx = canvas.getContext('2d');
+    if (!host || !ctx) return;
+
+    let width = 0;
+    let height = 0;
+    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let nodes = [];
+    let links = [];
+    let packets = [];
+    const pings = [];
+    let raf = 0;
+    let tick = 0;
+    let visible = true;
+    let pingCooldown = 90;
+    const pointer = { x: -9999, y: -9999, active: false };
+    const abort = new AbortController();
+    const orbs = [
+      { hue: '212,175,55', cx: 0.18, cy: 0.12, r: 0.50, ax: 0.05, ay: 0.04, sx: 0.09, sy: 0.06, ph: 0.0, a: 0.22 },
+      { hue: '34,197,94', cx: 0.80, cy: 0.28, r: 0.44, ax: 0.06, ay: 0.05, sx: 0.07, sy: 0.11, ph: 1.9, a: 0.15 },
+      { hue: '212,175,55', cx: 0.50, cy: 0.85, r: 0.46, ax: 0.07, ay: 0.04, sx: 0.06, sy: 0.09, ph: 3.3, a: 0.12 }
+    ];
+
+    const seeded = (seed) => {
+      const value = Math.sin(seed * 91.271 + 17.431) * 43758.5453123;
+      return value - Math.floor(value);
+    };
+
+    const makeField = () => {
+      const nodeCount = Math.min(58, Math.max(26, Math.round((width * height) / 42000)));
+      nodes = Array.from({ length: nodeCount }, (_, index) => {
+        const baseX = (0.04 + seeded(index + 5) * 0.92) * width;
+        const baseY = (0.08 + seeded(index + 19) * 0.84) * height;
+        return {
+          baseX,
+          baseY,
+          x: baseX,
+          y: baseY,
+          glow: 0,
+          phase: seeded(index + 29) * Math.PI * 2,
+          speed: 0.16 + seeded(index + 41) * 0.26,
+          driftX: 10 + seeded(index + 51) * 26,
+          driftY: 8 + seeded(index + 59) * 20,
+          size: 1.1 + seeded(index + 83) * 1.6,
+          tone: seeded(index + 67) > 0.7 ? 'green' : 'gold'
+        };
+      });
+
+      // Connect each node to its two nearest neighbours (deduplicated)
+      links = [];
+      const seen = new Set();
+      nodes.forEach((node, i) => {
+        const dists = [];
+        nodes.forEach((other, j) => {
+          if (i === j) return;
+          const dx = node.baseX - other.baseX;
+          const dy = node.baseY - other.baseY;
+          dists.push({ j, d: dx * dx + dy * dy });
+        });
+        dists.sort((a, b) => a.d - b.d);
+        for (let k = 0; k < Math.min(2, dists.length); k += 1) {
+          const j = dists[k].j;
+          const key = i < j ? i + '-' + j : j + '-' + i;
+          if (seen.has(key)) continue;
+          seen.add(key);
+          links.push({ a: i, b: j });
+        }
+      });
+
+      const packetCount = links.length ? Math.min(18, Math.max(8, Math.round(links.length * 0.35))) : 0;
+      packets = Array.from({ length: packetCount }, (_, index) => ({
+        link: Math.floor(seeded(index + 7) * links.length) % Math.max(1, links.length),
+        t: seeded(index + 13),
+        speed: 0.003 + seeded(index + 23) * 0.005,
+        hue: seeded(index + 37) > 0.72 ? '34,197,94' : '212,175,55'
+      }));
+    };
+
+    const resize = () => {
+      const bounds = host.getBoundingClientRect();
+      width = Math.max(1, bounds.width);
+      height = Math.max(1, bounds.height);
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      makeField();
+    };
+
+    const update = () => {
+      const pointerRadius = Math.min(220, Math.max(140, width * 0.16));
+      const prSq = pointerRadius * pointerRadius;
+      const motion = reduce ? 0 : 1;
+      const pingLimit = Math.max(width, height) * 1.1;
+
+      for (let i = pings.length - 1; i >= 0; i -= 1) {
+        pings[i].r += 3.2 * motion;
+        if (pings[i].r > pings[i].max) pings.splice(i, 1);
+      }
+
+      if (!reduce && nodes.length) {
+        pingCooldown -= 1;
+        if (pingCooldown <= 0) {
+          const n = nodes[Math.floor(Math.random() * nodes.length)];
+          pings.push({ x: n.x, y: n.y, r: 0, max: pingLimit * 0.5 });
+          pingCooldown = 150 + Math.floor(Math.random() * 120);
+        }
+      }
+
+      nodes.forEach((node) => {
+        let x = node.baseX +
+          Math.sin(tick * node.speed + node.phase) * node.driftX +
+          Math.cos(tick * 0.14 + node.phase * 0.7) * node.driftX * 0.3;
+        let y = node.baseY +
+          Math.cos(tick * (node.speed * 0.85) + node.phase) * node.driftY +
+          Math.sin(tick * 0.12 + node.phase * 1.2) * node.driftY * 0.34;
+        let glow = 0;
+
+        if (pointer.active && !reduce) {
+          const dx = x - pointer.x;
+          const dy = y - pointer.y;
+          const dSq = dx * dx + dy * dy;
+          if (dSq < prSq) {
+            const dist = Math.sqrt(dSq) || 1;
+            const falloff = 1 - dist / pointerRadius;
+            glow = Math.max(glow, falloff);
+            const pull = falloff * falloff * 26;
+            x -= (dx / dist) * pull;
+            y -= (dy / dist) * pull;
+          }
+        }
+
+        pings.forEach((ping) => {
+          const rx = x - ping.x;
+          const ry = y - ping.y;
+          const rd = Math.sqrt(rx * rx + ry * ry) || 1;
+          const band = Math.abs(rd - ping.r);
+          if (band < 34) {
+            glow = Math.max(glow, (1 - band / 34) * (1 - ping.r / ping.max) * 0.9);
+          }
+        });
+
+        node.x = x;
+        node.y = y;
+        node.glow += (glow - node.glow) * (reduce ? 1 : 0.12);
+      });
+    };
+
+    const draw = () => {
+      ctx.clearRect(0, 0, width, height);
+      ctx.globalCompositeOperation = 'lighter';
+
+      orbs.forEach((orb) => {
+        const ox = (orb.cx + Math.sin(tick * orb.sx + orb.ph) * orb.ax) * width;
+        const oy = (orb.cy + Math.cos(tick * orb.sy + orb.ph) * orb.ay) * height;
+        const radius = orb.r * Math.max(width, height);
+        const g = ctx.createRadialGradient(ox, oy, 0, ox, oy, radius);
+        g.addColorStop(0, 'rgba(' + orb.hue + ',' + orb.a + ')');
+        g.addColorStop(0.5, 'rgba(' + orb.hue + ',' + (orb.a * 0.34) + ')');
+        g.addColorStop(1, 'rgba(' + orb.hue + ',0)');
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, width, height);
+      });
+
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      links.forEach((link) => {
+        const a = nodes[link.a];
+        const b = nodes[link.b];
+        if (!a || !b) return;
+        const energy = Math.max(a.glow, b.glow);
+        ctx.strokeStyle = 'rgba(212,175,55,' + (0.05 + energy * 0.25) + ')';
+        ctx.lineWidth = 0.7 + energy * 0.9;
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+      });
+
+      packets.forEach((p) => {
+        if (!links.length) return;
+        const link = links[p.link % links.length];
+        if (!link) return;
+        const a = nodes[link.a];
+        const b = nodes[link.b];
+        if (!a || !b) return;
+        p.t += p.speed * (reduce ? 0 : 1);
+        if (p.t >= 1) {
+          p.t = 0;
+          p.link = Math.floor(Math.random() * links.length);
+        }
+        const px = a.x + (b.x - a.x) * p.t;
+        const py = a.y + (b.y - a.y) * p.t;
+        const back = Math.max(0, p.t - 0.085);
+        const tx = a.x + (b.x - a.x) * back;
+        const ty = a.y + (b.y - a.y) * back;
+        const trail = ctx.createLinearGradient(tx, ty, px, py);
+        trail.addColorStop(0, 'rgba(' + p.hue + ',0)');
+        trail.addColorStop(1, 'rgba(' + p.hue + ',0.85)');
+        ctx.strokeStyle = trail;
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        ctx.moveTo(tx, ty);
+        ctx.lineTo(px, py);
+        ctx.stroke();
+        const head = ctx.createRadialGradient(px, py, 0, px, py, 7);
+        head.addColorStop(0, 'rgba(' + p.hue + ',0.9)');
+        head.addColorStop(1, 'rgba(' + p.hue + ',0)');
+        ctx.fillStyle = head;
+        ctx.beginPath();
+        ctx.arc(px, py, 7, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      nodes.forEach((node) => {
+        const wave = 0.5 + 0.5 * Math.sin(tick * 0.8 + node.phase);
+        const alpha = 0.16 + wave * 0.12 + node.glow * 0.6;
+        const r = node.size + wave * 0.3 + node.glow * 1.8;
+        const hue = node.glow > 0.05 ? '212,175,55' : (node.tone === 'green' ? '52,211,120' : '212,175,55');
+        if (node.glow > 0.12) {
+          const glow = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, r * 4.5);
+          glow.addColorStop(0, 'rgba(' + hue + ',' + (alpha * 0.45) + ')');
+          glow.addColorStop(1, 'rgba(' + hue + ',0)');
+          ctx.fillStyle = glow;
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, r * 4.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.fillStyle = 'rgba(' + hue + ',' + alpha + ')';
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      pings.forEach((ping) => {
+        const fade = 1 - ping.r / ping.max;
+        ctx.strokeStyle = 'rgba(212,175,55,' + (fade * 0.22) + ')';
+        ctx.lineWidth = 1.3;
+        ctx.beginPath();
+        ctx.arc(ping.x, ping.y, ping.r, 0, Math.PI * 2);
+        ctx.stroke();
+      });
+
+      ctx.globalCompositeOperation = 'source-over';
+    };
+
+    const animate = () => {
+      if (visible) {
+        tick += 0.016;
+        update();
+        draw();
+      }
+      raf = requestAnimationFrame(animate);
+    };
+
+    resize();
+    const ro = new ResizeObserver(resize);
+    ro.observe(host);
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => { visible = entry.isIntersecting; });
+    }, { threshold: 0 });
+    io.observe(host);
+
+    window.addEventListener('pointermove', (event) => {
+      const bounds = host.getBoundingClientRect();
+      pointer.x = event.clientX - bounds.left;
+      pointer.y = event.clientY - bounds.top;
+      pointer.active = event.clientX >= bounds.left && event.clientX <= bounds.right && event.clientY >= bounds.top && event.clientY <= bounds.bottom;
+    }, { passive: true, signal: abort.signal });
+
+    window.addEventListener('blur', () => { pointer.active = false; }, { signal: abort.signal });
+
+    if (!reduce) {
+      host.parentElement?.addEventListener('pointerdown', (event) => {
+        const bounds = host.getBoundingClientRect();
+        if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) return;
+        pings.push({ x: event.clientX - bounds.left, y: event.clientY - bounds.top, r: 0, max: Math.max(width, height) * 1.1 });
+        if (pings.length > 6) pings.shift();
+      }, { passive: true, signal: abort.signal });
+      raf = requestAnimationFrame(animate);
+    } else {
+      tick = 1.4;
+      update();
+      draw();
+    }
+
+    window.addEventListener('pagehide', () => {
+      if (raf) cancelAnimationFrame(raf);
+      ro.disconnect();
+      io.disconnect();
+      abort.abort();
+    }, { once: true });
+  });
 
   // ---- Lazy autoplay videos when in view, pause when out.
   // Heavy clips keep their src in data-src on the <source> and only download
@@ -422,9 +1058,25 @@
     });
   }
 
+  // ---- Static-site form guard
+  document.querySelectorAll('form[data-static-form]').forEach(form => {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      const status = form.querySelector('.form-status');
+      if (!status) return;
+      status.textContent = form.dataset.staticMessage || 'This form is not connected yet.';
+      status.classList.add('visible');
+      status.focus?.();
+    });
+  });
+
   // ---- Year stamp
   document.querySelectorAll('[data-year]').forEach(el => {
     el.textContent = new Date().getFullYear();
   });
 })();
-
