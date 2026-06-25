@@ -670,15 +670,24 @@
     const ctx = canvas.getContext('2d');
     if (!host || !ctx) return;
 
+    // Mobile / low-power path: fewer pixels, fewer elements, 30fps, cheaper draws
+    const lowPower = window.matchMedia('(pointer: coarse)').matches
+      || window.matchMedia('(max-width: 768px)').matches;
+    const dprCap = lowPower ? 1.25 : 2;
+
     let width = 0;
     let height = 0;
-    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let dpr = Math.min(window.devicePixelRatio || 1, dprCap);
+    let orbCanvas = null;
     let nodes = [];
     let links = [];
     let packets = [];
     const pings = [];
     let raf = 0;
     let tick = 0;
+    let step = 1;
+    let lastT = 0;
+    let acc = 0;
     let visible = true;
     let pingCooldown = 90;
     const pointer = { x: -9999, y: -9999, active: false };
@@ -695,7 +704,9 @@
     };
 
     const makeField = () => {
-      const nodeCount = Math.min(58, Math.max(26, Math.round((width * height) / 42000)));
+      const nodeCount = lowPower
+        ? Math.min(30, Math.max(16, Math.round((width * height) / 70000)))
+        : Math.min(58, Math.max(26, Math.round((width * height) / 42000)));
       nodes = Array.from({ length: nodeCount }, (_, index) => {
         const baseX = (0.04 + seeded(index + 5) * 0.92) * width;
         const baseY = (0.08 + seeded(index + 19) * 0.84) * height;
@@ -735,7 +746,7 @@
         }
       });
 
-      const packetCount = links.length ? Math.min(18, Math.max(8, Math.round(links.length * 0.35))) : 0;
+      const packetCount = links.length ? Math.min(lowPower ? 10 : 18, Math.max(8, Math.round(links.length * 0.35))) : 0;
       packets = Array.from({ length: packetCount }, (_, index) => ({
         link: Math.floor(seeded(index + 7) * links.length) % Math.max(1, links.length),
         t: seeded(index + 13),
@@ -744,17 +755,41 @@
       }));
     };
 
+    // On mobile, bake the (static) orb glow into an offscreen layer once per
+    // resize so the loop can blit it instead of rebuilding 3 radial gradients
+    // + 3 full-canvas fills every frame.
+    const buildOrbLayer = () => {
+      orbCanvas = document.createElement('canvas');
+      orbCanvas.width = Math.max(1, Math.round(width));
+      orbCanvas.height = Math.max(1, Math.round(height));
+      const octx = orbCanvas.getContext('2d');
+      if (!octx) { orbCanvas = null; return; }
+      octx.globalCompositeOperation = 'lighter';
+      orbs.forEach((orb) => {
+        const ox = orb.cx * width;
+        const oy = orb.cy * height;
+        const radius = orb.r * Math.max(width, height);
+        const g = octx.createRadialGradient(ox, oy, 0, ox, oy, radius);
+        g.addColorStop(0, 'rgba(' + orb.hue + ',' + orb.a + ')');
+        g.addColorStop(0.5, 'rgba(' + orb.hue + ',' + (orb.a * 0.34) + ')');
+        g.addColorStop(1, 'rgba(' + orb.hue + ',0)');
+        octx.fillStyle = g;
+        octx.fillRect(0, 0, width, height);
+      });
+    };
+
     const resize = () => {
       const bounds = host.getBoundingClientRect();
       width = Math.max(1, bounds.width);
       height = Math.max(1, bounds.height);
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dpr = Math.min(window.devicePixelRatio || 1, dprCap);
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       canvas.style.width = width + 'px';
       canvas.style.height = height + 'px';
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       makeField();
+      if (lowPower) buildOrbLayer();
     };
 
     const update = () => {
@@ -764,7 +799,7 @@
       const pingLimit = Math.max(width, height) * 1.1;
 
       for (let i = pings.length - 1; i >= 0; i -= 1) {
-        pings[i].r += 3.2 * motion;
+        pings[i].r += 3.2 * motion * step;
         if (pings[i].r > pings[i].max) pings.splice(i, 1);
       }
 
@@ -820,17 +855,21 @@
       ctx.clearRect(0, 0, width, height);
       ctx.globalCompositeOperation = 'lighter';
 
-      orbs.forEach((orb) => {
-        const ox = (orb.cx + Math.sin(tick * orb.sx + orb.ph) * orb.ax) * width;
-        const oy = (orb.cy + Math.cos(tick * orb.sy + orb.ph) * orb.ay) * height;
-        const radius = orb.r * Math.max(width, height);
-        const g = ctx.createRadialGradient(ox, oy, 0, ox, oy, radius);
-        g.addColorStop(0, 'rgba(' + orb.hue + ',' + orb.a + ')');
-        g.addColorStop(0.5, 'rgba(' + orb.hue + ',' + (orb.a * 0.34) + ')');
-        g.addColorStop(1, 'rgba(' + orb.hue + ',0)');
-        ctx.fillStyle = g;
-        ctx.fillRect(0, 0, width, height);
-      });
+      if (lowPower && orbCanvas) {
+        ctx.drawImage(orbCanvas, 0, 0, width, height);
+      } else {
+        orbs.forEach((orb) => {
+          const ox = (orb.cx + Math.sin(tick * orb.sx + orb.ph) * orb.ax) * width;
+          const oy = (orb.cy + Math.cos(tick * orb.sy + orb.ph) * orb.ay) * height;
+          const radius = orb.r * Math.max(width, height);
+          const g = ctx.createRadialGradient(ox, oy, 0, ox, oy, radius);
+          g.addColorStop(0, 'rgba(' + orb.hue + ',' + orb.a + ')');
+          g.addColorStop(0.5, 'rgba(' + orb.hue + ',' + (orb.a * 0.34) + ')');
+          g.addColorStop(1, 'rgba(' + orb.hue + ',0)');
+          ctx.fillStyle = g;
+          ctx.fillRect(0, 0, width, height);
+        });
+      }
 
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
@@ -855,7 +894,7 @@
         const a = nodes[link.a];
         const b = nodes[link.b];
         if (!a || !b) return;
-        p.t += p.speed * (reduce ? 0 : 1);
+        p.t += p.speed * (reduce ? 0 : step);
         if (p.t >= 1) {
           p.t = 0;
           p.link = Math.floor(Math.random() * links.length);
@@ -865,22 +904,35 @@
         const back = Math.max(0, p.t - 0.085);
         const tx = a.x + (b.x - a.x) * back;
         const ty = a.y + (b.y - a.y) * back;
-        const trail = ctx.createLinearGradient(tx, ty, px, py);
-        trail.addColorStop(0, 'rgba(' + p.hue + ',0)');
-        trail.addColorStop(1, 'rgba(' + p.hue + ',0.85)');
-        ctx.strokeStyle = trail;
-        ctx.lineWidth = 1.6;
-        ctx.beginPath();
-        ctx.moveTo(tx, ty);
-        ctx.lineTo(px, py);
-        ctx.stroke();
-        const head = ctx.createRadialGradient(px, py, 0, px, py, 7);
-        head.addColorStop(0, 'rgba(' + p.hue + ',0.9)');
-        head.addColorStop(1, 'rgba(' + p.hue + ',0)');
-        ctx.fillStyle = head;
-        ctx.beginPath();
-        ctx.arc(px, py, 7, 0, Math.PI * 2);
-        ctx.fill();
+        if (lowPower) {
+          ctx.strokeStyle = 'rgba(' + p.hue + ',0.6)';
+          ctx.lineWidth = 1.4;
+          ctx.beginPath();
+          ctx.moveTo(tx, ty);
+          ctx.lineTo(px, py);
+          ctx.stroke();
+          ctx.fillStyle = 'rgba(' + p.hue + ',0.9)';
+          ctx.beginPath();
+          ctx.arc(px, py, 3.5, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          const trail = ctx.createLinearGradient(tx, ty, px, py);
+          trail.addColorStop(0, 'rgba(' + p.hue + ',0)');
+          trail.addColorStop(1, 'rgba(' + p.hue + ',0.85)');
+          ctx.strokeStyle = trail;
+          ctx.lineWidth = 1.6;
+          ctx.beginPath();
+          ctx.moveTo(tx, ty);
+          ctx.lineTo(px, py);
+          ctx.stroke();
+          const head = ctx.createRadialGradient(px, py, 0, px, py, 7);
+          head.addColorStop(0, 'rgba(' + p.hue + ',0.9)');
+          head.addColorStop(1, 'rgba(' + p.hue + ',0)');
+          ctx.fillStyle = head;
+          ctx.beginPath();
+          ctx.arc(px, py, 7, 0, Math.PI * 2);
+          ctx.fill();
+        }
       });
 
       nodes.forEach((node) => {
@@ -888,7 +940,7 @@
         const alpha = 0.16 + wave * 0.12 + node.glow * 0.6;
         const r = node.size + wave * 0.3 + node.glow * 1.8;
         const hue = node.glow > 0.05 ? '212,175,55' : (node.tone === 'green' ? '52,211,120' : '212,175,55');
-        if (node.glow > 0.12) {
+        if (node.glow > 0.12 && !lowPower) {
           const glow = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, r * 4.5);
           glow.addColorStop(0, 'rgba(' + hue + ',' + (alpha * 0.45) + ')');
           glow.addColorStop(1, 'rgba(' + hue + ',0)');
@@ -915,11 +967,27 @@
       ctx.globalCompositeOperation = 'source-over';
     };
 
-    const animate = () => {
+    const animate = (now) => {
+      const t = now || performance.now();
+      const dt = lastT ? t - lastT : 16.67;
+      lastT = t;
       if (visible) {
-        tick += 0.016;
-        update();
-        draw();
+        if (lowPower) {
+          // Throttle to ~30fps; advance motion by elapsed time so speed holds.
+          acc += dt;
+          if (acc >= 32) {
+            step = Math.min(3, acc / 16.67);
+            tick += 0.016 * step;
+            update();
+            draw();
+            acc = 0;
+          }
+        } else {
+          step = Math.min(3, dt / 16.67);
+          tick += 0.016 * step;
+          update();
+          draw();
+        }
       }
       raf = requestAnimationFrame(animate);
     };
