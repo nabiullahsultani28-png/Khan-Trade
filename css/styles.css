@@ -2855,6 +2855,24 @@ section {
   }
 }
 
+/* Mobile: drop the per-card backdrop blur (heavy GPU pass) and use a more
+   opaque solid background so the canvas behind doesn't bleed through. */
+@media (max-width: 768px) {
+  .pricing-page-motion .pricing-plan-card {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background:
+      radial-gradient(75% 60% at 50% -18%, rgba(255, 255, 255, 0.06), transparent 62%),
+      linear-gradient(180deg, rgba(18, 24, 34, 0.985), rgba(10, 15, 23, 0.995));
+  }
+
+  .pricing-page-motion .plan-paid:not(.premium) {
+    background:
+      radial-gradient(75% 60% at 50% -18%, rgba(212, 175, 55, 0.1), transparent 62%),
+      linear-gradient(180deg, rgba(18, 24, 34, 0.985), rgba(10, 15, 23, 0.995));
+  }
+}
+
 @media (max-width: 720px) {
   .pricing-hero {
     padding: 118px 0 68px;

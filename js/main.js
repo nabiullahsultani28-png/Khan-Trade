@@ -333,13 +333,22 @@
     const ctx = canvas.getContext('2d');
     if (!host || !ctx) return;
 
+    // Mobile / low-power path: fewer pixels, fewer elements, 30fps, cheaper draws
+    const lowPower = window.matchMedia('(pointer: coarse)').matches
+      || window.matchMedia('(max-width: 768px)').matches;
+    const dprCap = lowPower ? 1.25 : 2;
+
     let width = 0;
     let height = 0;
-    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let dpr = Math.min(window.devicePixelRatio || 1, dprCap);
+    let orbCanvas = null;
     let particles = [];
     let ribbons = [];
     let raf = 0;
     let tick = 0;
+    let step = 1;
+    let lastT = 0;
+    let acc = 0;
     let visible = true;
     const pointer = { x: -9999, y: -9999, active: false };
     const ripples = [];
@@ -356,7 +365,9 @@
     };
 
     const makeField = () => {
-      const particleCount = Math.min(190, Math.max(74, Math.round((width * height) / 17000)));
+      const particleCount = lowPower
+        ? Math.min(70, Math.max(40, Math.round((width * height) / 34000)))
+        : Math.min(150, Math.max(74, Math.round((width * height) / 19000)));
       particles = Array.from({ length: particleCount }, (_, index) => {
         const baseX = (-0.08 + seeded(index + 3) * 1.16) * width;
         const baseY = (0.08 + seeded(index + 17) * 0.86) * height;
@@ -376,7 +387,7 @@
         };
       });
 
-      const ribbonCount = Math.max(4, Math.min(7, Math.round(width / 280)));
+      const ribbonCount = lowPower ? Math.max(3, Math.min(4, Math.round(width / 320))) : Math.max(4, Math.min(7, Math.round(width / 280)));
       ribbons = Array.from({ length: ribbonCount }, (_, index) => {
         const lane = (index + 0.5) / ribbonCount;
         return {
@@ -391,17 +402,41 @@
       });
     };
 
+    // On mobile, bake the (static) orb glow into an offscreen layer once per
+    // resize so the loop can blit it instead of rebuilding 3 radial gradients
+    // + 3 full-canvas fills every frame.
+    const buildOrbLayer = () => {
+      orbCanvas = document.createElement('canvas');
+      orbCanvas.width = Math.max(1, Math.round(width));
+      orbCanvas.height = Math.max(1, Math.round(height));
+      const octx = orbCanvas.getContext('2d');
+      if (!octx) { orbCanvas = null; return; }
+      octx.globalCompositeOperation = 'lighter';
+      orbs.forEach((orb) => {
+        const ox = orb.cx * width;
+        const oy = orb.cy * height;
+        const radius = orb.r * Math.max(width, height);
+        const gradient = octx.createRadialGradient(ox, oy, 0, ox, oy, radius);
+        gradient.addColorStop(0, 'rgba(' + orb.hue + ',' + orb.a + ')');
+        gradient.addColorStop(0.5, 'rgba(' + orb.hue + ',' + (orb.a * 0.35) + ')');
+        gradient.addColorStop(1, 'rgba(' + orb.hue + ',0)');
+        octx.fillStyle = gradient;
+        octx.fillRect(0, 0, width, height);
+      });
+    };
+
     const resize = () => {
       const bounds = host.getBoundingClientRect();
       width = Math.max(1, bounds.width);
       height = Math.max(1, bounds.height);
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dpr = Math.min(window.devicePixelRatio || 1, dprCap);
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       canvas.style.width = width + 'px';
       canvas.style.height = height + 'px';
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       makeField();
+      if (lowPower) buildOrbLayer();
     };
 
     const ribbonY = (ribbon, x) =>
@@ -429,7 +464,7 @@
 
       for (let index = ripples.length - 1; index >= 0; index -= 1) {
         const ripple = ripples[index];
-        ripple.r += 9 * motionStep;
+        ripple.r += 9 * motionStep * step;
         if (ripple.r > rippleLimit) ripples.splice(index, 1);
       }
 
@@ -469,8 +504,9 @@
           }
         });
 
-        particle.x += (targetX - particle.x) * (reduce ? 1 : 0.055);
-        particle.y += (targetY - particle.y) * (reduce ? 1 : 0.055);
+        const ease = reduce ? 1 : Math.min(1, 0.055 * step);
+        particle.x += (targetX - particle.x) * ease;
+        particle.y += (targetY - particle.y) * ease;
         particle.prox = proximity;
       });
     };
@@ -479,17 +515,21 @@
       ctx.clearRect(0, 0, width, height);
       ctx.globalCompositeOperation = 'lighter';
 
-      orbs.forEach((orb) => {
-        const ox = (orb.cx + Math.sin(tick * orb.sx + orb.ph) * orb.ax) * width;
-        const oy = (orb.cy + Math.cos(tick * orb.sy + orb.ph) * orb.ay) * height;
-        const radius = orb.r * Math.max(width, height);
-        const gradient = ctx.createRadialGradient(ox, oy, 0, ox, oy, radius);
-        gradient.addColorStop(0, 'rgba(' + orb.hue + ',' + orb.a + ')');
-        gradient.addColorStop(0.5, 'rgba(' + orb.hue + ',' + (orb.a * 0.35) + ')');
-        gradient.addColorStop(1, 'rgba(' + orb.hue + ',0)');
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, width, height);
-      });
+      if (lowPower && orbCanvas) {
+        ctx.drawImage(orbCanvas, 0, 0, width, height);
+      } else {
+        orbs.forEach((orb) => {
+          const ox = (orb.cx + Math.sin(tick * orb.sx + orb.ph) * orb.ax) * width;
+          const oy = (orb.cy + Math.cos(tick * orb.sy + orb.ph) * orb.ay) * height;
+          const radius = orb.r * Math.max(width, height);
+          const gradient = ctx.createRadialGradient(ox, oy, 0, ox, oy, radius);
+          gradient.addColorStop(0, 'rgba(' + orb.hue + ',' + orb.a + ')');
+          gradient.addColorStop(0.5, 'rgba(' + orb.hue + ',' + (orb.a * 0.35) + ')');
+          gradient.addColorStop(1, 'rgba(' + orb.hue + ',0)');
+          ctx.fillStyle = gradient;
+          ctx.fillRect(0, 0, width, height);
+        });
+      }
 
       updateField();
 
@@ -497,31 +537,33 @@
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
       ribbons.forEach((ribbon) => {
-        ctx.shadowBlur = 18;
-        ctx.shadowColor = 'rgba(' + ribbon.hue + ',0.28)';
-        drawRibbon(ribbon, ribbon.width + 8, 0.22);
-        ctx.shadowBlur = 0;
+        // Wide low-alpha stroke for the glow (cheaper than canvas shadowBlur),
+        // skipped entirely on low-power devices.
+        if (!lowPower) drawRibbon(ribbon, ribbon.width + 8, 0.5);
         drawRibbon(ribbon, ribbon.width, 1);
       });
       ctx.restore();
 
-      particles.forEach((particle, index) => {
-        for (let step = 1; step <= 2; step += 1) {
-          const neighbor = particles[(index + step * 17) % particles.length];
-          const dx = particle.x - neighbor.x;
-          const dy = particle.y - neighbor.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist > 128) continue;
-          const energy = Math.max(particle.prox, neighbor.prox, 0.05) * (1 - dist / 128);
-          if (energy < 0.018) continue;
-          ctx.strokeStyle = 'rgba(212,175,55,' + (energy * 0.16) + ')';
-          ctx.lineWidth = 0.8;
-          ctx.beginPath();
-          ctx.moveTo(particle.x, particle.y);
-          ctx.lineTo(neighbor.x, neighbor.y);
-          ctx.stroke();
-        }
-      });
+      // Particle-link lines: skip on low-power devices.
+      if (!lowPower) {
+        particles.forEach((particle, index) => {
+          for (let n = 1; n <= 2; n += 1) {
+            const neighbor = particles[(index + n * 17) % particles.length];
+            const dx = particle.x - neighbor.x;
+            const dy = particle.y - neighbor.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist > 128) continue;
+            const energy = Math.max(particle.prox, neighbor.prox, 0.05) * (1 - dist / 128);
+            if (energy < 0.018) continue;
+            ctx.strokeStyle = 'rgba(212,175,55,' + (energy * 0.16) + ')';
+            ctx.lineWidth = 0.8;
+            ctx.beginPath();
+            ctx.moveTo(particle.x, particle.y);
+            ctx.lineTo(neighbor.x, neighbor.y);
+            ctx.stroke();
+          }
+        });
+      }
 
       particles.forEach((particle) => {
         const wave = 0.5 + 0.5 * Math.sin(tick * 0.9 + particle.phase);
@@ -529,7 +571,7 @@
         const particleRadius = particle.size + wave * 0.4 + particle.prox * 1.35;
         const hue = particle.prox > 0.04 ? '212,175,55' : (particle.tone === 'green' ? '52,211,120' : (particle.tone === 'gold' ? '212,175,55' : '150,166,190'));
 
-        if (particle.prox > 0.18) {
+        if (particle.prox > 0.18 && !lowPower) {
           const glow = ctx.createRadialGradient(particle.x, particle.y, 0, particle.x, particle.y, particleRadius * 4);
           glow.addColorStop(0, 'rgba(' + hue + ',' + (alpha * 0.4) + ')');
           glow.addColorStop(1, 'rgba(' + hue + ',0)');
@@ -557,10 +599,25 @@
       ctx.globalCompositeOperation = 'source-over';
     };
 
-    const animate = () => {
+    const animate = (now) => {
+      const t = now || performance.now();
+      const dt = lastT ? t - lastT : 16.67;
+      lastT = t;
       if (visible) {
-        tick += 0.016;
-        draw();
+        if (lowPower) {
+          // Throttle to ~30fps; advance motion by elapsed time so speed holds.
+          acc += dt;
+          if (acc >= 32) {
+            step = Math.min(3, acc / 16.67);
+            tick += 0.016 * step;
+            draw();
+            acc = 0;
+          }
+        } else {
+          step = Math.min(3, dt / 16.67);
+          tick += 0.016 * step;
+          draw();
+        }
       }
       raf = requestAnimationFrame(animate);
     };
