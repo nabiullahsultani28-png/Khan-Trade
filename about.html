@@ -34,7 +34,7 @@
   /* Smooth anchor jumps clear of the sticky nav */
   #top, #story, #how, #principles, #markets, #fit, #legal, #join { scroll-margin-top: 90px; }
 
-  /* Canvas backdrop (aurora orbs + magnetic dot matrix) — hero only, for performance */
+  /* Canvas backdrop (aurora orbs + drifting constellation network) */
   .bg-fx {
     position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
     -webkit-mask-image: radial-gradient(150% 135% at 60% 38%, #000 0%, #000 60%, transparent 100%);
@@ -42,6 +42,62 @@
   }
   .bg-canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
   .about-hero > .container { position: relative; z-index: 2; }
+
+  /* One continuous background for the about-page main field.
+     This is the actual merge: the constellation/aurora system now spans both
+     the intro and lower sections, stopping before the footer. */
+  .about-intro-stage {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background:
+      radial-gradient(56% 58% at 9% 10%, rgba(212,175,55,0.12), transparent 68%),
+      radial-gradient(54% 62% at 88% 24%, rgba(34,197,94,0.12), transparent 70%),
+      radial-gradient(48% 52% at 48% 48%, rgba(212,175,55,0.06), transparent 72%),
+      linear-gradient(108deg, rgba(27,25,14,0.92) 0%, rgba(13,17,18,0.96) 45%, rgba(5,28,25,0.92) 100%);
+  }
+  .about-intro-stage::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(10,14,20,0) 0%, rgba(10,14,20,0.08) 40%, rgba(10,14,20,0) 100%),
+      radial-gradient(74% 36% at 50% 38%, rgba(212,175,55,0.05), transparent 70%),
+      radial-gradient(62% 44% at 84% 70%, rgba(34,197,94,0.08), transparent 74%);
+  }
+  .about-intro-stage::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 220px;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(10,14,20,0), var(--bg-base));
+  }
+  .about-intro-stage > .bg-fx--intro {
+    opacity: 0.98;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 calc(100% - 120px), transparent 100%);
+    mask-image: linear-gradient(180deg, #000 0%, #000 calc(100% - 120px), transparent 100%);
+  }
+  .about-intro-stage > section {
+    position: relative;
+    z-index: 1;
+    background: transparent;
+  }
+  .about-intro-stage .how-section,
+  .about-intro-stage #markets,
+  .about-intro-stage #legal,
+  .about-intro-stage #join {
+    border: 0;
+    background: transparent;
+  }
+  .about-intro-stage .about-hero::before,
+  .about-intro-stage .about-hero::after,
+  .about-intro-stage .story-section::before {
+    display: none;
+  }
 
   /* CSS-only drifting gold grid + breathing glow for content sections */
   .fx-grid-glow { position: relative; isolation: isolate; }
@@ -60,23 +116,19 @@
   .fx-grid-glow::after {
     content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
     background:
-      radial-gradient(38% 46% at 82% 12%, rgba(212,175,55,0.10), transparent 70%),
-      radial-gradient(44% 54% at 6% 90%, rgba(34,197,94,0.06), transparent 72%);
+      radial-gradient(46% 54% at 78% 8%,  rgba(212,175,55,0.16), transparent 68%),
+      radial-gradient(38% 44% at 10% 88%, rgba(34,197,94,0.07),   transparent 72%),
+      radial-gradient(28% 32% at 50% 52%, rgba(212,175,55,0.05),  transparent 65%);
     animation: aboutGlowBreath 16s ease-in-out infinite alternate;
   }
   @keyframes aboutGlowBreath {
-    0% { opacity: 0.5; transform: translate3d(0,0,0) scale(1); }
-    100% { opacity: 1; transform: translate3d(0,-14px,0) scale(1.05); }
+    0%   { opacity: 0.55; transform: translate3d(0,0,0) scale(1); }
+    100% { opacity: 1;    transform: translate3d(0,-16px,0) scale(1.06); }
   }
-
-  /* How-it-works: "where to start" tier strip */
-  .how-tiers { margin-top: 44px; display: grid; gap: 14px; grid-template-columns: repeat(3, 1fr); }
-  @media (max-width: 760px) { .how-tiers { grid-template-columns: 1fr; } }
-  .how-tier { background: var(--bg-base); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; }
-  .how-tier .ht-name { font-family: var(--font-display); font-weight: 600; color: var(--ink); font-size: 1rem; }
-  .how-tier .ht-price { display: block; margin-top: 4px; font-family: var(--font-mono); font-size: 0.76rem; letter-spacing: 0.02em; color: var(--gold); }
-  .how-tier .ht-desc { margin-top: 10px; font-size: 0.9rem; line-height: 1.55; color: var(--ink-mute); }
-  .how-tier.featured { border-color: rgba(212,175,55,0.4); box-shadow: 0 0 0 1px rgba(212,175,55,0.16), 0 24px 60px -40px rgba(212,175,55,0.4); }
+  /* these sections share the intro-stage constellation backdrop. */
+  #how.fx-grid-glow::before, #how.fx-grid-glow::after { display: none; content: none; }
+  .how-section { position: relative; isolation: auto; overflow: visible; }
+  .how-section > .container { position: relative; z-index: 1; }
 
   /* Legal & privacy accordion bodies */
   .legal-note { max-width: 820px; margin: 0 auto 18px; text-align: center; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.02em; color: var(--ink-dim); }
@@ -93,6 +145,815 @@
   @media (prefers-reduced-motion: reduce) {
     .fx-grid-glow::before, .fx-grid-glow::after { animation: none; }
   }
+
+  /* ===== Hero copy — marker row, gold full-stop, glass jump pills ===== */
+  .about-hero-top { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .about-hero-tag {
+    position: relative; padding-left: 17px;
+    font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-dim);
+  }
+  .about-hero-tag::before {
+    content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+    width: 7px; height: 7px; border-radius: 999px; background: var(--bull);
+    box-shadow: 0 0 0 4px rgba(34,197,94,0.16);
+    animation: aboutTagPulse 2.6s ease-in-out infinite;
+  }
+  @keyframes aboutTagPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.32); }
+    60% { box-shadow: 0 0 0 6px rgba(34,197,94,0); }
+  }
+  .about-hero-copy h1 .about-hero-dot { color: var(--gold); }
+
+  /* Jump links become deliberate glass pills (matches the video-hero treatment) */
+  .about-hero-links { gap: 12px 14px; }
+  .about-hero-links .link-arrow {
+    border-bottom: 0; padding: 10px 18px; border-radius: 999px;
+    color: var(--ink); background: rgba(244,245,247,0.05);
+    border: 1px solid rgba(244,245,247,0.14);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    transition: background 0.25s var(--ease-out), border-color 0.25s var(--ease-out),
+      color 0.25s var(--ease-out), gap 0.3s var(--ease-out);
+  }
+  .about-hero-links .link-arrow svg { color: var(--gold); }
+  .about-hero-links .link-arrow:hover {
+    opacity: 1; gap: 12px; color: #fff;
+    background: rgba(212,175,55,0.14); border-color: var(--gold);
+  }
+  [data-theme="light"] .about-hero-tag { color: var(--ink-mute); }
+  [data-theme="light"] .about-hero-links .link-arrow {
+    color: var(--ink); background: rgba(17,22,31,0.04); border-color: rgba(17,22,31,0.12);
+  }
+  [data-theme="light"] .about-hero-links .link-arrow:hover {
+    color: var(--ink); background: rgba(212,175,55,0.14); border-color: var(--gold);
+  }
+  @media (prefers-reduced-motion: reduce) { .about-hero-tag::before { animation: none; } }
+
+  /* ===== Hero panel — floating numbered execution stack ===== */
+  .about-hero-grid { align-items: center; }
+  .about-hero-panel {
+    padding: clamp(22px, 2.4vw, 30px);
+    border: 1px solid rgba(212,175,55,0.22);
+    border-radius: 20px;
+    background:
+      radial-gradient(120% 90% at 100% 0%, rgba(212,175,55,0.12), transparent 55%),
+      linear-gradient(180deg, rgba(22,29,41,0.72), rgba(12,17,25,0.66));
+    -webkit-backdrop-filter: blur(14px) saturate(1.1);
+    backdrop-filter: blur(14px) saturate(1.1);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.06) inset,
+      0 40px 80px -34px rgba(0,0,0,0.85),
+      0 0 0 1px rgba(212,175,55,0.05);
+    animation: ahpFloat 7s ease-in-out infinite;
+    will-change: transform;
+  }
+  @keyframes ahpFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+  }
+  .about-hero-panel::after {
+    content: ''; position: absolute; left: 6%; right: 6%; bottom: -26px; height: 40px; z-index: -1;
+    border-radius: 999px; pointer-events: none;
+    background: radial-gradient(60% 100% at 50% 0%, rgba(0,0,0,0.55), transparent 70%);
+    filter: blur(8px);
+    animation: ahpShadow 7s ease-in-out infinite;
+  }
+  @keyframes ahpShadow {
+    0%, 100% { opacity: 0.85; transform: scaleX(1); }
+    50% { opacity: 0.5; transform: scaleX(0.9); }
+  }
+
+  .ahp-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 22px;
+  }
+  .about-hero-panel .about-panel-kicker { margin-bottom: 0; white-space: nowrap; }
+  .ahp-head { gap: 14px; }
+  .ahp-live {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: var(--font-mono); font-size: 0.64rem; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--bull);
+  }
+  .ahp-live-dot {
+    width: 7px; height: 7px; border-radius: 999px; background: var(--bull);
+    box-shadow: 0 0 0 0 rgba(34,197,94,0.4);
+    animation: ahpLive 2.4s ease-in-out infinite;
+  }
+  @keyframes ahpLive {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.45); }
+    60% { box-shadow: 0 0 0 7px rgba(34,197,94,0); }
+  }
+
+  .ahp-stack { list-style: none; margin: 0; padding: 0; position: relative; }
+  .ahp-node {
+    position: relative; display: grid; grid-template-columns: 36px minmax(0,1fr);
+    gap: 16px; align-items: start; padding: 13px 0;
+  }
+  .ahp-node + .ahp-node { border-top: 1px solid rgba(255,255,255,0.06); }
+  .ahp-step {
+    position: relative; z-index: 1;
+    width: 36px; height: 36px; border-radius: 999px;
+    display: grid; place-items: center;
+    font-family: var(--font-mono); font-size: 0.74rem; font-weight: 500;
+    color: var(--gold);
+    background: rgba(212,175,55,0.1);
+    border: 1px solid rgba(212,175,55,0.4);
+  }
+  .ahp-body strong {
+    display: block; color: var(--ink);
+    font-family: var(--font-display); font-size: 1.02rem; line-height: 1.2;
+  }
+  .ahp-body span {
+    display: block; margin-top: 5px;
+    color: var(--ink-mute); font-size: 0.9rem; line-height: 1.5;
+  }
+  [data-theme="light"] .about-hero-panel {
+    background:
+      radial-gradient(120% 90% at 100% 0%, rgba(212,175,55,0.14), transparent 55%),
+      linear-gradient(180deg, rgba(255,255,255,0.9), rgba(248,250,252,0.86));
+    border-color: rgba(212,175,55,0.32);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.7) inset, 0 40px 80px -40px rgba(15,23,42,0.4);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .about-hero-panel, .about-hero-panel::after, .ahp-live-dot { animation: none; }
+  }
+  @media (max-width: 980px) {
+    .about-hero-panel { animation: none; }
+    .about-hero-panel::after { display: none; }
+  }
+
+  /* ===== STORY — "problem to process" origin, full-bleed canvas backdrop ===== */
+  .story-section { position: relative; overflow: hidden; padding: clamp(72px,8vw,120px) 0; }
+  .bg-fx--story {
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
+    mask-image: linear-gradient(180deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
+  }
+  .story-section > .container { position: relative; z-index: 2; }
+
+  .story-head { max-width: 760px; }
+  .story-head h2 { margin-top: 16px; }
+  .story-dot { color: var(--gold); }
+  .story-lead {
+    margin-top: 22px; max-width: 640px;
+    font-size: clamp(1.15rem, 1.9vw, 1.5rem); line-height: 1.45; color: var(--ink);
+    text-wrap: pretty;
+  }
+  .story-lead { font-weight: 400; }
+
+  .story-transform {
+    margin-top: clamp(40px, 5vw, 64px);
+  }
+
+  /* ── "Noise → process" panel ── */
+  .story-shift {
+    position: relative; overflow: hidden;
+    border: 1px solid var(--line); border-radius: var(--radius-lg);
+    padding: clamp(26px, 3.2vw, 44px);
+    background: linear-gradient(135deg, rgba(12,17,26,0.96) 0%, rgba(20,28,40,0.92) 100%);
+    -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+  .story-shift::before {
+    content: ''; position: absolute; left: 0; right: 0; top: 0; height: 1px; z-index: 2;
+    background: linear-gradient(90deg, transparent, rgba(212,175,55,0.55) 28%, rgba(212,175,55,0.55) 72%, transparent);
+  }
+  .story-shift::after {
+    content: ''; position: absolute; right: -8%; bottom: -34%; width: 58%; height: 92%; z-index: 0;
+    pointer-events: none; border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,175,55,0.09), transparent 70%);
+  }
+  .story-shift > * { position: relative; z-index: 1; }
+
+  .shift-head {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 14px;
+    flex-wrap: wrap; margin-bottom: clamp(20px, 2.4vw, 28px);
+  }
+  .shift-kicker {
+    font-family: var(--font-mono); font-size: 0.68rem; font-weight: 500;
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-dim);
+  }
+  .shift-legend { font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-mute); }
+  .shift-legend b { color: var(--gold); font-weight: 500; }
+
+  /* BEFORE — one muted, struck-through line of noise */
+  .shift-before {
+    display: flex; align-items: center; gap: 12px 18px; flex-wrap: wrap;
+    padding: 15px 18px; border-radius: 12px;
+    border: 1px dashed var(--line-strong); background: rgba(125,135,150,0.04);
+  }
+  .shift-before-label {
+    flex: none; font-family: var(--font-mono); font-size: 0.62rem; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--bear);
+  }
+  .noise-row { display: flex; flex-wrap: wrap; gap: 8px 12px; margin: 0; padding: 0; list-style: none; }
+  .noise-row li {
+    position: relative; font-family: var(--font-mono); font-size: 0.82rem;
+    color: var(--ink-dim); padding: 2px 1px;
+  }
+  .noise-row li::after {
+    content: ''; position: absolute; left: -1px; right: -1px; top: 53%; height: 1.5px;
+    background: var(--bear); opacity: 0.55; transform: scaleX(0); transform-origin: left;
+    transition: transform 0.55s var(--ease-out);
+  }
+  .reveal.in .noise-row li::after, .story-shift .noise-row li::after { transform: scaleX(1); }
+  .reveal .noise-row li::after { transform: scaleX(0); }
+  .reveal.in .noise-row li:nth-child(2)::after { transition-delay: 0.06s; }
+  .reveal.in .noise-row li:nth-child(3)::after { transition-delay: 0.12s; }
+  .reveal.in .noise-row li:nth-child(4)::after { transition-delay: 0.18s; }
+  .reveal.in .noise-row li:nth-child(5)::after { transition-delay: 0.24s; }
+
+  /* TRANSITION line between before and pipeline */
+  .shift-arrow {
+    display: flex; align-items: center; gap: 16px; margin: clamp(20px,2.4vw,28px) 0;
+    font-family: var(--font-mono); font-size: 0.64rem; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); white-space: nowrap;
+  }
+  .shift-arrow::before, .shift-arrow::after {
+    content: ''; height: 1px; flex: 1; background: linear-gradient(90deg, transparent, rgba(212,175,55,0.35), transparent);
+  }
+
+  /* AFTER — connected 4-step pipeline */
+  .pipeline {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+  }
+  .pipe-step {
+    position: relative; padding: 22px 20px 24px;
+    border: 1px solid var(--line); border-radius: 14px;
+    background: linear-gradient(180deg, rgba(22,29,41,0.7), rgba(12,17,25,0.5));
+    transition: transform 0.35s var(--ease-out), border-color 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
+  }
+  .pipe-step:hover { transform: translateY(-5px); border-color: var(--line-strong); }
+  .pipe-step:not(:last-child)::after {
+    content: ''; position: absolute; right: -10px; top: 50%; z-index: 3;
+    width: 8px; height: 8px; transform: translateY(-50%) rotate(45deg);
+    border-top: 1.5px solid rgba(212,175,55,0.55); border-right: 1.5px solid rgba(212,175,55,0.55);
+  }
+  .pipe-num {
+    font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.04em; color: var(--ink-dim);
+  }
+  .pipe-name {
+    display: block; margin-top: 12px;
+    font-family: var(--font-display); font-weight: 600; font-size: 1.2rem; color: var(--ink);
+  }
+  .pipe-desc { display: block; margin-top: 7px; font-size: 0.86rem; line-height: 1.5; color: var(--ink-mute); text-wrap: pretty; }
+  .pipe-step--core {
+    border-color: rgba(212,175,55,0.4);
+    background:
+      radial-gradient(120% 120% at 50% 0%, rgba(212,175,55,0.1), transparent 60%),
+      linear-gradient(180deg, rgba(24,30,42,0.8), rgba(13,18,27,0.6));
+    box-shadow: 0 0 0 1px rgba(212,175,55,0.12), 0 24px 54px -40px rgba(212,175,55,0.5);
+  }
+  .pipe-step--core .pipe-num { color: var(--gold); }
+
+  [data-theme="light"] .story-shift { background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(248,250,252,0.88)); }
+  [data-theme="light"] .shift-before { background: rgba(17,22,31,0.03); }
+  [data-theme="light"] .pipe-step { background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(248,250,252,0.78)); }
+  [data-theme="light"] .pipe-step--core {
+    background: radial-gradient(120% 120% at 50% 0%, rgba(212,175,55,0.12), transparent 60%), linear-gradient(180deg, #fff, rgba(248,250,252,0.85));
+  }
+
+  @media (max-width: 860px) {
+    .pipeline { grid-template-columns: repeat(2, 1fr); }
+    .pipe-step:not(:last-child)::after { display: none; }
+  }
+  @media (max-width: 480px) {
+    .pipeline { grid-template-columns: 1fr; }
+    .shift-before { flex-direction: column; align-items: flex-start; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pipe-step:hover { transform: none; }
+    .noise-row li::after, .reveal .noise-row li::after { transform: scaleX(1); transition: none; }
+  }
+
+  /* closing line */
+  .story-practice {
+    margin: clamp(40px,5vw,60px) auto 0; max-width: 820px; text-align: center;
+    font-size: clamp(1.02rem, 1.5vw, 1.2rem); line-height: 1.6; color: var(--ink-mute);
+    text-wrap: pretty;
+  }
+  .story-practice strong { color: var(--ink); font-weight: 600; }
+  .story-risk { display: block; margin-top: 12px; font-size: 0.85rem; color: var(--ink-dim); }
+
+  /* ===== Merge hero <-> story: seamless constellation crossfade ===== */
+  .about-hero {
+    border-bottom: 0;
+    overflow: hidden;
+  }
+  .about-hero::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: clamp(220px, 18vw, 340px);
+    z-index: 1;
+    pointer-events: none;
+    background:
+      radial-gradient(64% 120% at 16% 24%, rgba(212,175,55,0.08), transparent 72%),
+      radial-gradient(56% 112% at 86% 18%, rgba(34,197,94,0.07), transparent 74%),
+      linear-gradient(180deg, rgba(10,14,20,0) 0%, rgba(9,13,18,0.52) 68%, rgba(9,13,18,0.96) 100%);
+  }
+  /* Pull the story up into the hero's fading lower edge; restore spacing with padding */
+  .story-section {
+    margin-top: 0;
+    padding-top: clamp(72px,8vw,120px);
+    position: relative; z-index: 1;
+  }
+  .story-section::before {
+    display: none;
+  }
+  /* Story canvas fades IN exactly across the overlap (top) and OUT into the next section (bottom),
+     so its starfield dissolves into the hero's instead of starting at a hard line. */
+  .bg-fx--story {
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, rgba(0,0,0,0.38) 120px, #000 260px, #000 calc(100% - 130px), transparent 100%);
+    mask-image: linear-gradient(180deg, transparent 0, rgba(0,0,0,0.38) 120px, #000 260px, #000 calc(100% - 130px), transparent 100%);
+  }
+  @media (max-width: 900px) {
+    .about-hero::after { height: 220px; }
+    .story-section { margin-top: 0; padding-top: clamp(56px,8vw,96px); }
+    .bg-fx--story {
+      -webkit-mask-image: linear-gradient(180deg, transparent 0, rgba(0,0,0,0.42) 86px, #000 190px, #000 calc(100% - 100px), transparent 100%);
+      mask-image: linear-gradient(180deg, transparent 0, rgba(0,0,0,0.42) 86px, #000 190px, #000 calc(100% - 100px), transparent 100%);
+    }
+  }
+
+  /* ===== HOW IT WORKS — connected three-layer system ===== */
+  .how-layers {
+    max-width: 920px; margin: clamp(40px,5vw,60px) auto 0;
+    display: grid; gap: 18px; position: relative;
+  }
+  /* spine linking the numbered nodes */
+  .how-layers::before {
+    content: ''; position: absolute; left: 35px; top: 30px; bottom: 30px; width: 2px; z-index: 0;
+    background: linear-gradient(180deg, rgba(212,175,55,0.15), var(--gold) 50%, rgba(34,197,94,0.4));
+  }
+  @media (max-width: 620px) { .how-layers::before { display: none; } }
+
+  .hl-card {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 72px 1fr; align-items: start;
+    border: 1px solid var(--line); border-radius: var(--radius-lg);
+    background: linear-gradient(180deg, rgba(22,29,41,0.7), rgba(12,17,25,0.55));
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    overflow: hidden;
+    transition: transform 0.4s var(--ease-out), border-color 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
+  }
+  .hl-card:hover { transform: translateX(4px); border-color: var(--line-strong); }
+
+  .hl-rail { position: relative; padding: 26px 0 26px 22px; }
+  .hl-num {
+    position: relative; z-index: 1;
+    display: grid; place-items: center; width: 44px; height: 44px; border-radius: 999px;
+    font-family: var(--font-mono); font-size: 0.86rem; color: var(--bull);
+    background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.4);
+  }
+  .hl-main { padding: 24px 26px 24px 4px; }
+  .hl-chip {
+    display: inline-block; font-family: var(--font-mono); font-size: 0.62rem; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-dim);
+    padding: 5px 10px; border-radius: 999px; border: 1px solid var(--line-strong);
+    background: rgba(125,135,150,0.06);
+  }
+  .hl-chip--gold { color: var(--gold); border-color: rgba(212,175,55,0.4); background: rgba(212,175,55,0.08); }
+  .hl-main h3 { margin: 14px 0 0; font-size: 1.3rem; }
+  .hl-main p { margin: 10px 0 0; color: var(--ink-mute); font-size: 0.96rem; line-height: 1.6; max-width: 60ch; text-wrap: pretty; }
+  .hl-tags { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .hl-tags li {
+    font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-mute);
+    padding: 5px 11px; border-radius: 8px; background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .hl-tags .hl-tag--note { color: var(--gold); background: rgba(212,175,55,0.08); border-color: rgba(212,175,55,0.22); }
+
+  /* the core layer — the two models everything centers on */
+  .hl-card--core {
+    border-color: rgba(212,175,55,0.32);
+    background:
+      radial-gradient(120% 130% at 0% 0%, rgba(212,175,55,0.1), transparent 55%),
+      linear-gradient(180deg, rgba(24,30,42,0.78), rgba(13,18,27,0.6));
+    box-shadow: 0 0 0 1px rgba(212,175,55,0.12), 0 30px 70px -50px rgba(212,175,55,0.5);
+  }
+  .hl-card--core .hl-num { color: var(--gold); background: rgba(212,175,55,0.12); border-color: rgba(212,175,55,0.5); }
+
+  [data-theme="light"] .hl-card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(248,250,252,0.78));
+  }
+  [data-theme="light"] .hl-card--core {
+    background:
+      radial-gradient(120% 130% at 0% 0%, rgba(212,175,55,0.12), transparent 55%),
+      linear-gradient(180deg, #fff, rgba(248,250,252,0.85));
+  }
+  [data-theme="light"] .hl-tags li { background: rgba(17,22,31,0.03); border-color: rgba(17,22,31,0.07); }
+
+  @media (max-width: 620px) {
+    .hl-card { grid-template-columns: 1fr; }
+    .hl-rail { padding: 22px 26px 0; }
+    .hl-main { padding: 14px 26px 24px; }
+  }
+
+  /* ===== FOUR RULES — rulebook cards with per-rule accent ===== */
+  .rules-grid {
+    margin-top: clamp(36px,4.5vw,52px);
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
+  }
+  @media (max-width: 1040px) { .rules-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .rules-grid { grid-template-columns: 1fr; } }
+
+  .rule-card {
+    position: relative; overflow: hidden;
+    padding: 26px 24px 28px;
+    border: 1px solid var(--line); border-radius: var(--radius-lg);
+    background: linear-gradient(180deg, rgba(22,29,41,0.66), rgba(12,17,25,0.5));
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    transition: transform 0.4s var(--ease-out), border-color 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
+  }
+  /* top accent bar in the rule's colour */
+  .rule-card::before {
+    content: ''; position: absolute; left: 0; top: 0; height: 3px; width: 100%;
+    background: linear-gradient(90deg, rgba(var(--rc),0.9), rgba(var(--rc),0));
+    opacity: 0.85;
+  }
+  .rule-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(var(--rc),0.4);
+    box-shadow: 0 26px 60px -38px rgba(var(--rc),0.55), 0 0 0 1px rgba(var(--rc),0.14);
+  }
+
+  /* oversized ghost index */
+  .rule-ghost {
+    position: absolute; right: 14px; bottom: -14px; z-index: 0;
+    font-family: var(--font-display); font-weight: 700; font-size: 6.2rem; line-height: 1;
+    color: rgba(var(--rc),0.08); pointer-events: none;
+    transition: color 0.4s var(--ease-out);
+  }
+  .rule-card:hover .rule-ghost { color: rgba(var(--rc),0.16); }
+
+  .rule-top {
+    position: relative; z-index: 1;
+    display: flex; align-items: center; gap: 12px; margin-bottom: 22px;
+  }
+  .rule-ico {
+    display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px;
+    color: rgb(var(--rc));
+    background: rgba(var(--rc),0.1); border: 1px solid rgba(var(--rc),0.32);
+  }
+  .rule-ico svg { width: 21px; height: 21px; }
+  .rule-tag {
+    font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase; color: rgba(var(--rc),0.92);
+  }
+  .rule-card h3 { position: relative; z-index: 1; font-size: 1.18rem; margin: 0; }
+  .rule-card p {
+    position: relative; z-index: 1; margin-top: 10px;
+    font-size: 0.93rem; line-height: 1.6; color: var(--ink-mute); text-wrap: pretty;
+  }
+
+  [data-theme="light"] .rule-card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(248,250,252,0.8));
+  }
+  [data-theme="light"] .rule-card[style*="226,232,240"] .rule-ico { color: #5b6472; background: rgba(91,100,114,0.1); border-color: rgba(91,100,114,0.3); }
+  [data-theme="light"] .rule-card[style*="226,232,240"] .rule-tag { color: #5b6472; }
+  [data-theme="light"] .rule-card[style*="226,232,240"] .rule-ghost { color: rgba(91,100,114,0.1); }
+
+  @media (prefers-reduced-motion: reduce) { .rule-card:hover { transform: none; } }
+
+  /* ===== MARKETS — instruments panel (replaces the photo) ===== */
+  .mkt-panel {
+    position: relative; overflow: hidden;
+    padding: clamp(20px,2.2vw,28px);
+    border: 1px solid var(--line); border-radius: var(--radius-lg);
+    background:
+      radial-gradient(130% 90% at 100% 0%, rgba(212,175,55,0.09), transparent 55%),
+      linear-gradient(180deg, rgba(22,29,41,0.72), rgba(12,17,25,0.6));
+    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.05) inset, 0 40px 80px -46px rgba(0,0,0,0.8);
+  }
+  .mkt-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 16px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .mkt-title { font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; color: var(--ink); }
+  .mkt-live {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: var(--font-mono); font-size: 0.64rem; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--bull);
+  }
+  .mkt-live-dot {
+    width: 7px; height: 7px; border-radius: 999px; background: var(--bull);
+    animation: mktLive 2.4s ease-in-out infinite;
+  }
+  @keyframes mktLive { 0%,100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.45); } 60% { box-shadow: 0 0 0 7px rgba(34,197,94,0); } }
+
+  .mkt-list { list-style: none; margin: 0; padding: 0; }
+  .mkt-row {
+    display: grid; grid-template-columns: 84px 1fr 72px auto; align-items: center; gap: 14px;
+    padding: 16px 6px; border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .mkt-row:last-child { border-bottom: 0; }
+  .mkt-sym { font-family: var(--font-mono); font-weight: 500; font-size: 0.95rem; color: var(--ink); }
+  .mkt-name { color: var(--ink-mute); font-size: 0.9rem; }
+  .mkt-spark { width: 72px; height: 26px; color: var(--ink-dim); }
+  .mkt-row--gold .mkt-sym { color: var(--gold); }
+  .mkt-row--gold .mkt-spark { color: var(--gold); }
+  .mkt-flag {
+    font-family: var(--font-mono); font-size: 0.58rem; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold);
+    padding: 4px 9px; border-radius: 999px;
+    background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.34);
+  }
+
+  .mkt-foot {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    margin-top: 14px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .mkt-foot-label {
+    font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--ink-dim);
+  }
+  .mkt-sessions { display: flex; gap: 8px; }
+  .mkt-sess {
+    position: relative; padding-left: 16px;
+    font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-mute);
+  }
+  .mkt-sess::before {
+    content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+    width: 6px; height: 6px; border-radius: 999px; background: var(--bull);
+  }
+  .mkt-exclude {
+    margin-top: 16px; text-align: center;
+    font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.04em; color: var(--ink-dim);
+  }
+
+  [data-theme="light"] .mkt-panel {
+    background:
+      radial-gradient(130% 90% at 100% 0%, rgba(212,175,55,0.1), transparent 55%),
+      linear-gradient(180deg, rgba(255,255,255,0.92), rgba(248,250,252,0.82));
+  }
+
+  @media (max-width: 560px) {
+    .mkt-row { grid-template-columns: 78px 1fr auto; }
+    .mkt-spark { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .mkt-live-dot { animation: none; } }
+
+  /* ===== Animate the candlestick backdrop (principles + markets) ===== */
+  .about-pattern::before { animation: aboutCandleDrift 46s linear infinite; opacity: 0.075; }
+  @keyframes aboutCandleDrift { to { background-position: 320px 0; } }
+  .about-pattern::after {
+    content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background:
+      radial-gradient(40% 48% at 12% 18%, rgba(34,197,94,0.06), transparent 70%),
+      radial-gradient(44% 52% at 88% 86%, rgba(212,175,55,0.08), transparent 72%);
+    animation: aboutPatternGlow 17s ease-in-out infinite alternate;
+  }
+  @keyframes aboutPatternGlow {
+    0% { opacity: 0.45; transform: translate3d(0,0,0) scale(1); }
+    100% { opacity: 0.95; transform: translate3d(0,-12px,0) scale(1.04); }
+  }
+  /* markets drifts the other way for subtle variety */
+  #markets.about-pattern::before { animation-duration: 54s; animation-direction: reverse; }
+  #markets.about-pattern > .container { position: relative; z-index: 1; }
+
+  /* ===== Float the markets instruments panel (matches the hero execution stack) ===== */
+  .mkt-panel { overflow: visible; animation: mktFloat 7.5s ease-in-out infinite; will-change: transform; }
+  .mkt-panel::after {
+    content: ''; position: absolute; left: 8%; right: 8%; bottom: -24px; height: 38px; z-index: -1;
+    border-radius: 999px; pointer-events: none;
+    background: radial-gradient(60% 100% at 50% 0%, rgba(0,0,0,0.5), transparent 70%);
+    filter: blur(8px);
+    animation: mktShadow 7.5s ease-in-out infinite;
+  }
+  @keyframes mktFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+  @keyframes mktShadow { 0%,100% { opacity: 0.8; transform: scaleX(1); } 50% { opacity: 0.5; transform: scaleX(0.9); } }
+  @media (max-width: 980px) { .mkt-panel { animation: none; } .mkt-panel::after { display: none; } }
+
+  /* ===== Four rules — constellation backdrop (hero-family, upward-drifting variant) ===== */
+  .principles-fx { position: relative; isolation: isolate; overflow: hidden; }
+  .principles-fx > .container { position: relative; z-index: 1; }
+  .bg-fx--principles {
+    -webkit-mask-image: radial-gradient(125% 112% at 50% 42%, #000 0%, #000 56%, transparent 100%);
+    mask-image: radial-gradient(125% 112% at 50% 42%, #000 0%, #000 56%, transparent 100%);
+  }
+
+  /* ===== LEGAL & PRIVACY — "policy desk" master/detail (ported from the FAQ support-desk) ===== */
+  #legal .faq2 {
+    position: relative;
+    max-width: 1180px;
+    margin: clamp(26px, 3vw, 42px) auto 0;
+    border: 1px solid var(--line);
+    border-radius: calc(var(--radius-lg) + 4px);
+    background: var(--bg-elev);
+    overflow: hidden;
+    box-shadow: 0 44px 100px -54px rgba(0, 0, 0, 0.85);
+  }
+  #legal .faq2::before {
+    content: '';
+    position: absolute; top: 0; left: 26px; right: 26px; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.65), rgba(34, 197, 94, 0.32), transparent);
+  }
+
+  .faq2-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 15px 22px;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+  .faq2-bar-title { display: inline-flex; align-items: center; gap: 11px; color: var(--ink-mute); }
+  .faq2-bar-title::before {
+    content: '';
+    width: 9px; height: 9px; border-radius: 2px;
+    background: var(--gold); box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+  }
+  .faq2-bar-meta .hl { color: var(--gold); }
+
+  .faq2-body { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.2fr); }
+  .faq2-list { border-right: 1px solid var(--line); }
+
+  .faq2-item { border-bottom: 1px solid var(--line); scroll-margin-top: 96px; }
+  .faq2-item:last-child { border-bottom: 0; }
+
+  .faq2-q {
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 16px;
+    padding: 22px 22px;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.02rem;
+    line-height: 1.34;
+    position: relative;
+    transition: background 0.3s, padding-left 0.45s var(--ease-out), color 0.25s;
+  }
+  .faq2-q::before {
+    content: '';
+    position: absolute; left: 0; top: 14px; bottom: 14px; width: 2px;
+    background: linear-gradient(var(--gold), rgba(212, 175, 55, 0.2));
+    border-radius: 2px;
+    transform: scaleY(0); transform-origin: top center; opacity: 0;
+    transition: transform 0.5s var(--ease-out), opacity 0.3s ease;
+  }
+  .faq2-num {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--ink-dim);
+    transition: color 0.25s ease;
+  }
+  .faq2-chev {
+    width: 16px; height: 16px;
+    color: var(--ink-dim);
+    flex-shrink: 0;
+    transition: transform 0.4s var(--ease-out), color 0.25s ease;
+  }
+  .faq2-q:hover { background: rgba(212, 175, 55, 0.05); padding-left: 30px; }
+  .faq2-q:hover .faq2-num { color: var(--gold); }
+  .faq2-item.active .faq2-q { background: var(--bg-elev-2); }
+  .faq2-item.active .faq2-q::before { transform: scaleY(1); opacity: 1; animation: railGlow 2.2s ease-in-out infinite; }
+  @keyframes railGlow { 0%, 100% { box-shadow: 0 0 7px -2px var(--gold); } 50% { box-shadow: 0 0 13px 0 var(--gold); } }
+  .faq2-item.active .faq2-num { color: var(--gold); }
+  .faq2-item.active .faq2-chev { color: var(--gold); transform: translateX(3px); }
+
+  .faq2-src { display: none; }
+
+  .faq2-detail {
+    position: relative;
+    padding: clamp(28px, 3vw, 44px) clamp(26px, 3vw, 46px);
+    min-height: 348px;
+  }
+  .faq2-detail::after {
+    content: attr(data-wm);
+    position: absolute; top: 16px; right: 26px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 5.5rem;
+    line-height: 1;
+    color: var(--gold);
+    opacity: 0.06;
+    pointer-events: none;
+    user-select: none;
+    animation: wmBreath 4.5s ease-in-out infinite;
+  }
+  @keyframes wmBreath { 0%, 100% { opacity: 0.05; } 50% { opacity: 0.1; } }
+  .faq2-detail.anim::after { animation: wmFlash 0.7s var(--ease-out) both, wmBreath 4.5s ease-in-out 0.7s infinite; }
+  @keyframes wmFlash {
+    0% { opacity: 0; transform: translateY(8px) scale(0.9); }
+    55% { opacity: 0.2; }
+    100% { opacity: 0.08; transform: none; }
+  }
+  .faq2-detail::before {
+    content: '';
+    position: absolute; top: 0; bottom: 0; width: 45%; left: -50%;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.10), transparent);
+    pointer-events: none; opacity: 0; z-index: 2;
+  }
+  .faq2-detail.anim::before { animation: paneSweep 0.85s cubic-bezier(0.4, 0, 0.1, 1); }
+  @keyframes paneSweep { 0% { left: -50%; opacity: 1; } 100% { left: 120%; opacity: 0; } }
+
+  .faq2-ans-tag { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+  .faq2-ans-name {
+    font-family: var(--font-mono); font-size: 0.74rem; font-weight: 500;
+    letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold);
+    white-space: nowrap;
+  }
+  .faq2-ans-rule {
+    flex: 1 1 auto; height: 1px;
+    background: linear-gradient(90deg, rgba(212, 175, 55, 0.45), rgba(212, 175, 55, 0.06));
+    transform-origin: left center;
+  }
+  .faq2-ans-coord {
+    font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500;
+    letter-spacing: 0.08em; color: var(--ink-dim); white-space: nowrap;
+  }
+  .faq2-ans-coord b { color: var(--gold); font-weight: 500; }
+  .faq2-detail h3 {
+    position: relative;
+    font-size: clamp(1.3rem, 2vw, 1.72rem);
+    margin-bottom: 20px; padding-bottom: 14px;
+    max-width: 24ch;
+  }
+  .faq2-detail h3::after {
+    content: ''; position: absolute; left: 0; bottom: 0;
+    width: 46px; height: 2px; transform-origin: left center;
+    background: linear-gradient(90deg, var(--gold), rgba(212, 175, 55, 0));
+  }
+  .faq2-detail-ans { color: var(--ink-mute); font-size: 1rem; line-height: 1.66; max-width: 60ch; }
+  .faq2-detail-ans p { margin: 0 0 0.9em; color: inherit; }
+  .faq2-detail-ans p:last-child { margin-bottom: 0; }
+  .faq2-detail-ans strong { color: var(--ink); font-weight: 600; }
+  .faq2-detail-ans a { color: var(--gold); border-bottom: 1px solid rgba(212, 175, 55, 0.4); }
+
+  .faq2-detail.anim .faq2-ans-name { animation: tagIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+  .faq2-detail.anim .faq2-ans-rule { animation: ruleDraw 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both; }
+  .faq2-detail.anim .faq2-ans-coord { animation: tagIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.24s both; }
+  .faq2-detail.anim h3 { animation: h3Wipe 0.66s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both; }
+  .faq2-detail.anim h3::after { animation: ruleDraw 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.34s both; }
+  .faq2-detail.anim .faq2-detail-ans p { animation: pIn 0.62s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .faq2-detail.anim .faq2-detail-ans p:nth-child(1) { animation-delay: 0.22s; }
+  .faq2-detail.anim .faq2-detail-ans p:nth-child(2) { animation-delay: 0.34s; }
+  .faq2-detail.anim .faq2-detail-ans p:nth-child(3) { animation-delay: 0.46s; }
+  @keyframes tagIn { from { opacity: 0; transform: translateX(-14px); } to { opacity: 1; transform: none; } }
+  @keyframes ruleDraw { from { transform: scaleX(0); opacity: 0; } to { transform: scaleX(1); opacity: 1; } }
+  @keyframes h3Wipe {
+    from { opacity: 0; clip-path: inset(0 100% 0 0); transform: translateY(10px); filter: blur(4px); }
+    to { opacity: 1; clip-path: inset(0 0 0 0); transform: none; filter: blur(0); }
+  }
+  @keyframes pIn {
+    from { opacity: 0; transform: translateY(18px); filter: blur(5px); }
+    to { opacity: 1; transform: none; filter: blur(0); }
+  }
+
+  [data-theme="light"] #legal .faq2 { background: var(--bg-elev); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq2-detail.anim .faq2-ans-name,
+    .faq2-detail.anim .faq2-ans-rule,
+    .faq2-detail.anim .faq2-ans-coord,
+    .faq2-detail.anim h3,
+    .faq2-detail.anim h3::after,
+    .faq2-detail.anim::after,
+    .faq2-detail.anim .faq2-detail-ans p,
+    .faq2-item.active .faq2-q::before,
+    .faq2-detail::after,
+    .faq2-detail.anim::before { animation: none; }
+    .faq2-detail.anim h3 { clip-path: none; }
+  }
+
+  @media (max-width: 900px) {
+    .faq2-body { grid-template-columns: 1fr; }
+    .faq2-list { border-right: 0; }
+    .faq2-detail { display: none; }
+
+    .faq2-src {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.45s var(--ease-out);
+      background: var(--bg-elev-2);
+    }
+    .faq2-item.active .faq2-src { grid-template-rows: 1fr; }
+    .faq2-src-inner { overflow: hidden; }
+    .faq2-item.active .faq2-src-inner {
+      padding: 4px 22px 26px;
+      border-left: 2px solid var(--gold);
+    }
+    .faq2-src .faq2-ans-tag { margin-bottom: 12px; }
+    .faq2-src h3 { display: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .faq2-src { transition: none; }
+    }
+  }
 </style>
 </head>
 <body>
@@ -100,41 +961,37 @@
 
 <header class="nav" id="nav">
   <div class="nav-inner">
-    <a class="brand" href="index.html" aria-label="The Khan Trading home">
-      <span class="brand-mark"><img src="assets/img/logo.jpg" alt="The Khan Trading logo" loading="lazy" /></span>
-      <span>The Khan Trading</span>
-    </a>
+    <a class="brand" href="index.html"><span class="brand-mark"><img src="assets/img/logo.jpg" alt="" loading="lazy" /></span><span>The Khan Trading</span></a>
     <nav class="nav-links" aria-label="Primary">
       <a href="index.html">Home</a>
-      <div class="nav-dropdown-group">
-        <button class="nav-dropdown-trigger" type="button" aria-haspopup="true" aria-expanded="false">
-          <span>Learn</span>
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: -2px;">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
-        </button>
-        <div class="nav-dropdown-menu">
-          <a href="index.html#ict">ICT Concepts</a>
-          <a href="crt.html">CRT Model</a>
-          <a href="unicorn.html">Unicorn Model</a>
+        <div class="nav-dropdown-group" tabindex="0">
+          <span>Learn
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: -2px;">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+          <div class="nav-dropdown-menu">
+            <a href="index.html#ict">ICT Concepts</a>
+            <a href="crt.html">CRT Model</a>
+            <a href="unicorn.html">Unicorn Model</a>
+          </div>
         </div>
-      </div>
       <a href="about.html" class="active">About</a>
       <a href="pricing.html">Pricing</a>
       <a href="contact.html">Contact</a>
     </nav>
-    <div class="nav-auth">
-      <a href="register.html" class="btn-join" aria-label="Join Now">
-        Join Now
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-      </a>
-    </div>
+      <div class="nav-auth">
+        <a href="register.html" class="btn-join" aria-label="Join Now">
+          Join Now
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
     <button class="theme-toggle nav-theme" type="button" aria-label="Switch theme">
       <svg class="ic-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
       <svg class="ic-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
       <svg class="ic-system" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
     </button>
-    <button class="nav-mobile-toggle" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false">
+    <button class="nav-mobile-toggle" aria-label="Open menu">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
     </button>
   </div>
@@ -229,13 +1086,18 @@
 
 <main id="main">
 
+  <div class="about-intro-stage">
+    <div class="bg-fx bg-fx--intro" aria-hidden="true"><canvas class="bg-canvas" data-variant="intro"></canvas></div>
+
   <!-- ============ HERO ============ -->
   <section id="top" class="page-hero about-hero" aria-label="About The Khan Trading">
-    <div class="bg-fx" aria-hidden="true"><canvas class="bg-canvas"></canvas></div>
     <div class="container about-hero-grid">
       <div class="about-hero-copy">
-        <span class="eyebrow">About</span>
-        <h1>What The Khan Trading is.</h1>
+        <div class="about-hero-top">
+          <span class="eyebrow">About</span>
+          <span class="about-hero-tag">ICT · CRT · Unicorn</span>
+        </div>
+        <h1>What The Khan Trading is<span class="about-hero-dot">.</span></h1>
         <p class="lead">A forex education service. We teach ICT concepts and the two execution models built on them — Candle Range Theory (CRT) and the Unicorn entry model — focused on XAUUSD and the FX majors. We post live setups during the London and New York sessions via Telegram, with a full course and private Discord for students. All content is educational, not financial advice.</p>
         <div class="crt-jump about-hero-links">
           <a class="link-arrow" href="#story">Story <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
@@ -245,52 +1107,110 @@
       </div>
 
       <aside class="about-hero-panel" aria-label="The Khan Trading system overview">
-        <span class="about-panel-kicker">Execution stack</span>
-        <div class="about-panel-row">
-          <strong>ICT concepts</strong>
-          <span>Market structure, liquidity, order blocks, fair-value gaps</span>
+        <div class="ahp-head">
+          <span class="about-panel-kicker">Execution stack</span>
+          <span class="ahp-live"><span class="ahp-live-dot"></span>Live</span>
         </div>
-        <div class="about-panel-row">
-          <strong>CRT model</strong>
-          <span>Range, sweep, confirmation, expansion</span>
-        </div>
-        <div class="about-panel-row">
-          <strong>Unicorn entry</strong>
-          <span>Breaker block, FVG, liquidity sweep confluence</span>
-        </div>
-        <div class="about-panel-row">
-          <strong>Community access</strong>
-          <span>Free Telegram, Premium Telegram, full course, private Discord</span>
-        </div>
+        <ol class="ahp-stack">
+          <li class="ahp-node">
+            <span class="ahp-step">01</span>
+            <div class="ahp-body">
+              <strong>ICT concepts</strong>
+              <span>Market structure, liquidity, order blocks, fair-value gaps</span>
+            </div>
+          </li>
+          <li class="ahp-node">
+            <span class="ahp-step">02</span>
+            <div class="ahp-body">
+              <strong>CRT model</strong>
+              <span>Range, sweep, confirmation, expansion</span>
+            </div>
+          </li>
+          <li class="ahp-node">
+            <span class="ahp-step">03</span>
+            <div class="ahp-body">
+              <strong>Unicorn entry</strong>
+              <span>Breaker block, FVG, liquidity sweep confluence</span>
+            </div>
+          </li>
+          <li class="ahp-node">
+            <span class="ahp-step">04</span>
+            <div class="ahp-body">
+              <strong>Community access</strong>
+              <span>Free Telegram, Premium Telegram, full course, private Discord</span>
+            </div>
+          </li>
+        </ol>
       </aside>
     </div>
   </section>
 
   <!-- ============ STORY ============ -->
-  <section id="story" class="fx-grid-glow" style="padding-top:80px">
-    <div class="container">
-      <div class="grid-2" style="align-items:start">
-        <div>
-          <span class="eyebrow">Where we came from</span>
-          <h2 style="margin-top:18px">Where this came from.</h2>
-          <p style="margin-top:24px">The Khan Trading started with one problem: most traders run a dozen indicators and switch strategy every week, and never get consistent. The fix was to pick one framework &mdash; ICT &mdash; and turn it into a fixed process: <strong>CRT</strong> to find the trade, the <strong>Unicorn</strong> entry for the highest-confluence setups, and a checklist for every entry.</p>
-          <p>What we do in practice: post live setups during the London and New York sessions with the entry, stop and target, explain the reasoning, and stay on Gold and the FX majors. Trading carries risk, and the decisions you make are your own.</p>
-        </div>
-          <div class="card" style="padding:0;overflow:hidden;border-radius:var(--radius-lg)">
-            <div style="aspect-ratio:4/5;background:linear-gradient(135deg, var(--bg-elev-2), var(--bg-base));display:grid;place-items:center;position:relative">
-              <div style="text-align:center; position:relative; z-index:2;">
-                <div style="width:140px;height:140px;border-radius:999px;background:linear-gradient(135deg, var(--bull), var(--gold));display:grid;place-items:center;font-family:var(--font-display);font-weight:700;font-size:3rem;color:#0A0E14;margin:0 auto">K</div>
-                <p style="margin-top:22px;font-family:var(--font-display);font-weight:600;font-size:1.1rem;color:var(--ink)">The Khan Trading</p>
-                <p style="margin-top:6px;font-family:var(--font-mono);font-size:0.74rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold)">ICT · CRT · Unicorn</p>
-              </div>
-            </div>
+  <section id="story" class="story-section" aria-label="Where The Khan Trading came from">
+    <div class="container story-inner">
+
+      <header class="story-head reveal">
+        <span class="eyebrow">The origin</span>
+        <h2>Where this came from<span class="story-dot">.</span></h2>
+        <p class="story-lead">It started with one problem: most traders run a dozen indicators, switch strategy every week &mdash; and never get consistent.</p>
+      </header>
+
+      <div class="story-transform">
+        <div class="story-shift reveal">
+
+          <div class="shift-head">
+            <span class="shift-kicker">From noise to one process</span>
+            <span class="shift-legend">1 framework · <b>0 guesswork</b></span>
           </div>
+
+          <!-- BEFORE: the noise, struck out -->
+          <div class="shift-before">
+            <span class="shift-before-label">Most&nbsp;traders</span>
+            <ul class="noise-row">
+              <li>12 indicators</li>
+              <li>new strategy weekly</li>
+              <li>RSI &middot; MACD &middot; Stoch</li>
+              <li>gut-feel entries</li>
+              <li>no consistency</li>
+            </ul>
+          </div>
+
+          <div class="shift-arrow" aria-hidden="true">Replaced with one repeatable process</div>
+
+          <!-- AFTER: the connected pipeline -->
+          <ol class="pipeline">
+            <li class="pipe-step">
+              <span class="pipe-num">01</span>
+              <span class="pipe-name">ICT</span>
+              <span class="pipe-desc">One framework, not twelve.</span>
+            </li>
+            <li class="pipe-step pipe-step--core">
+              <span class="pipe-num">02</span>
+              <span class="pipe-name">CRT</span>
+              <span class="pipe-desc">Reads the range to find the trade.</span>
+            </li>
+            <li class="pipe-step pipe-step--core">
+              <span class="pipe-num">03</span>
+              <span class="pipe-name">Unicorn</span>
+              <span class="pipe-desc">The highest-confluence entry.</span>
+            </li>
+            <li class="pipe-step">
+              <span class="pipe-num">04</span>
+              <span class="pipe-name">Checklist</span>
+              <span class="pipe-desc">Run on every single entry.</span>
+            </li>
+          </ol>
+
+        </div>
       </div>
+
+      <p class="story-practice reveal">In practice we post <strong>live setups</strong> through the London and New York sessions &mdash; entry, stop, target and the reasoning behind each &mdash; and stay on <strong>Gold</strong> and the <strong>FX majors</strong>. <span class="story-risk">Trading carries risk, and the decisions you make are your own.</span></p>
+
     </div>
   </section>
 
   <!-- ============ HOW IT WORKS ============ -->
-  <section id="how" class="fx-grid-glow" style="background:var(--bg-elev);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <section id="how" class="fx-grid-glow how-section">
     <div class="container">
       <div class="section-header">
         <span class="eyebrow">How it works</span>
@@ -298,102 +1218,48 @@
         <p>Three layers: the ICT framework, the two execution models built on it, and how setups reach you.</p>
       </div>
 
-      <div class="grid-2" style="align-items:center">
-        <div class="unicorn-visual unicorn-visual--glow reveal">
-          <span class="badge"><span class="pulse"></span> XAUUSD · FX majors</span>
-          <img src="assets/img/about-markets.jpg" alt="A trader reviewing candlestick charts across a laptop and tablet" width="1600" height="2400" loading="lazy" />
-        </div>
-        <div class="stagger-group">
-          <div class="step">
-            <div class="step-num">01</div>
-            <div>
-              <span class="crt-chip">Framework</span>
-              <h4 style="margin-top:8px">ICT concepts</h4>
-              <p>Six building blocks: market structure, liquidity, order blocks, fair-value gaps, premium/discount, and session timing (kill zones). The two models below are built from these.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-num">02</div>
-            <div>
-              <span class="crt-chip gold">Models</span>
-              <h4 style="margin-top:8px">CRT &amp; Unicorn</h4>
-              <p>CRT reads one reference candle's range to define entry, stop and target in four steps. The Unicorn entry stacks a breaker block, a fair-value gap and a liquidity sweep for the highest-confluence setups (typically 1&ndash;3 a week).</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-num">03</div>
-            <div>
-              <span class="crt-chip">Signals</span>
-              <h4 style="margin-top:8px">Delivery &amp; community</h4>
-              <p>Setups are posted during the London and New York sessions. Paid signals include entry, stop-loss and take-profit; the course adds a full curriculum and a private Discord.</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div class="how-layers">
 
-      <div class="how-tiers reveal">
-        <div class="how-tier">
-          <span class="ht-name">Free</span>
-          <span class="ht-price">$0 forever</span>
-          <p class="ht-desc">ICT &amp; CRT basics, weekly commentary, and public setup breakdowns.</p>
-        </div>
-        <div class="how-tier">
-          <span class="ht-name">Premium Telegram</span>
-          <span class="ht-price">$20/mo · $300 lifetime</span>
-          <p class="ht-desc">2&ndash;3 signals a day, each with entry, stop-loss &amp; take-profit.</p>
-        </div>
-        <div class="how-tier featured">
-          <span class="ht-name">Full Course + Discord</span>
-          <span class="ht-price">$50/mo · $500 lifetime</span>
-          <p class="ht-desc">4&ndash;5 signals a day + the full ICT/CRT/Unicorn curriculum &amp; private Discord.</p>
-        </div>
+        <article class="hl-card reveal" style="--i:0">
+          <div class="hl-rail"><span class="hl-num">01</span></div>
+          <div class="hl-main">
+            <span class="hl-chip">Framework</span>
+            <h3>ICT concepts</h3>
+            <p>Six building blocks &mdash; market structure, liquidity, order blocks, fair-value gaps, premium/discount and session timing. Everything below is built from these.</p>
+            <ul class="hl-tags">
+              <li>Market structure</li><li>Liquidity</li><li>Order blocks</li><li>Fair-value gaps</li><li>Premium / discount</li><li>Kill zones</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="hl-card hl-card--core reveal" style="--i:1">
+          <div class="hl-rail"><span class="hl-num">02</span></div>
+          <div class="hl-main">
+            <span class="hl-chip hl-chip--gold">Models</span>
+            <h3>CRT &amp; Unicorn</h3>
+            <p>CRT reads one reference candle's range to define entry, stop and target in four steps. The Unicorn entry stacks a breaker block, a fair-value gap and a liquidity sweep for the highest-confluence setups.</p>
+            <ul class="hl-tags">
+              <li>CRT &middot; 4 steps</li><li>Breaker block</li><li>FVG + sweep</li><li class="hl-tag--note">1&ndash;3 setups / week</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="hl-card reveal" style="--i:2">
+          <div class="hl-rail"><span class="hl-num">03</span></div>
+          <div class="hl-main">
+            <span class="hl-chip">Signals</span>
+            <h3>Delivery &amp; community</h3>
+            <p>Setups are posted live through the London and New York sessions. Paid signals carry entry, stop-loss and take-profit; the course adds the full curriculum and a private Discord.</p>
+            <ul class="hl-tags">
+              <li>London + NY sessions</li><li>Entry &middot; Stop &middot; Target</li><li>Course + Discord</li>
+            </ul>
+          </div>
+        </article>
+
       </div>
-      <p style="text-align:center;margin-top:22px;font-size:0.95rem">
-        <a class="link-arrow" href="pricing.html">See full pricing <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-      </p>
     </div>
   </section>
 
-  <!-- Philosophy -->
-  <section class="about-pattern" id="principles">
-    <div class="container">
-      <div class="section-header">
-        <span class="eyebrow">How we trade</span>
-        <h2>Four rules we hold to.</h2>
-      </div>
-
-      <div class="grid-4 stagger-group">
-        <article class="card" data-tilt>
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-          </div>
-          <h3 style="font-size:1.15rem">Session-timed</h3>
-          <p style="font-size:0.93rem;margin-top:10px">Setups are taken in the London and New York sessions. Outside them, we stay flat.</p>
-        </article>
-        <article class="card" data-tilt>
-          <div class="card-icon gold">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>
-          </div>
-          <h3 style="font-size:1.15rem">Two models only</h3>
-          <p style="font-size:0.93rem;margin-top:10px">We trade CRT and the Unicorn entry &mdash; not a rotating set of indicators.</p>
-        </article>
-        <article class="card" data-tilt>
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 4v16"/></svg>
-          </div>
-          <h3 style="font-size:1.15rem">Checklist entries</h3>
-          <p style="font-size:0.93rem;margin-top:10px">Every entry follows a fixed checklist: sweep, displacement, entry zone, stop, target. No checklist, no trade.</p>
-        </article>
-        <article class="card" data-tilt>
-          <div class="card-icon bear">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-          </div>
-          <h3 style="font-size:1.15rem">Risk first</h3>
-          <p style="font-size:0.93rem;margin-top:10px">Risk per trade is fixed and defined before entry. Capital preservation comes before profit.</p>
-        </article>
-      </div>
-    </div>
-  </section>
 
   <!-- ============ FOCUS: GOLD & MAJORS ============ -->
   <section id="markets">
@@ -411,16 +1277,44 @@
             <span class="crt-chip">New York session</span>
           </div>
         </div>
-        <div class="unicorn-visual reveal">
-          <span class="badge"><span class="pulse"></span> Gold · XAUUSD</span>
-          <img src="assets/img/about-focus.jpg" alt="A market-data screen showing Gold and major index prices" width="1600" height="1067" loading="lazy" />
+        <div class="mkt-panel reveal">
+          <div class="mkt-head">
+            <span class="mkt-title">Instruments</span>
+            <span class="mkt-live"><span class="mkt-live-dot"></span>Tracked daily</span>
+          </div>
+          <ul class="mkt-list">
+            <li class="mkt-row mkt-row--gold">
+              <span class="mkt-sym">XAUUSD</span>
+              <span class="mkt-name">Gold</span>
+              <svg class="mkt-spark" viewBox="0 0 72 26" fill="none" aria-hidden="true"><polyline points="2,20 13,17 24,19 35,12 46,14 57,6 70,3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="mkt-flag">Primary</span>
+            </li>
+            <li class="mkt-row">
+              <span class="mkt-sym">EURUSD</span>
+              <span class="mkt-name">Euro / Dollar</span>
+              <svg class="mkt-spark" viewBox="0 0 72 26" fill="none" aria-hidden="true"><polyline points="2,10 13,13 24,9 35,15 46,12 57,16 70,13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </li>
+            <li class="mkt-row">
+              <span class="mkt-sym">GBPUSD</span>
+              <span class="mkt-name">Pound / Dollar</span>
+              <svg class="mkt-spark" viewBox="0 0 72 26" fill="none" aria-hidden="true"><polyline points="2,14 13,11 24,16 35,10 46,17 57,11 70,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </li>
+          </ul>
+          <div class="mkt-foot">
+            <span class="mkt-foot-label">Active sessions</span>
+            <div class="mkt-sessions">
+              <span class="mkt-sess">London</span>
+              <span class="mkt-sess">New York</span>
+            </div>
+          </div>
+          <div class="mkt-exclude">No crypto &middot; no indices &middot; no rotating markets</div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ============ LEGAL & PRIVACY ============ -->
-  <section id="legal" class="fx-grid-glow" style="background:var(--bg-elev);border-top:1px solid var(--line)">
+  <section id="legal">
     <div class="container">
       <div class="section-header">
         <span class="eyebrow">Legal &amp; privacy</span>
@@ -429,54 +1323,117 @@
       </div>
       <p class="legal-note">Plain-language summaries, not a substitute for professional legal advice.</p>
 
-      <div class="faq">
-        <div class="faq-item" id="privacy">
-          <button class="faq-q">Privacy Policy <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button>
-          <div class="faq-a"><div class="faq-a-inner"><div class="legal-doc">
-            <ul>
-              <li><strong>What we collect.</strong> The details you give us when you register or get in touch &mdash; typically your name, email and country. If you join our Telegram or Discord, those platforms also process your data under their own policies.</li>
-              <li><strong>How we use it.</strong> To set up and manage your access, send the updates and signals you asked for, answer your questions, and improve what we offer. We don't sell your data.</li>
-              <li><strong>Sharing.</strong> Only with the services that run the business (e.g. Telegram, Discord, payment and email providers), as needed to deliver what you signed up for, or where the law requires it.</li>
-              <li><strong>Your rights.</strong> Ask us to show, correct or delete your data, or to stop contacting you, any time &mdash; just email us.</li>
-              <li><strong>Retention &amp; cookies.</strong> Kept only as long as needed for the above. The site uses minimal local storage (e.g. remembering your theme) &mdash; no advertising trackers.</li>
-            </ul>
-          </div></div></div>
+      <div class="faq2 reveal">
+        <div class="faq2-bar">
+          <span class="faq2-bar-title">legal.desk</span>
+          <span class="faq2-bar-meta"><span class="hl">05</span> policies &middot; the khan trading</span>
         </div>
 
-        <div class="faq-item" id="terms">
-          <button class="faq-q">Terms of Use <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button>
-          <div class="faq-a"><div class="faq-a-inner"><div class="legal-doc">
-            <p>Using this site and our channels means you accept these terms. The Khan Trading provides trading <strong>education and example setups</strong> &mdash; not a service that trades for you, manages money, or guarantees results.</p>
-            <p>Paid access is personal to you. Don't share, resell or redistribute paid content, signals or course material. We may suspend access for abuse, chargebacks, or breaking community rules.</p>
-            <p>All content and branding is ours, provided for your own learning use only. We may update the site, our offers, or these terms at any time; continued use means you accept the current version.</p>
-          </div></div></div>
-        </div>
+        <div class="faq2-body">
+          <div class="faq2-list" role="tablist" aria-label="Legal &amp; privacy policies">
 
-        <div class="faq-item" id="risk">
-          <button class="faq-q">Risk Disclaimer <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button>
-          <div class="faq-a"><div class="faq-a-inner"><div class="legal-doc">
-            <p>Trading forex and Gold carries <strong>substantial risk</strong> and isn't suitable for everyone &mdash; you can lose some or all of your capital.</p>
-            <p>Everything we publish &mdash; education, commentary, and example setups including entries, stops and targets &mdash; is for <strong>educational purposes only</strong>. It is not financial, investment or tax advice, and not a recommendation to buy or sell anything.</p>
-            <p>Past performance and example trades do not guarantee future results. You alone are responsible for your decisions and risk management. Only trade money you can afford to lose, and seek independent advice if you're unsure.</p>
-          </div></div></div>
-        </div>
+            <div class="faq2-item active" id="privacy">
+              <button class="faq2-q" aria-expanded="true">
+                <span class="faq2-num">01</span>
+                <span class="faq2-q-text">Privacy Policy</span>
+                <svg class="faq2-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6" /></svg>
+              </button>
+              <div class="faq2-src">
+                <div class="faq2-src-inner">
+                  <span class="faq2-ans-tag"><span class="faq2-ans-name">Privacy</span><span class="faq2-ans-rule"></span><span class="faq2-ans-coord"><b>01</b> / 05</span></span>
+                  <h3>Privacy Policy</h3>
+                  <div class="faq2-detail-ans">
+                    <p><strong>What we collect.</strong> The details you give us when you register or get in touch &mdash; typically your name, email and country. If you join our Telegram or Discord, those platforms also process your data under their own policies.</p>
+                    <p><strong>How we use it.</strong> To set up and manage your access, send the updates and signals you asked for, answer your questions, and improve what we offer. We don't sell your data.</p>
+                    <p><strong>Sharing.</strong> Only with the services that run the business (e.g. Telegram, Discord, payment and email providers), as needed to deliver what you signed up for, or where the law requires it.</p>
+                    <p><strong>Your rights.</strong> Ask us to show, correct or delete your data, or to stop contacting you, any time &mdash; just email us.</p>
+                    <p><strong>Retention &amp; cookies.</strong> Kept only as long as needed for the above. The site uses minimal local storage (e.g. remembering your theme) &mdash; no advertising trackers.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-        <div class="faq-item" id="conflict">
-          <button class="faq-q">Conflict of Interest Policy <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button>
-          <div class="faq-a"><div class="faq-a-inner"><div class="legal-doc">
-            <p>We want you to know where our incentives sit. The Khan Trading earns from channel subscriptions and course sales &mdash; <strong>not from any broker</strong>. We are not a broker, fund, or signal-copying service.</p>
-            <p>We may hold or take positions in the same instruments we discuss (e.g. XAUUSD). Example setups are shared to teach a method &mdash; not to move price or push you into our positions.</p>
-            <p>If we ever recommend a third-party tool or service and receive any benefit for it, we'll say so.</p>
-          </div></div></div>
-        </div>
+            <div class="faq2-item" id="terms">
+              <button class="faq2-q" aria-expanded="false">
+                <span class="faq2-num">02</span>
+                <span class="faq2-q-text">Terms of Use</span>
+                <svg class="faq2-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6" /></svg>
+              </button>
+              <div class="faq2-src">
+                <div class="faq2-src-inner">
+                  <span class="faq2-ans-tag"><span class="faq2-ans-name">Terms</span><span class="faq2-ans-rule"></span><span class="faq2-ans-coord"><b>02</b> / 05</span></span>
+                  <h3>Terms of Use</h3>
+                  <div class="faq2-detail-ans">
+                    <p>Using this site and our channels means you accept these terms. The Khan Trading provides trading <strong>education and example setups</strong> &mdash; not a service that trades for you, manages money, or guarantees results.</p>
+                    <p>Paid access is personal to you. Don't share, resell or redistribute paid content, signals or course material. We may suspend access for abuse, chargebacks, or breaking community rules.</p>
+                    <p>All content and branding is ours, provided for your own learning use only. We may update the site, our offers, or these terms at any time; continued use means you accept the current version.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-        <div class="faq-item" id="consent">
-          <button class="faq-q">Declaration of Consent <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button>
-          <div class="faq-a"><div class="faq-a-inner"><div class="legal-doc">
-            <p>By registering, you confirm the details you provide are accurate, you're of legal age in your country, and you consent to us processing your data as described in the Privacy Policy above to deliver the services you requested.</p>
-            <p>You also confirm you've read the Risk Disclaimer and understand that all content is educational, that trading is risky, and that your results are your own responsibility.</p>
-            <p>You can withdraw consent or close your account at any time by emailing us; some records may be kept where the law requires.</p>
-          </div></div></div>
+            <div class="faq2-item" id="risk">
+              <button class="faq2-q" aria-expanded="false">
+                <span class="faq2-num">03</span>
+                <span class="faq2-q-text">Risk Disclaimer</span>
+                <svg class="faq2-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6" /></svg>
+              </button>
+              <div class="faq2-src">
+                <div class="faq2-src-inner">
+                  <span class="faq2-ans-tag"><span class="faq2-ans-name">Risk</span><span class="faq2-ans-rule"></span><span class="faq2-ans-coord"><b>03</b> / 05</span></span>
+                  <h3>Risk Disclaimer</h3>
+                  <div class="faq2-detail-ans">
+                    <p>Trading forex and Gold carries <strong>substantial risk</strong> and isn't suitable for everyone &mdash; you can lose some or all of your capital.</p>
+                    <p>Everything we publish &mdash; education, commentary, and example setups including entries, stops and targets &mdash; is for <strong>educational purposes only</strong>. It is not financial, investment or tax advice, and not a recommendation to buy or sell anything.</p>
+                    <p>Past performance and example trades do not guarantee future results. You alone are responsible for your decisions and risk management. Only trade money you can afford to lose, and seek independent advice if you're unsure.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="faq2-item" id="conflict">
+              <button class="faq2-q" aria-expanded="false">
+                <span class="faq2-num">04</span>
+                <span class="faq2-q-text">Conflict of Interest Policy</span>
+                <svg class="faq2-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6" /></svg>
+              </button>
+              <div class="faq2-src">
+                <div class="faq2-src-inner">
+                  <span class="faq2-ans-tag"><span class="faq2-ans-name">Conflicts</span><span class="faq2-ans-rule"></span><span class="faq2-ans-coord"><b>04</b> / 05</span></span>
+                  <h3>Conflict of Interest Policy</h3>
+                  <div class="faq2-detail-ans">
+                    <p>We want you to know where our incentives sit. The Khan Trading earns from channel subscriptions and course sales &mdash; <strong>not from any broker</strong>. We are not a broker, fund, or signal-copying service.</p>
+                    <p>We may hold or take positions in the same instruments we discuss (e.g. XAUUSD). Example setups are shared to teach a method &mdash; not to move price or push you into our positions.</p>
+                    <p>If we ever recommend a third-party tool or service and receive any benefit for it, we'll say so.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="faq2-item" id="consent">
+              <button class="faq2-q" aria-expanded="false">
+                <span class="faq2-num">05</span>
+                <span class="faq2-q-text">Declaration of Consent</span>
+                <svg class="faq2-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6" /></svg>
+              </button>
+              <div class="faq2-src">
+                <div class="faq2-src-inner">
+                  <span class="faq2-ans-tag"><span class="faq2-ans-name">Consent</span><span class="faq2-ans-rule"></span><span class="faq2-ans-coord"><b>05</b> / 05</span></span>
+                  <h3>Declaration of Consent</h3>
+                  <div class="faq2-detail-ans">
+                    <p>By registering, you confirm the details you provide are accurate, you're of legal age in your country, and you consent to us processing your data as described in the Privacy Policy above to deliver the services you requested.</p>
+                    <p>You also confirm you've read the Risk Disclaimer and understand that all content is educational, that trading is risky, and that your results are your own responsibility.</p>
+                    <p>You can withdraw consent or close your account at any time by emailing us; some records may be kept where the law requires.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="faq2-detail" data-wm="01" aria-live="polite">
+            <div class="faq2-detail-content"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -509,6 +1466,7 @@
       </p>
     </div>
   </section>
+  </div>
 
 </main>
 
@@ -550,27 +1508,72 @@
 <script src="js/main.js"></script>
 <script src="js/animations.js"></script>
 <script>
-  /* Legal accordion — open + scroll to a doc when linked via #hash (e.g. from register.html) */
+  /* Legal & privacy — "policy desk" master/detail on desktop, accordion on mobile,
+     with #hash deep-linking (e.g. about.html#terms from register.html / footer). */
   (function () {
+    var root = document.querySelector('.faq2');
+    if (!root) return;
+    var items = Array.prototype.slice.call(root.querySelectorAll('.faq2-item'));
+    var detail = root.querySelector('.faq2-detail');
+    var content = detail.querySelector('.faq2-detail-content');
+    var mqMobile = window.matchMedia('(max-width: 900px)');
+    var current = 0;
+
+    function paintDetail(i) {
+      var inner = items[i].querySelector('.faq2-src-inner');
+      content.innerHTML = inner.innerHTML;
+      detail.setAttribute('data-wm', items[i].querySelector('.faq2-num').textContent.trim());
+      detail.classList.remove('anim');
+      void detail.offsetWidth;
+      detail.classList.add('anim');
+    }
+
+    function setActive(i) {
+      items.forEach(function (it, idx) {
+        var on = idx === i;
+        it.classList.toggle('active', on);
+        it.querySelector('.faq2-q').setAttribute('aria-expanded', on ? 'true' : 'false');
+      });
+    }
+
+    function select(i) {
+      current = i;
+      setActive(i);
+      if (!mqMobile.matches && i >= 0) paintDetail(i);
+    }
+
+    items.forEach(function (it, idx) {
+      it.querySelector('.faq2-q').addEventListener('click', function () {
+        if (mqMobile.matches) {
+          select(it.classList.contains('active') ? -1 : idx);
+        } else if (idx !== current) {
+          select(idx);
+        }
+      });
+    });
+
+    var onMqChange = function () {
+      if (!mqMobile.matches) { if (current < 0) current = 0; select(current); }
+    };
+    if (mqMobile.addEventListener) mqMobile.addEventListener('change', onMqChange);
+    else mqMobile.addListener(onMqChange);
+
     function openFromHash() {
       var id = (location.hash || '').slice(1);
       if (!id) return;
-      var el = document.getElementById(id);
-      if (!el || !el.classList.contains('faq-item')) return;
-      var parent = el.parentElement;
-      if (parent) Array.prototype.forEach.call(parent.querySelectorAll('.faq-item.open'), function (o) {
-        if (o !== el) { o.classList.remove('open'); var q0 = o.querySelector('.faq-q'); if (q0) q0.setAttribute('aria-expanded', 'false'); }
-      });
-      el.classList.add('open');
-      var q = el.querySelector('.faq-q');
-      if (q) q.setAttribute('aria-expanded', 'true');
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      var idx = -1;
+      for (var i = 0; i < items.length; i++) { if (items[i].id === id) { idx = i; break; } }
+      if (idx < 0) return;
+      select(idx);
+      (mqMobile.matches ? items[idx] : root).scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
     window.addEventListener('hashchange', openFromHash);
+
+    select(0);
     if (location.hash) setTimeout(openFromHash, 80);
   })();
 
-  /* Canvas backdrop — aurora orbs behind a magnetic dot matrix (mounts every .bg-canvas) */
+  /* Canvas backdrop — aurora orbs behind a drifting constellation network (mounts every .bg-canvas) */
   (function () {
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var canvases = Array.prototype.slice.call(document.querySelectorAll('.bg-canvas'));
@@ -579,25 +1582,81 @@
       var host = canvas.parentNode;
       var ctx = canvas.getContext('2d');
       var W = 0, H = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
-      var dots = [], GAP = 34, cols = 0, rows = 0;
-      var ripples = [];
+      var nodes = [];
+      var pulses = [];
       var mouse = { x: -9999, y: -9999, active: false };
       var t = 0, raf = 0, visible = true;
+      var pVar = canvas.dataset.variant === 'principles';
+      var hVar = canvas.dataset.variant === 'how';
+      var LINK = pVar ? 162 : (hVar ? 150 : 132), LINK2 = LINK * LINK;
+      var vDrift = pVar ? -0.0045 : 0;
+      var hDrift = hVar ? 0.0055 : 0;
+      var coldLink = pVar ? '198,168,90' : (hVar ? '176,172,150' : '150,166,190');
+      var CR = 170, CR2 = CR * CR;
 
-      var orbs = [
+      var orbs = canvas.dataset.variant === 'story' ? [
+        { hue: '212,175,55', cx: 0.12, cy: 0.30, r: 0.50, ax: 0.04, ay: 0.03, sx: 0.06, sy: 0.05, ph: 0.4, a: 0.16 },
+        { hue: '34,197,94',  cx: 0.92, cy: 0.66, r: 0.46, ax: 0.05, ay: 0.04, sx: 0.05, sy: 0.07, ph: 2.3, a: 0.13 },
+        { hue: '212,175,55', cx: 0.52, cy: 0.06, r: 0.40, ax: 0.05, ay: 0.03, sx: 0.04, sy: 0.06, ph: 4.0, a: 0.10 }
+      ] : [
         { hue: '212,175,55', cx: 0.20, cy: 0.14, r: 0.48, ax: 0.05, ay: 0.04, sx: 0.11, sy: 0.07, ph: 0.0, a: 0.28 },
         { hue: '34,197,94',  cx: 0.82, cy: 0.28, r: 0.42, ax: 0.06, ay: 0.05, sx: 0.09, sy: 0.13, ph: 1.7, a: 0.20 },
         { hue: '212,175,55', cx: 0.62, cy: 0.86, r: 0.44, ax: 0.07, ay: 0.04, sx: 0.07, sy: 0.10, ph: 3.1, a: 0.15 }
       ];
+      if (canvas.dataset.variant === 'principles') {
+        orbs = [
+          { hue: '212,175,55', cx: 0.50, cy: 0.04, r: 0.52, ax: 0.04, ay: 0.03, sx: 0.05, sy: 0.04, ph: 0.6, a: 0.17 },
+          { hue: '34,197,94',  cx: 0.50, cy: 0.98, r: 0.50, ax: 0.05, ay: 0.03, sx: 0.04, sy: 0.05, ph: 2.6, a: 0.12 },
+          { hue: '212,175,55', cx: 0.88, cy: 0.42, r: 0.34, ax: 0.05, ay: 0.04, sx: 0.06, sy: 0.05, ph: 4.2, a: 0.09 }
+        ];
+      }
 
-      function makeDots() {
-        dots = [];
-        cols = Math.ceil(W / GAP) + 1; rows = Math.ceil(H / GAP) + 1;
-        for (var r = 0; r < rows; r++) {
-          for (var c = 0; c < cols; c++) {
-            var hx = c * GAP, hy = r * GAP;
-            dots.push({ hx: hx, hy: hy, x: hx, y: hy, vx: 0, vy: 0, prox: 0, green: Math.random() < 0.10, ph: (hx * 0.013 + hy * 0.017) });
-          }
+      if (canvas.dataset.variant === 'how') {
+        orbs = [
+          { hue: '212,175,55', cx: 0.16, cy: 0.16, r: 0.50, ax: 0.05, ay: 0.04, sx: 0.06, sy: 0.05, ph: 0.3, a: 0.20 },
+          { hue: '34,197,94',  cx: 0.86, cy: 0.82, r: 0.48, ax: 0.06, ay: 0.04, sx: 0.05, sy: 0.06, ph: 2.4, a: 0.15 },
+          { hue: '212,175,55', cx: 0.54, cy: 0.50, r: 0.36, ax: 0.05, ay: 0.04, sx: 0.05, sy: 0.05, ph: 4.1, a: 0.08 }
+        ];
+      }
+
+      function makeNodes() {
+        var dens = canvas.dataset.variant === 'story' ? 17000 : (canvas.dataset.variant === 'principles' ? 18500 : (canvas.dataset.variant === 'how' ? 15500 : 13000));
+        var target = Math.min(150, Math.max(36, Math.round((W * H) / dens)));
+        nodes = [];
+        for (var k = 0; k < target; k++) {
+          nodes.push({
+            x: Math.random() * W, y: Math.random() * H,
+            vx: (Math.random() - 0.5) * 0.28, vy: (Math.random() - 0.5) * 0.28,
+            r: 0.9 + Math.random() * 1.4,
+            green: Math.random() < 0.14,
+            ph: Math.random() * Math.PI * 2,
+            glow: 0
+          });
+        }
+      }
+
+      function findNeighbor(i, exclude) {
+        var ni = nodes[i]; if (!ni) return -1;
+        var best = -1, bestD = LINK2;
+        for (var j = 0; j < nodes.length; j++) {
+          if (j === i || j === exclude) continue;
+          var nj = nodes[j], dx = ni.x - nj.x, dy = ni.y - nj.y, d2 = dx * dx + dy * dy;
+          if (d2 < bestD) { bestD = d2; best = j; }
+        }
+        return best;
+      }
+      function respawnTraveler(tr) {
+        var a = (Math.random() * nodes.length) | 0;
+        var b = findNeighbor(a, -1);
+        tr.from = a; tr.to = (b === -1 ? a : b); tr.p = b === -1 ? 1 : Math.random() * 0.3;
+      }
+      function initTravelers() {
+        travelers = [];
+        if (!hVar) return;
+        var hues = ['212,175,55', '52,211,120', '212,175,55'];
+        for (var i = 0; i < 3; i++) {
+          var tr = { hue: hues[i % hues.length], speed: 0.0075 + Math.random() * 0.006 };
+          respawnTraveler(tr); travelers.push(tr);
         }
       }
 
@@ -613,6 +1672,7 @@
       function draw() {
         ctx.clearRect(0, 0, W, H);
         ctx.globalCompositeOperation = 'lighter';
+
         for (var k = 0; k < orbs.length; k++) {
           var o = orbs[k];
           var ox = (o.cx + Math.sin(t * o.sx + o.ph) * o.ax) * W;
@@ -624,57 +1684,110 @@
           g.addColorStop(1, 'rgba(' + o.hue + ',0)');
           ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
         }
-        var R = Math.min(190, Math.max(120, W * 0.14)), R2 = R * R;
+
         var dt = reduce ? 0 : 1;
-        for (var s = ripples.length - 1; s >= 0; s--) { var rp = ripples[s]; rp.r += 9 * dt; if (rp.r > Math.max(W, H) * 1.25) ripples.splice(s, 1); }
-        for (var i = 0; i < dots.length; i++) {
-          var d = dots[i]; var prox = 0;
-          if (mouse.active && !reduce) {
-            var dx = d.x - mouse.x, dy = d.y - mouse.y, dist2 = dx * dx + dy * dy;
-            if (dist2 < R2) { var dd = Math.sqrt(dist2) || 1, fall = 1 - dd / R; prox = fall; var push = fall * fall * 15; d.vx += (dx / dd) * push * 0.05; d.vy += (dy / dd) * push * 0.05; }
+        var maxR = Math.max(W, H) * 1.2;
+
+        for (var p = pulses.length - 1; p >= 0; p--) { var pu = pulses[p]; pu.r += 7 * dt; if (pu.r > maxR) pulses.splice(p, 1); }
+
+        var n = nodes.length, m;
+        for (m = 0; m < n; m++) {
+          var d = nodes[m];
+          if (!reduce) {
+            d.x += d.vx; d.y += d.vy;
+            if (mouse.active) {
+              var mx = mouse.x - d.x, my = mouse.y - d.y, md2 = mx * mx + my * my;
+              if (md2 < CR2) { var inv = 1 / (Math.sqrt(md2) || 1); d.vx += mx * inv * 0.012; d.vy += my * inv * 0.012; }
+            }
+            for (var pp = 0; pp < pulses.length; pp++) {
+              var ps = pulses[pp]; var rx = d.x - ps.x, ry = d.y - ps.y; var rd = Math.sqrt(rx * rx + ry * ry) || 1;
+              if (Math.abs(rd - ps.r) < 36) { var kk = (1 - Math.abs(rd - ps.r) / 36) * (1 - ps.r / maxR); d.vx += (rx / rd) * kk * 0.9; d.vy += (ry / rd) * kk * 0.9; }
+            }
+            d.vx *= 0.985; d.vy *= 0.985; if (vDrift) d.vy += vDrift; if (hDrift) d.vx += hDrift;
+            var sp = Math.hypot(d.vx, d.vy); if (sp > 0.7) { d.vx *= 0.7 / sp; d.vy *= 0.7 / sp; }
+            if (d.x < -20) d.x = W + 20; else if (d.x > W + 20) d.x = -20;
+            if (d.y < -20) d.y = H + 20; else if (d.y > H + 20) d.y = -20;
           }
-          for (var s2 = 0; s2 < ripples.length; s2++) {
-            var rp2 = ripples[s2]; var rx = d.hx - rp2.x, ry = d.hy - rp2.y; var rdist = Math.sqrt(rx * rx + ry * ry) || 1; var band = Math.abs(rdist - rp2.r);
-            if (band < 34) { var k2 = (1 - band / 34) * (1 - rp2.r / (Math.max(W, H) * 1.25)) * 3; d.vx += (rx / rdist) * k2; d.vy += (ry / rdist) * k2; if (k2 * 0.08 > prox) prox = k2 * 0.08; }
+          var g2 = 0;
+          if (mouse.active && !reduce) { var gx = d.x - mouse.x, gy = d.y - mouse.y, gd2 = gx * gx + gy * gy; if (gd2 < CR2) g2 = 1 - Math.sqrt(gd2) / CR; }
+          d.glow = g2;
+        }
+
+        for (var a = 0; a < n; a++) {
+          var na = nodes[a];
+          for (var b = a + 1; b < n; b++) {
+            var nb = nodes[b];
+            var dx = na.x - nb.x, dy = na.y - nb.y, dd2 = dx * dx + dy * dy;
+            if (dd2 > LINK2) continue;
+            var prox = 1 - Math.sqrt(dd2) / LINK;
+            var hot = Math.max(na.glow, nb.glow);
+            var alpha = prox * (0.10 + hot * 0.5);
+            if (alpha < 0.012) continue;
+            ctx.strokeStyle = hot > 0.12 ? 'rgba(212,175,55,' + alpha + ')' : 'rgba(' + coldLink + ',' + (alpha * 0.8) + ')';
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(na.x, na.y); ctx.lineTo(nb.x, nb.y); ctx.stroke();
           }
-          d.vx += (d.hx - d.x) * 0.06; d.vy += (d.hy - d.y) * 0.06; d.vx *= 0.82; d.vy *= 0.82; d.x += d.vx * dt; d.y += d.vy * dt; d.prox = prox;
         }
-        for (var li = 0; li < dots.length; li++) {
-          var a = dots[li]; var col = li % cols;
-          var right = (col < cols - 1) ? dots[li + 1] : null;
-          var down = (li + cols < dots.length) ? dots[li + cols] : null;
-          for (var nn = 0; nn < 2; nn++) {
-            var b2 = nn === 0 ? right : down; if (!b2) continue;
-            var energy = Math.max(a.prox, b2.prox); if (energy < 0.02) continue;
-            ctx.strokeStyle = 'rgba(212,175,55,' + (energy * 0.3) + ')'; ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b2.x, b2.y); ctx.stroke();
+
+        if (mouse.active && !reduce) {
+          for (var c = 0; c < n; c++) {
+            var nc = nodes[c]; if (nc.glow <= 0.02) continue;
+            ctx.strokeStyle = 'rgba(212,175,55,' + (nc.glow * 0.45) + ')'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(mouse.x, mouse.y); ctx.lineTo(nc.x, nc.y); ctx.stroke();
           }
         }
-        for (var m = 0; m < dots.length; m++) {
-          var d2 = dots[m]; var prox2 = d2.prox;
-          var wave = 0.5 + 0.5 * Math.sin(t * 0.9 + d2.ph);
-          var alpha = (0.10 + wave * 0.12) + prox2 * 0.6;
-          var rr = 1.1 + wave * 0.5 + prox2 * 1.5;
-          var hue; if (prox2 > 0.04) hue = '212,175,55'; else if (d2.green) hue = '52,211,120'; else hue = '150,166,190';
-          if (prox2 > 0.22) {
-            var gg = ctx.createRadialGradient(d2.x, d2.y, 0, d2.x, d2.y, rr * 3.2);
-            gg.addColorStop(0, 'rgba(' + hue + ',' + (alpha * 0.4) + ')'); gg.addColorStop(1, 'rgba(' + hue + ',0)');
-            ctx.fillStyle = gg; ctx.beginPath(); ctx.arc(d2.x, d2.y, rr * 3.2, 0, Math.PI * 2); ctx.fill();
+
+        for (var q = 0; q < n; q++) {
+          var dn = nodes[q];
+          var twinkle = 0.5 + 0.5 * Math.sin(t * 1.1 + dn.ph);
+          var alpha2 = 0.18 + twinkle * 0.14 + dn.glow * 0.6;
+          var rr = dn.r + twinkle * 0.3 + dn.glow * 1.8;
+          var hue; if (dn.glow > 0.05) hue = '212,175,55'; else if (dn.green) hue = '52,211,120'; else hue = '160,176,200';
+          if (dn.glow > 0.2) {
+            var gg = ctx.createRadialGradient(dn.x, dn.y, 0, dn.x, dn.y, rr * 3.4);
+            gg.addColorStop(0, 'rgba(' + hue + ',' + (alpha2 * 0.45) + ')'); gg.addColorStop(1, 'rgba(' + hue + ',0)');
+            ctx.fillStyle = gg; ctx.beginPath(); ctx.arc(dn.x, dn.y, rr * 3.4, 0, Math.PI * 2); ctx.fill();
           }
-          ctx.fillStyle = 'rgba(' + hue + ',' + alpha + ')'; ctx.beginPath(); ctx.arc(d2.x, d2.y, rr, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = 'rgba(' + hue + ',' + alpha2 + ')'; ctx.beginPath(); ctx.arc(dn.x, dn.y, rr, 0, Math.PI * 2); ctx.fill();
         }
-        for (var sr = 0; sr < ripples.length; sr++) {
-          var rp3 = ripples[sr]; var fade = 1 - rp3.r / (Math.max(W, H) * 1.25);
-          ctx.strokeStyle = 'rgba(212,175,55,' + (fade * 0.22) + ')'; ctx.lineWidth = 1.4;
-          ctx.beginPath(); ctx.arc(rp3.x, rp3.y, rp3.r, 0, Math.PI * 2); ctx.stroke();
+
+        if (hVar && !reduce) {
+          for (var ti = 0; ti < travelers.length; ti++) {
+            var tr = travelers[ti];
+            var na2 = nodes[tr.from], nb2 = nodes[tr.to];
+            if (!na2 || !nb2) { respawnTraveler(tr); continue; }
+            var ddx = na2.x - nb2.x, ddy = na2.y - nb2.y;
+            if (ddx * ddx + ddy * ddy > LINK2 * 2.6) { respawnTraveler(tr); continue; }
+            tr.p += tr.speed;
+            if (tr.p >= 1) {
+              var nx = findNeighbor(tr.to, tr.from);
+              tr.from = tr.to;
+              if (nx === -1) { respawnTraveler(tr); } else { tr.to = nx; tr.p = 0; }
+              continue;
+            }
+            var hx = na2.x + (nb2.x - na2.x) * tr.p, hy = na2.y + (nb2.y - na2.y) * tr.p;
+            ctx.strokeStyle = 'rgba(' + tr.hue + ',0.32)'; ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.moveTo(na2.x, na2.y); ctx.lineTo(hx, hy); ctx.stroke();
+            var gh = ctx.createRadialGradient(hx, hy, 0, hx, hy, 8);
+            gh.addColorStop(0, 'rgba(' + tr.hue + ',0.85)'); gh.addColorStop(1, 'rgba(' + tr.hue + ',0)');
+            ctx.fillStyle = gh; ctx.beginPath(); ctx.arc(hx, hy, 8, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = 'rgba(' + tr.hue + ',0.95)'; ctx.beginPath(); ctx.arc(hx, hy, 1.8, 0, Math.PI * 2); ctx.fill();
+          }
         }
+
+        for (var pr = 0; pr < pulses.length; pr++) {
+          var pf = pulses[pr]; var fade = 1 - pf.r / maxR;
+          ctx.strokeStyle = 'rgba(212,175,55,' + (fade * 0.2) + ')'; ctx.lineWidth = 1.4;
+          ctx.beginPath(); ctx.arc(pf.x, pf.y, pf.r, 0, Math.PI * 2); ctx.stroke();
+        }
+
         ctx.globalCompositeOperation = 'source-over';
       }
 
       function loop() { if (visible) { t += 0.016; draw(); } raf = requestAnimationFrame(loop); }
 
-      resize(); makeDots();
-      var ro = new ResizeObserver(function () { resize(); makeDots(); }); ro.observe(host);
+      resize(); makeNodes(); initTravelers();
+      var ro = new ResizeObserver(function () { resize(); makeNodes(); initTravelers(); }); ro.observe(host);
       var io = new IntersectionObserver(function (es) { es.forEach(function (e) { visible = e.isIntersecting; }); }, { threshold: 0 }); io.observe(host);
       window.addEventListener('pointermove', function (e) {
         var b = host.getBoundingClientRect();
@@ -686,8 +1799,8 @@
         host.parentNode.addEventListener('pointerdown', function (e) {
           var b = host.getBoundingClientRect();
           if (e.clientX < b.left || e.clientX > b.right || e.clientY < b.top || e.clientY > b.bottom) return;
-          ripples.push({ x: e.clientX - b.left, y: e.clientY - b.top, r: 0 });
-          if (ripples.length > 4) ripples.shift();
+          pulses.push({ x: e.clientX - b.left, y: e.clientY - b.top, r: 0 });
+          if (pulses.length > 4) pulses.shift();
         }, { passive: true });
       }
       if (reduce) { t = 1.4; draw(); } else { draw(); raf = requestAnimationFrame(loop); }
@@ -695,6 +1808,7 @@
 
     canvases.forEach(mount);
   })();
+
 </script>
 </body>
 </html>

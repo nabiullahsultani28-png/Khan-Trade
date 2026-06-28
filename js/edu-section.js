@@ -2,7 +2,7 @@
   var root = document.getElementById('ict');
   if (!root) return;
 
-  var _raf = null, _tick = null, _onScroll = null, _onResize = null;
+  var _raf = null, _onScroll = null, _onResize = null;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   setupReveal(root);
@@ -48,8 +48,21 @@
     var w = 0, h = 0, dpr = 1, small = false;
     var step = 22, colW = 12, bandH = 0;
     var series = [], minP = 0, maxP = 1, chartW = 0, chartCY = 0;
-    var progS = 0;
+    var progS = 0, progT = 0;
     var N = 175;
+    var onScreen = true;
+
+    // Pre-rendered chart strip (built once per resize) + cached vignette.
+    // The candle series is static, so we rasterize the whole chart once and
+    // blit a window of it each frame instead of re-stroking every candle.
+    var strip = null, sctx = null, cacheDpr = 1, vgrad = null;
+
+    // Parallax tuning. PAN_SCALE keeps the horizontal travel small so the drift
+    // stays subtle. EASE is high on purpose: the pan must track the scroll
+    // position almost 1:1. A low EASE lags ~(1-EASE)/EASE frames behind the
+    // scroll and keeps drifting after you stop, which reads as sluggish/floaty.
+    var PAN_SCALE = 0.16;
+    var EASE = 0.5;
 
     function baseAt(i) {
       var t = i / (N - 1);
@@ -90,74 +103,136 @@
       bandH = vph * (small ? 0.78 : 0.88);
       buildSeries();
       chartW = N * step;
-    }
-    _onResize = resize;
-    window.addEventListener('resize', resize, { passive: true });
-    resize();
-
-    function yOf(p) {
-      return chartCY + (0.5 - (p - minP) / (maxP - minP)) * bandH;
+      buildStrip();
+      buildVignette();
     }
 
-    function frame() {
-      var rect = secEl.getBoundingClientRect();
-      var vh = window.innerHeight || h;
-      var prog = clamp((vh - rect.top) / (vh + rect.height), 0, 1);
-      progS += (prog - progS) * 0.10;
+    // Map a price to a y within the band [0, bandH]. minP→bandH, maxP→0, so the
+    // full chart fits the strip exactly. The per-frame blit then offsets it by
+    // (chartCY - bandH/2), reproducing the live yOf() positioning 1:1.
+    function stripY(p) {
+      return bandH / 2 + (0.5 - (p - minP) / (maxP - minP)) * bandH;
+    }
 
-      if (rect.bottom < -80 || rect.top > vh + 80) {
-        if (!reduce) _raf = requestAnimationFrame(frame);
-        return;
-      }
+    // Rasterize grid + every candle once into an offscreen strip the full width
+    // of the chart. cacheDpr matches the screen dpr, so the blit is pixel-exact.
+    function buildStrip() {
+      cacheDpr = dpr;
+      if (!strip) strip = document.createElement('canvas');
+      strip.width = Math.max(1, Math.round(chartW * cacheDpr));
+      strip.height = Math.max(1, Math.round(bandH * cacheDpr));
+      sctx = strip.getContext('2d');
+      sctx.setTransform(cacheDpr, 0, 0, cacheDpr, 0, 0);
+      sctx.clearRect(0, 0, chartW, bandH);
 
-      ctx.clearRect(0, 0, w, h);
-
-      var panMax = Math.max(0, chartW - w);
-      var panX = progS * panMax;
-      chartCY = clamp(vh / 2 - rect.top, bandH / 2 + 20, h - bandH / 2 - 20);
-
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = 'rgba(255,255,255,0.035)';
+      sctx.lineWidth = 1;
+      sctx.strokeStyle = 'rgba(255,255,255,0.035)';
       var gh = bandH / 5;
-      for (var gy = chartCY - bandH / 2; gy <= chartCY + bandH / 2 + 0.5; gy += gh) {
-        ctx.beginPath(); ctx.moveTo(0, Math.round(gy) + 0.5); ctx.lineTo(w, Math.round(gy) + 0.5); ctx.stroke();
+      for (var gy = 0; gy <= bandH + 0.5; gy += gh) {
+        sctx.beginPath(); sctx.moveTo(0, Math.round(gy) + 0.5); sctx.lineTo(chartW, Math.round(gy) + 0.5); sctx.stroke();
       }
-      ctx.strokeStyle = 'rgba(255,255,255,0.02)';
+      sctx.strokeStyle = 'rgba(255,255,255,0.02)';
       var gstep = step * 5;
-      for (var gx = -(panX % gstep); gx < w; gx += gstep) {
-        ctx.beginPath(); ctx.moveTo(Math.round(gx) + 0.5, 0); ctx.lineTo(Math.round(gx) + 0.5, h); ctx.stroke();
+      for (var gx = 0; gx <= chartW + 0.5; gx += gstep) {
+        sctx.beginPath(); sctx.moveTo(Math.round(gx) + 0.5, 0); sctx.lineTo(Math.round(gx) + 0.5, bandH); sctx.stroke();
       }
 
-      var i0 = Math.max(0, Math.floor(panX / step) - 1);
-      var i1 = Math.min(N - 1, Math.ceil((panX + w) / step) + 1);
-      for (var i = i0; i <= i1; i++) {
+      for (var i = 0; i < N; i++) {
         var k = series[i];
-        var x = i * step - panX;
+        var x = i * step;
         var xc = x + colW / 2;
-        var yO = yOf(k.o), yC = yOf(k.c), yH = yOf(k.hi), yL = yOf(k.lo);
+        var yO = stripY(k.o), yC = stripY(k.c), yH = stripY(k.hi), yL = stripY(k.lo);
         var cc = k.up ? '34,197,94' : '239,68,68';
         var top = Math.min(yO, yC), bh = Math.max(2, Math.abs(yC - yO));
-        ctx.strokeStyle = 'rgba(' + cc + ',0.6)';
-        ctx.lineWidth = 1.4;
-        ctx.beginPath(); ctx.moveTo(xc, yH); ctx.lineTo(xc, yL); ctx.stroke();
-        ctx.fillStyle = 'rgba(' + cc + ',0.82)';
+        sctx.strokeStyle = 'rgba(' + cc + ',0.6)';
+        sctx.lineWidth = 1.4;
+        sctx.beginPath(); sctx.moveTo(xc, yH); sctx.lineTo(xc, yL); sctx.stroke();
+        sctx.fillStyle = 'rgba(' + cc + ',0.82)';
         var rad = Math.min(colW * 0.28, 3);
-        if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(x, top, colW, bh, rad); ctx.fill(); }
-        else ctx.fillRect(x, top, colW, bh);
+        if (sctx.roundRect) { sctx.beginPath(); sctx.roundRect(x, top, colW, bh, rad); sctx.fill(); }
+        else sctx.fillRect(x, top, colW, bh);
       }
-
-      var vg = ctx.createRadialGradient(w / 2, h * 0.5, Math.min(w, h) * 0.3, w / 2, h * 0.5, Math.max(w, h) * 0.8);
-      vg.addColorStop(0, 'rgba(10,14,20,0)');
-      vg.addColorStop(1, 'rgba(10,14,20,0.45)');
-      ctx.fillStyle = vg;
-      ctx.fillRect(0, 0, w, h);
-
-      if (!reduce) _raf = requestAnimationFrame(frame);
     }
 
-    frame();
-    _tick = setInterval(function () {
-      if (!reduce && (document.hidden || _raf == null)) frame();
-    }, 1000 / 30);
+    // Screen-fixed darkening vignette. Rebuilt only on resize, reused each frame.
+    function buildVignette() {
+      vgrad = ctx.createRadialGradient(w / 2, h * 0.5, Math.min(w, h) * 0.3, w / 2, h * 0.5, Math.max(w, h) * 0.8);
+      vgrad.addColorStop(0, 'rgba(10,14,20,0)');
+      vgrad.addColorStop(1, 'rgba(10,14,20,0.45)');
+    }
+
+    function progAt(rect, vh) {
+      return clamp((vh - rect.top) / (vh + rect.height), 0, 1);
+    }
+
+    function draw(rect, vh) {
+      ctx.clearRect(0, 0, w, h);
+      if (!strip) return;
+
+      var panMax = Math.max(0, chartW - w);
+      var panX = progS * panMax * PAN_SCALE;
+      chartCY = clamp(vh / 2 - rect.top, bandH / 2 + 20, h - bandH / 2 - 20);
+
+      // Blit the visible window of the pre-rendered strip (one GPU copy instead
+      // of re-stroking ~100 candles). Source rect is in the strip's device px.
+      ctx.drawImage(
+        strip,
+        panX * cacheDpr, 0, w * cacheDpr, bandH * cacheDpr,
+        0, chartCY - bandH / 2, w, bandH
+      );
+
+      if (vgrad) { ctx.fillStyle = vgrad; ctx.fillRect(0, 0, w, h); }
+    }
+
+    // Redraw only while the eased pan is still catching up to the scroll
+    // target. Once it settles, the loop stops — idle frames cost nothing.
+    function loop() {
+      _raf = null;
+      if (reduce || !onScreen || document.hidden) return;
+      var vh = window.innerHeight || h;
+      var rect = secEl.getBoundingClientRect();
+      progT = progAt(rect, vh);
+      progS += (progT - progS) * EASE;
+      if (Math.abs(progT - progS) < 0.0006) progS = progT;
+      draw(rect, vh);
+      if (progS !== progT) _raf = requestAnimationFrame(loop);
+    }
+
+    function kick() {
+      if (reduce || !onScreen || document.hidden) return;
+      if (_raf == null) _raf = requestAnimationFrame(loop);
+    }
+
+    // Force a single repaint at the current pan (initial mount + resize),
+    // independent of the easing loop.
+    function paintNow() {
+      var vh = window.innerHeight || h;
+      var rect = secEl.getBoundingClientRect();
+      draw(rect, vh);
+    }
+
+    _onResize = function () { resize(); paintNow(); };
+    window.addEventListener('resize', _onResize, { passive: true });
+    window.addEventListener('scroll', kick, { passive: true });
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) kick(); });
+
+    resize();
+
+    (function () {
+      var vh = window.innerHeight || h;
+      var rect = secEl.getBoundingClientRect();
+      progS = progT = progAt(rect, vh);
+    })();
+    paintNow();
+
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) {
+        onScreen = es[0].isIntersecting;
+        if (onScreen) kick();
+      }, { rootMargin: '160px 0px' });
+      io.observe(secEl);
+    }
+
+    if (!reduce) kick();
   }
 })();

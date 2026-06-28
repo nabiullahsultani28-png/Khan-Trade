@@ -327,8 +327,8 @@
     });
   }
 
-  // ---- Pricing page animated backdrop: aurora + curved liquidity field
-  document.querySelectorAll('.pricing-bg-canvas').forEach((canvas) => {
+  // ---- Pricing + Unicorn animated backdrop: aurora + curved liquidity field
+  document.querySelectorAll('.pricing-bg-canvas, .unicorn-bg-canvas').forEach((canvas) => {
     const host = canvas.parentElement;
     const ctx = canvas.getContext('2d');
     if (!host || !ctx) return;
@@ -651,6 +651,249 @@
       raf = requestAnimationFrame(animate);
     } else {
       tick = 1.4;
+      draw();
+    }
+
+    window.addEventListener('pagehide', () => {
+      if (raf) cancelAnimationFrame(raf);
+      ro.disconnect();
+      io.disconnect();
+      abort.abort();
+    }, { once: true });
+  });
+
+  // ---- CRT page animated backdrop: range rails + liquidity sweeps
+  document.querySelectorAll('.crt-bg-canvas').forEach((canvas) => {
+    const host = canvas.parentElement;
+    const ctx = canvas.getContext('2d');
+    if (!host || !ctx) return;
+
+    const lowPower = window.matchMedia('(pointer: coarse)').matches
+      || window.matchMedia('(max-width: 768px)').matches;
+    const dprCap = lowPower ? 1.2 : 1.8;
+
+    let width = 0;
+    let height = 0;
+    let dpr = Math.min(window.devicePixelRatio || 1, dprCap);
+    let rails = [];
+    let candles = [];
+    let packets = [];
+    let raf = 0;
+    let tick = 0;
+    let step = 1;
+    let lastT = 0;
+    let acc = 0;
+    let visible = true;
+    const abort = new AbortController();
+
+    const seeded = (seed) => {
+      const value = Math.sin(seed * 78.233 + 31.417) * 43758.5453123;
+      return value - Math.floor(value);
+    };
+
+    const makeField = () => {
+      const railCount = lowPower ? 5 : 8;
+      rails = Array.from({ length: railCount }, (_, index) => {
+        const lane = (index + 0.5) / railCount;
+        const y = height * (0.08 + lane * 0.84);
+        return {
+          y,
+          phase: seeded(index + 11) * Math.PI * 2,
+          drift: 10 + seeded(index + 17) * 22,
+          tone: index % 3 === 1 ? 'green' : 'gold',
+          alpha: 0.05 + seeded(index + 23) * 0.05
+        };
+      });
+
+      const candleCount = lowPower
+        ? Math.min(42, Math.max(22, Math.round(width / 22)))
+        : Math.min(84, Math.max(40, Math.round(width / 15)));
+      candles = Array.from({ length: candleCount }, (_, index) => {
+        const side = seeded(index + 41) > 0.58 ? 1 : -1;
+        const baseY = height * (0.16 + seeded(index + 53) * 0.72);
+        return {
+          x: (-0.08 + (index / Math.max(1, candleCount - 1)) * 1.16) * width,
+          baseY,
+          phase: seeded(index + 61) * Math.PI * 2,
+          speed: 0.18 + seeded(index + 67) * 0.22,
+          body: 12 + seeded(index + 73) * 34,
+          wick: 22 + seeded(index + 79) * 72,
+          side,
+          tone: seeded(index + 83) > 0.72 ? 'gold' : (side > 0 ? 'green' : 'red')
+        };
+      });
+
+      const packetCount = lowPower ? 10 : 22;
+      packets = Array.from({ length: packetCount }, (_, index) => ({
+        rail: Math.floor(seeded(index + 91) * rails.length) % Math.max(1, rails.length),
+        x: seeded(index + 101) * width,
+        speed: 0.42 + seeded(index + 107) * 1.08,
+        phase: seeded(index + 113) * Math.PI * 2,
+        tone: seeded(index + 127) > 0.62 ? 'green' : 'gold'
+      }));
+    };
+
+    const resize = () => {
+      const bounds = host.getBoundingClientRect();
+      width = Math.max(1, bounds.width);
+      height = Math.max(1, bounds.height);
+      dpr = Math.min(window.devicePixelRatio || 1, dprCap);
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      makeField();
+    };
+
+    const railY = (rail, x) =>
+      rail.y +
+      Math.sin(tick * 0.55 + rail.phase + x * 0.004) * rail.drift +
+      Math.cos(tick * 0.28 + rail.phase * 0.6 + x * 0.009) * rail.drift * 0.34;
+
+    const drawRail = (rail) => {
+      ctx.beginPath();
+      for (let x = -80; x <= width + 80; x += 36) {
+        const y = railY(rail, x);
+        if (x === -80) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      const hue = rail.tone === 'green' ? '34,197,94' : '212,175,55';
+      ctx.strokeStyle = 'rgba(' + hue + ',' + rail.alpha + ')';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    };
+
+    const drawRangeBox = (rail, index) => {
+      const boxHeight = Math.min(126, Math.max(72, height * (0.08 + seeded(index + 131) * 0.035)));
+      const y = railY(rail, width * 0.5) - boxHeight * 0.5;
+      const x = width * (0.08 + seeded(index + 137) * 0.18);
+      const w = width * (0.46 + seeded(index + 139) * 0.28);
+      const alpha = lowPower ? 0.035 : 0.052;
+
+      ctx.strokeStyle = 'rgba(212,175,55,' + (alpha * 2.8) + ')';
+      ctx.fillStyle = 'rgba(212,175,55,' + alpha + ')';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.rect(x, y, w, boxHeight);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.setLineDash([4, 9]);
+      ctx.strokeStyle = 'rgba(226,232,240,' + (alpha * 2.2) + ')';
+      ctx.beginPath();
+      ctx.moveTo(x, y + boxHeight * 0.5);
+      ctx.lineTo(x + w, y + boxHeight * 0.5);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    };
+
+    const drawCandle = (candle, index) => {
+      const wave = Math.sin(tick * candle.speed + candle.phase);
+      const x = candle.x + Math.sin(tick * 0.12 + candle.phase) * 22;
+      const y = candle.baseY + wave * 18;
+      const body = candle.body * (0.82 + (0.18 * Math.abs(wave)));
+      const wick = candle.wick;
+      const hue = candle.tone === 'green' ? '34,197,94' : (candle.tone === 'red' ? '239,68,68' : '212,175,55');
+      const alpha = 0.055 + (index % 7 === 0 ? 0.04 : 0);
+      const bodyTop = candle.side > 0 ? y - body : y;
+      const wickTop = bodyTop - wick * 0.44;
+      const wickBottom = bodyTop + body + wick * 0.56;
+
+      ctx.strokeStyle = 'rgba(226,232,240,' + (alpha * 2.5) + ')';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(x, wickTop);
+      ctx.lineTo(x, wickBottom);
+      ctx.stroke();
+
+      ctx.fillStyle = 'rgba(' + hue + ',' + alpha + ')';
+      ctx.fillRect(x - 4, bodyTop, 8, Math.max(8, body));
+
+      if (index % 17 === 0 && !lowPower) {
+        const pulse = 0.5 + 0.5 * Math.sin(tick * 1.7 + candle.phase);
+        ctx.strokeStyle = 'rgba(239,68,68,' + (0.08 + pulse * 0.12) + ')';
+        ctx.beginPath();
+        ctx.arc(x, wickTop, 8 + pulse * 8, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    };
+
+    const drawPacket = (packet) => {
+      if (!rails.length) return;
+      packet.x += packet.speed * step;
+      if (packet.x > width + 80) packet.x = -80;
+      const rail = rails[packet.rail % rails.length];
+      const y = railY(rail, packet.x) + Math.sin(tick + packet.phase) * 8;
+      const hue = packet.tone === 'green' ? '34,197,94' : '212,175,55';
+
+      ctx.fillStyle = 'rgba(' + hue + ',0.38)';
+      ctx.beginPath();
+      ctx.arc(packet.x, y, 1.8, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = 'rgba(' + hue + ',0.16)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(packet.x - 26, y);
+      ctx.lineTo(packet.x - 5, y);
+      ctx.stroke();
+    };
+
+    const draw = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      rails.forEach((rail, index) => {
+        drawRail(rail);
+        if (index % 2 === 0) drawRangeBox(rail, index);
+      });
+      candles.forEach(drawCandle);
+      packets.forEach(drawPacket);
+      ctx.restore();
+
+      ctx.globalCompositeOperation = 'source-over';
+    };
+
+    const animate = (now) => {
+      const t = now || performance.now();
+      const dt = lastT ? t - lastT : 16.67;
+      lastT = t;
+
+      if (visible) {
+        if (lowPower) {
+          acc += dt;
+          if (acc >= 34) {
+            step = Math.min(3, acc / 16.67);
+            tick += 0.015 * step;
+            draw();
+            acc = 0;
+          }
+        } else {
+          step = Math.min(3, dt / 16.67);
+          tick += 0.015 * step;
+          draw();
+        }
+      }
+
+      raf = requestAnimationFrame(animate);
+    };
+
+    resize();
+    const ro = new ResizeObserver(resize);
+    ro.observe(host);
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => { visible = entry.isIntersecting; });
+    }, { threshold: 0 });
+    io.observe(host);
+
+    window.addEventListener('resize', resize, { passive: true, signal: abort.signal });
+
+    if (!reduce) {
+      raf = requestAnimationFrame(animate);
+    } else {
+      tick = 2.1;
       draw();
     }
 

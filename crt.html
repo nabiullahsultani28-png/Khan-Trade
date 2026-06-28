@@ -4,14 +4,16 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>CRT Model - Candle Range Theory | The Khan Trading</title>
-<meta name="description" content="A clean guide to the CRT model: mark the candle range, wait for a liquidity sweep, confirm re-entry, then manage risk toward the opposite side of the range." />
+<meta name="description" content="Learn the CRT Model - the ICT Power of 3 (accumulation, manipulation, distribution) read on a single candle: mark CRH, CRL and EQ, wait for a liquidity sweep, confirm re-entry, then plan delivery toward equilibrium or the opposite side of the range." />
 <meta name="theme-color" content="#0A0E14" />
 
 <meta property="og:title" content="CRT Model - Candle Range Theory | The Khan Trading" />
-<meta property="og:description" content="Mark the range, wait for the sweep, confirm re-entry, then manage risk toward the opposite side. A tighter CRT model guide." />
+<meta property="og:description" content="A sharper Candle Range Theory guide: CRH, CRL, EQ, the liquidity sweep, re-entry, displacement and trade invalidation." />
 <meta property="og:type" content="article" />
 <meta property="og:image" content="https://thekhantrading.com/assets/img/chart-crt.jpg" />
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="CRT Model - Candle Range Theory | The Khan Trading" />
+<meta name="twitter:description" content="Study Candle Range Theory through CRH, CRL, EQ, liquidity sweep, re-entry, displacement, invalidation and delivery targets." />
 <link rel="canonical" href="https://thekhantrading.com/crt.html" />
 
 <link rel="icon" type="image/jpeg" href="assets/img/logo.jpg" />
@@ -165,25 +167,50 @@
 </div>
 
 <main id="main" class="crt-page crt-page-clean">
+  <div class="crt-bg-fx" aria-hidden="true"><canvas class="crt-bg-canvas"></canvas></div>
   <!-- ============ HERO ============ -->
   <section class="crt-hero-clean" aria-labelledby="crt-hero-h">
     <div class="container">
       <div class="crt-hero-shell">
         <div class="crt-hero-copy reveal">
-          <span class="eyebrow">Candle Range Theory</span>
-          <h1 id="crt-hero-h">A range model for cleaner decisions.</h1>
-          <p class="lead">CRT starts with one reference candle. Its high and low become the map, the sweep shows where liquidity was taken, and the re-entry decides whether the trade is worth planning.</p>
+          <span class="eyebrow">CRT Model</span>
+          <h1 id="crt-hero-h">Candle Range Theory, traded with rules.</h1>
+          <p class="lead">CRT uses one meaningful candle as the map. Its high and low create CRH and CRL, the midpoint gives EQ, and the trade only becomes interesting after price sweeps one side and returns back inside the range.</p>
           <div class="crt-jump" aria-label="CRT page sections">
-            <a class="link-arrow" href="#model">Read the rules <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-            <a class="link-arrow" href="#diagram">View anatomy <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-            <a class="link-arrow" href="#checklist">Use the filter <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <a class="link-arrow" href="#model">Study the sequence <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <a class="link-arrow" href="#diagram">Read the chart <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <a class="link-arrow" href="#checklist">Check validity <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          </div>
+        </div>
+        <div class="crt-hero-visual reveal" aria-label="CRT visual example">
+          <div class="crt-hero-panel">
+            <div class="crt-panel-head">
+              <span>CRT desk</span>
+              <span>XAUUSD / H4</span>
+            </div>
+            <div class="crt-mini-chart" aria-hidden="true">
+              <span class="crt-mini-level top">CRH</span>
+              <span class="crt-mini-level mid">EQ</span>
+              <span class="crt-mini-level bottom">CRL</span>
+              <i class="crt-mini-candle c1"></i>
+              <i class="crt-mini-candle c2"></i>
+              <i class="crt-mini-candle c3"></i>
+              <i class="crt-mini-candle c4 sweep"></i>
+              <i class="crt-mini-candle c5 reject"></i>
+              <i class="crt-mini-candle c6 delivery"></i>
+            </div>
+            <dl class="crt-panel-stats">
+              <div><dt>Range</dt><dd>CRH / CRL</dd></div>
+              <div><dt>Trigger</dt><dd>Sweep + re-entry</dd></div>
+              <div><dt>First target</dt><dd>EQ</dd></div>
+            </dl>
           </div>
         </div>
         <ol class="crt-hero-rulebar reveal" aria-label="CRT decision flow">
-          <li><span>01</span> Mark range</li>
-          <li><span>02</span> Wait for sweep</li>
-          <li><span>03</span> Confirm re-entry</li>
-          <li><span>04</span> Define risk</li>
+          <li><span>01</span> Anchor the candle</li>
+          <li><span>02</span> Let one side sweep</li>
+          <li><span>03</span> Reclaim the range</li>
+          <li><span>04</span> Deliver to EQ or opposite side</li>
         </ol>
       </div>
     </div>
@@ -193,41 +220,71 @@
   <section id="model" class="crt-section crt-rules-section" aria-labelledby="model-h">
     <div class="container">
       <div class="crt-section-head reveal">
-        <span class="eyebrow">CRT in 4 rules</span>
-        <h2 id="model-h">The model is simple on purpose.</h2>
-        <p>The point is not to decorate a chart. The point is to create a repeatable decision: identify the range, wait for liquidity to be taken, require proof back inside the range, then manage risk before entry.</p>
+        <span class="eyebrow">The actual model</span>
+        <h2 id="model-h">Anchor, sweep, reclaim, deliver.</h2>
+        <p>CRT is not a breakout signal. It is a liquidity model built from a reference candle. The candle gives the range, the sweep exposes the trapped side, and the return inside the range decides whether a controlled trade plan exists.</p>
       </div>
 
       <ol class="crt-rule-list">
         <li class="reveal">
           <span class="crt-rule-num">01</span>
           <div>
-            <h3>Choose a clean candle</h3>
-            <p>Use a reference candle that actually matters: previous day, active session, or a higher-timeframe candle. Its high is CRH. Its low is CRL.</p>
+            <h3>Anchor one meaningful candle</h3>
+            <p>Use a candle with context: previous day, previous session, weekly open range, or a higher-timeframe candle. The high becomes <strong>CRH</strong>, the low becomes <strong>CRL</strong>, and the midpoint becomes <strong>EQ</strong>.</p>
           </div>
         </li>
         <li class="reveal">
           <span class="crt-rule-num">02</span>
           <div>
-            <h3>Let price take liquidity</h3>
-            <p>Price should pierce one side of the range first. A breakout that keeps running is information, not an automatic entry.</p>
+            <h3>Wait for manipulation outside the range</h3>
+            <p>Price should raid liquidity beyond CRH or CRL first. A sweep above CRH creates a possible short only after rejection; a sweep below CRL creates a possible long only after rejection.</p>
           </div>
         </li>
         <li class="reveal">
           <span class="crt-rule-num">03</span>
           <div>
-            <h3>Require re-entry</h3>
-            <p>The swept move needs to trade back inside the range and show intent away from the trapped side before a plan is valid.</p>
+            <h3>Require the range to be reclaimed</h3>
+            <p>The swept move must close or trade decisively back inside the candle range. That re-entry is the difference between a trapped breakout and a clean continuation through the level.</p>
           </div>
         </li>
         <li class="reveal">
           <span class="crt-rule-num">04</span>
           <div>
-            <h3>Decide risk first</h3>
-            <p>Risk belongs beyond the swept wick. Targets usually start at equilibrium or the opposite side of the candle range.</p>
+            <h3>Plan delivery before entry</h3>
+            <p>Risk belongs beyond the swept extreme. The first logical objective is EQ; if price accepts through the midpoint, the opposite side of the range is the next draw - a CRH sweep targets CRL, a CRL sweep targets CRH.</p>
           </div>
         </li>
       </ol>
+    </div>
+  </section>
+
+  <!-- ============ THREE-CANDLE SEQUENCE ============ -->
+  <section class="crt-section crt-sequence-section" aria-labelledby="sequence-h">
+    <div class="container">
+      <div class="crt-sequence-grid">
+        <div class="crt-section-head reveal">
+          <span class="eyebrow">3-candle sequence &middot; Power of 3</span>
+          <h2 id="sequence-h">Accumulation, manipulation, distribution.</h2>
+          <p>CRT is the ICT Power of 3 (AMD) read on a single candle. Candle one accumulates and defines the range, candle two manipulates - running liquidity outside the range - and candle three distributes, delivering price away from the raid toward the opposite side.</p>
+        </div>
+        <div class="crt-sequence-board reveal" aria-label="Three-candle CRT sequence">
+          <article>
+            <span>01</span>
+            <h3>Range candle</h3>
+            <p>Accumulation. Build the map - mark CRH, CRL and EQ before the move develops.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Manipulation candle</h3>
+            <p>Manipulation. Price runs outside the range to raid buy-side or sell-side liquidity, then rejects.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Delivery candle</h3>
+            <p>Distribution. Re-entry and displacement deliver price back through the range toward the opposite draw.</p>
+          </article>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -237,17 +294,18 @@
       <div class="crt-diagram-clean-grid">
         <div class="crt-diagram-copy reveal">
           <span class="eyebrow">Range anatomy</span>
-          <h2 id="diagram-h">One reference candle. Three levels.</h2>
-          <p>Keep the markup quiet. The high, midpoint, and low are enough to see whether price is sweeping liquidity or simply expanding away without you.</p>
+          <h2 id="diagram-h">One candle gives the whole map.</h2>
+          <p>The reference candle splits the chart into premium, discount and equilibrium. The model only matters when price raids one side, returns inside, then delivers away from the trapped liquidity.</p>
           <ul class="crt-micro-list">
             <li><span>CRH</span> Candle Range High</li>
-            <li><span>EQ</span> Range midpoint</li>
+            <li><span>EQ</span> Equilibrium / midpoint</li>
             <li><span>CRL</span> Candle Range Low</li>
+            <li><span>Raid</span> Liquidity taken outside the range</li>
           </ul>
         </div>
 
         <figure class="crt-diagram crt-diagram-clean reveal">
-          <svg viewBox="0 0 880 460" role="img" aria-label="Diagram of a Candle Range Theory setup: price ranges, sweeps above Candle Range High, re-enters, then expands toward Candle Range Low.">
+          <svg viewBox="0 0 880 460" role="img" aria-label="Diagram of a Candle Range Theory short setup: price marks Candle Range High and Candle Range Low, sweeps above Candle Range High, re-enters the range, then delivers toward equilibrium and Candle Range Low.">
             <rect class="crt-zone crt-zone-prem" x="80" y="110" width="740" height="125" />
             <rect class="crt-zone crt-zone-disc" x="80" y="235" width="740" height="125" />
             <rect class="crt-rangebox" x="80" y="110" width="740" height="250" rx="4" />
@@ -260,10 +318,10 @@
             <text class="crt-lab crt-lab-gold" x="824" y="114">CRH</text>
             <text class="crt-lab crt-lab-mute" x="824" y="239">EQ</text>
             <text class="crt-lab crt-lab-gold" x="824" y="364">CRL</text>
-            <text class="crt-lab crt-lab-mute" x="824" y="422">Target</text>
-            <text class="crt-phase-lab" x="120" y="98">RANGE</text>
-            <text class="crt-phase-lab" x="392" y="98">SWEEP</text>
-            <text class="crt-phase-lab" x="560" y="98">DELIVERY</text>
+            <text class="crt-lab crt-lab-mute" x="824" y="422">Sell-side draw</text>
+            <text class="crt-phase-lab" x="120" y="98">ANCHOR</text>
+            <text class="crt-phase-lab" x="368" y="98">BUY-SIDE SWEEP</text>
+            <text class="crt-phase-lab" x="560" y="98">RE-ENTRY + DELIVERY</text>
 
             <g class="crt-candle"><line class="wk" x1="130" y1="205" x2="130" y2="262"/><rect class="bd bull" x="121" y="220" width="18" height="30"/></g>
             <g class="crt-candle"><line class="wk" x1="170" y1="200" x2="170" y2="258"/><rect class="bd bear" x="161" y="215" width="18" height="30"/></g>
@@ -281,7 +339,7 @@
             <g class="crt-candle"><line class="wk" x1="586" y1="360" x2="586" y2="424"/><rect class="bd bear" x="577" y="372" width="18" height="44"/></g>
 
             <circle class="crt-sweep-dot" cx="378" cy="78" r="5"/>
-            <text class="crt-lab crt-lab-bear" x="378" y="62" text-anchor="middle">Sweep</text>
+            <text class="crt-lab crt-lab-bear" x="378" y="62" text-anchor="middle">BSL raid</text>
 
             <path class="crt-arrow-path" d="M 392 150 C 470 250 540 360 612 408" fill="none" marker-end="url(#crt-arrow)" />
             <defs>
@@ -289,7 +347,7 @@
                 <path d="M0 0 L10 5 L0 10 z" class="crt-arrow-head" />
               </marker>
             </defs>
-            <text class="crt-lab crt-lab-bull" x="556" y="300" transform="rotate(34 556 300)">Expansion</text>
+            <text class="crt-lab crt-lab-bull" x="556" y="300" transform="rotate(34 556 300)">Delivery</text>
           </svg>
           <figcaption class="crt-legend" aria-hidden="true">
             <span><i class="dot bull"></i> Bullish candle</span>
@@ -308,26 +366,28 @@
       <div class="crt-filter-layout">
         <div class="crt-section-head reveal">
           <span class="eyebrow">Valid vs invalid</span>
-          <h2 id="check-h">The filter should remove trades, not justify them.</h2>
-          <p>If one part of the sequence is missing, the trade does not need a story. It needs to be skipped.</p>
+          <h2 id="check-h">The filter should reject weak stories.</h2>
+          <p>A clean CRT setup is obvious before entry. If the range was selected after the move, if price never reclaims the range, or if the stop only works after being moved, the setup is not valid.</p>
         </div>
 
         <div class="crt-filter-columns">
           <article class="crt-filter-list crt-filter-list-good reveal">
             <h3>Valid setup</h3>
             <ul>
-              <li>Clear CRH and CRL from a meaningful candle</li>
-              <li>Liquidity sweep beyond one side of the range</li>
-              <li>Re-entry back inside the range</li>
-              <li>Risk defined before entry</li>
+              <li>Reference candle selected before the sweep</li>
+              <li>Liquidity raid beyond CRH or CRL</li>
+              <li>Re-entry back inside the candle range</li>
+              <li>Displacement away from the swept side</li>
+              <li>Risk placed beyond the swept extreme</li>
             </ul>
           </article>
           <article class="crt-filter-list crt-filter-list-bad reveal">
             <h3>Invalid setup</h3>
             <ul>
-              <li>Range chosen after the move already happened</li>
+              <li>Range chosen after price already delivered</li>
               <li>Clean breakout being forced into a reversal idea</li>
-              <li>No displacement after re-entry</li>
+              <li>No return back inside CRH or CRL</li>
+              <li>No displacement after the reclaim</li>
               <li>Stop or target moved to make the trade fit</li>
             </ul>
           </article>
@@ -343,12 +403,12 @@
         <div>
           <span class="eyebrow">Practice loop</span>
           <h2 id="practice-h">Build the eye before you risk money.</h2>
-          <p>Replay old sessions. Mark the range before the sweep. Save the chart. Score the result in R. After enough samples, the market tells you which sessions and ranges deserve attention.</p>
+          <p>Replay old sessions candle by candle. Mark the reference range before the sweep, document whether price re-entered, then score the delivery to EQ and the opposite side in R. The sample tells you which sessions and pairs deserve attention.</p>
         </div>
         <ol class="crt-practice-steps">
-          <li><span>01</span> Mark 20 ranges</li>
-          <li><span>02</span> Screenshot every sweep</li>
-          <li><span>03</span> Track wins and misses in R</li>
+          <li><span>01</span> Mark 30 reference candles</li>
+          <li><span>02</span> Screenshot every CRH or CRL sweep</li>
+          <li><span>03</span> Log re-entry, displacement and target delivery</li>
         </ol>
         <div class="crt-honest-note">
           <strong>Risk note:</strong> CRT is a planning model, not a promise. Drawdowns, execution mistakes, and losing streaks are part of trading. This page is educational only, not financial advice.
@@ -394,10 +454,6 @@
     <p class="disclaimer">&copy; <span data-year></span> The Khan Trading. Trading carries risk. Past performance does not guarantee future results. All content is educational and not financial advice.</p>
   </div>
 </footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="js/main.js"></script>
-<script src="js/animations.js"></script>
 </body>
 </html>
-
