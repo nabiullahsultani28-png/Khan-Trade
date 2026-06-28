@@ -61,9 +61,11 @@
   --ink: #161B22;
   --ink-mute: #56606E;
   --ink-dim: #8B95A4;
-  --bull-soft: rgba(34, 197, 94, 0.14);
+  --bull: #0F7A3D;
+  --gold: #936E00;
+  --bull-soft: rgba(15, 122, 61, 0.12);
   --bear-soft: rgba(239, 68, 68, 0.14);
-  --gold-soft: rgba(212, 175, 55, 0.16);
+  --gold-soft: rgba(147, 110, 0, 0.13);
   --line: #E3E7ED;
   --line-strong: #CFD5DE;
   --scrim: 255, 255, 255;
@@ -383,6 +385,22 @@ section {
   color: #1B1503;
   transform: translateY(-2px);
   box-shadow: 0 18px 40px -10px rgba(212, 175, 55, 0.7);
+}
+
+:root[data-theme="light"] .btn-tg-free,
+:root[data-theme="light"] .form button {
+  color: #FFFFFF;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
+}
+
+:root[data-theme="light"] .hero .btn-tg-free {
+  background: #22C55E;
+  color: #07120B;
+  text-shadow: none;
+}
+
+:root[data-theme="light"] .hero .btn-tg-free:hover {
+  color: #07120B;
 }
 /* Tactile press - physical "push" feedback on tap/click */
 .btn-tg:active {
@@ -771,7 +789,17 @@ section {
 }
 
 :root[data-theme="light"] .nav.over-hero:not(.scrolled) .nav-links a.active {
-  color: var(--bull);
+  color: #22C55E;
+}
+
+:root[data-theme="light"] .hero .eyebrow {
+  color: #D4AF37;
+  border-color: rgba(212, 175, 55, 0.36);
+  background: rgba(212, 175, 55, 0.13);
+}
+
+:root[data-theme="light"] .hero .accent {
+  color: #22C55E;
 }
 
 :root[data-theme="light"] .nav.over-hero:not(.scrolled) .nav-mobile-toggle {
@@ -3598,9 +3626,10 @@ section {
 }
 
 :root[data-theme="light"] .pricing-page-motion .plan .btn-tg-free:hover {
-  background: #22C55E;
-  border-color: #22C55E;
-  color: #07120B;
+  background: #0F7A3D;
+  border-color: #0F7A3D;
+  color: #FFFFFF;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
 }
 
 :root[data-theme="light"] .pricing-page-motion .plan .btn-tg-premium {
@@ -8628,11 +8657,24 @@ section {
 
 .btn-join:hover {
   transform: translateY(-2px);
+  color: #07120B;
   box-shadow: 0 12px 30px -6px rgba(34, 197, 94, 1);
 }
 
 .btn-join:hover svg {
   transform: translateX(4px);
+}
+
+:root[data-theme="light"] .btn-join {
+  color: #FFFFFF;
+  background: linear-gradient(135deg, #1FA45A 0%, var(--bull) 52%, #0B6A35 100%);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
+  box-shadow: 0 10px 26px -12px rgba(15, 122, 61, 0.62);
+}
+
+:root[data-theme="light"] .btn-join:hover {
+  color: #FFFFFF;
+  box-shadow: 0 14px 34px -12px rgba(15, 122, 61, 0.74);
 }
 
 .btn-join:active {
@@ -9744,6 +9786,12 @@ section {
 :root[data-theme="light"] .contact-form-panel .form select:focus,
 :root[data-theme="light"] .contact-form-panel .form textarea:focus {
   background: #fff;
+}
+
+:root[data-theme="light"] .contact-form-panel .form button {
+  background: linear-gradient(100deg, #936E00 0%, #8A6600 44%, #0F7A3D 130%);
+  color: #FFFFFF;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
 }
 
 :root[data-theme="light"] .contact-method {

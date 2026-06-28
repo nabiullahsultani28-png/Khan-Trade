@@ -81,6 +81,26 @@
     -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 calc(100% - 120px), transparent 100%);
     mask-image: linear-gradient(180deg, #000 0%, #000 calc(100% - 120px), transparent 100%);
   }
+  [data-theme="light"] .about-intro-stage {
+    background:
+      radial-gradient(60% 58% at 9% 10%, rgba(147,110,0,0.10), transparent 68%),
+      radial-gradient(56% 62% at 88% 24%, rgba(15,122,61,0.09), transparent 70%),
+      radial-gradient(52% 54% at 44% 50%, rgba(147,110,0,0.045), transparent 72%),
+      linear-gradient(108deg, rgba(250,251,252,0.98) 0%, rgba(244,247,250,0.96) 50%, rgba(239,248,244,0.94) 100%);
+  }
+  [data-theme="light"] .about-intro-stage::before {
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.56) 0%, rgba(255,255,255,0.12) 42%, rgba(255,255,255,0.42) 100%),
+      radial-gradient(72% 34% at 50% 38%, rgba(147,110,0,0.05), transparent 70%),
+      radial-gradient(62% 44% at 84% 70%, rgba(15,122,61,0.06), transparent 74%);
+  }
+  [data-theme="light"] .about-intro-stage::after {
+    background: linear-gradient(180deg, rgba(246,247,249,0), var(--bg-base));
+  }
+  [data-theme="light"] .about-intro-stage > .bg-fx--intro {
+    opacity: 0.34;
+    mix-blend-mode: multiply;
+  }
   .about-intro-stage > section {
     position: relative;
     z-index: 1;
