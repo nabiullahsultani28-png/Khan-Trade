@@ -825,9 +825,10 @@ section {
   position: fixed;
   inset: 0;
   z-index: 200;
-  background: rgba(var(--scrim), 0.97);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  /* Dim backdrop — the menu itself is a panel pinned to the right */
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   display: flex;
   flex-direction: column;
   opacity: 0;
@@ -861,13 +862,18 @@ section {
 .mobile-menu-footer {
   position: relative;
   z-index: 1;
+  /* Constrain to a right-anchored drawer panel */
+  width: min(84vw, 340px);
+  margin-left: auto;
+  border-left: 1px solid var(--line-strong);
+  background: var(--bg-base);
 }
 
 /* ---- Staggered entrance animation ---- */
 @keyframes menuItemIn {
   from {
     opacity: 0;
-    transform: translateX(-18px);
+    transform: translateX(24px);
   }
 
   to {
@@ -917,13 +923,13 @@ section {
 
 .mobile-menu-nav a {
   display: grid;
-  grid-template-columns: 28px 1fr auto;
+  grid-template-columns: 22px 1fr auto;
   gap: 0 12px;
   align-items: center;
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: 1.05rem;
   font-weight: 600;
-  padding: 20px 24px;
+  padding: 13px 20px;
   border-bottom: 1px solid var(--line);
   color: var(--ink);
   transition: color 0.25s, padding-left 0.35s var(--ease-out), background 0.25s;
@@ -939,8 +945,8 @@ section {
 }
 
 .mobile-menu-nav a .nav-arrow {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   color: var(--ink-dim);
   flex-shrink: 0;
   transition: color 0.25s, transform 0.35s var(--ease-out);
@@ -951,7 +957,7 @@ section {
   color: var(--bull);
   background: rgba(34, 197, 94, 0.05);
   border-left: 2px solid var(--bull);
-  padding-left: 22px;
+  padding-left: 18px;
 }
 
 .mobile-menu-nav a.active .nav-num {
@@ -966,7 +972,7 @@ section {
 /* Hover: slide right (only on non-active) */
 .mobile-menu-nav a:not(.active):hover {
   color: var(--bull);
-  padding-left: 30px;
+  padding-left: 26px;
   background: rgba(34, 197, 94, 0.04);
 }
 
@@ -1047,18 +1053,18 @@ section {
 /* Collapsible "Learn" group - tappable header styled like the nav rows */
 .mobile-learn-toggle {
   display: grid;
-  grid-template-columns: 28px 1fr auto;
+  grid-template-columns: 22px 1fr auto;
   gap: 0 12px;
   align-items: center;
   width: 100%;
-  padding: 20px 24px;
+  padding: 13px 20px;
   border: 0;
   border-bottom: 1px solid var(--line);
   background: transparent;
   cursor: pointer;
   text-align: left;
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: 1.05rem;
   font-weight: 600;
   color: var(--ink);
   transition: color 0.25s, background 0.25s;
@@ -1120,11 +1126,11 @@ section {
 /* Render learn items identically to the standard nav rows */
 .mobile-learn-card {
   display: grid !important;
-  grid-template-columns: 28px 1fr auto !important;
+  grid-template-columns: 22px 1fr auto !important;
   gap: 0 12px !important;
   align-items: center !important;
   margin: 0 !important;
-  padding: 20px 24px !important;
+  padding: 11px 20px 11px 42px !important;
   border: 0 !important;
   border-bottom: 1px solid var(--line) !important;
   border-radius: 0 !important;
@@ -1161,7 +1167,7 @@ section {
 
 .mlc-title {
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: 1.05rem;
   font-weight: 600;
   color: var(--ink);
   line-height: 1.1;
@@ -1169,8 +1175,8 @@ section {
 }
 
 .mobile-learn-card .nav-arrow {
-  width: 20px !important;
-  height: 20px !important;
+  width: 18px !important;
+  height: 18px !important;
   color: var(--ink-dim) !important;
   flex-shrink: 0;
   transition: color 0.25s, transform 0.35s var(--ease-out) !important;
@@ -1179,7 +1185,7 @@ section {
 /* Hover: slide right + green, matching the other rows */
 .mobile-learn-card:hover,
 .mobile-learn-card:focus-visible {
-  padding-left: 30px !important;
+  padding-left: 48px !important;
   background: rgba(34, 197, 94, 0.04) !important;
   transform: none !important;
 }

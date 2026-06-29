@@ -58,6 +58,10 @@
   toggle?.addEventListener('click', openMenu);
   closeBtn?.addEventListener('click', closeMenu);
   menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+  // Close when tapping the dimmed backdrop beside the drawer panel
+  menu?.addEventListener('click', (e) => {
+    if (e.target === menu) closeMenu();
+  });
   menu?.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       e.preventDefault();
