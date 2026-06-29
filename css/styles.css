@@ -3074,6 +3074,29 @@ section {
   }
 }
 
+@media (max-width: 1180px) {
+  .plans.plans-3.pricing-plans {
+    grid-template-columns: 1fr;
+    max-width: 560px;
+  }
+
+  .pricing-page-motion .pricing-plan-card {
+    --float-y: 0px;
+    min-height: auto;
+    transition-delay: 0s;
+  }
+
+  .pricing-page-motion .pricing-plan-card.reveal,
+  .pricing-page-motion .pricing-plan-card.reveal.in {
+    animation: none;
+    transform: none;
+  }
+
+  .pricing-page-motion .plan-complete .plan-head {
+    padding-right: 0;
+  }
+}
+
 /* ---- Homepage #join - compact tier strip (full detail lives on pricing.html) */
 .join-tiers {
   display: grid;
@@ -3466,6 +3489,133 @@ section {
   max-width: calc(100% - 40px);
   white-space: nowrap;
   z-index: 2;
+}
+
+@media (min-width: 1181px) {
+  .plans.plans-3.pricing-plans {
+    gap: clamp(22px, 1.8vw, 28px);
+    max-width: 1280px;
+  }
+
+  .pricing-page-motion .pricing-plans {
+    margin-top: clamp(42px, 5vw, 68px);
+  }
+
+  .pricing-page-motion .pricing-plan-card {
+    min-height: 720px;
+  }
+
+  .pricing-page-motion .plan {
+    padding: clamp(24px, 1.75vw, 32px);
+  }
+
+  .pricing-page-motion .plan-head {
+    gap: 16px;
+    min-height: 68px;
+  }
+
+  .pricing-page-motion .plan-tier {
+    font-size: 0.68rem;
+    margin-bottom: 7px;
+  }
+
+  .pricing-page-motion .plan h3 {
+    font-size: clamp(1.35rem, 1.55vw, 1.55rem);
+    line-height: 1.04;
+  }
+
+  .pricing-page-motion .plan-stage {
+    max-width: 104px;
+    padding: 6px 9px;
+    font-size: 0.58rem;
+  }
+
+  .pricing-page-motion .plan-price-row {
+    gap: 14px;
+    margin-top: 2px;
+  }
+
+  .pricing-page-motion .plan-price {
+    font-size: clamp(2rem, 2.35vw, 2.55rem);
+  }
+
+  .pricing-page-motion .plan-price .per,
+  .pricing-page-motion .plan-lifetime {
+    font-size: 0.76rem;
+  }
+
+  .pricing-page-motion .plan-depth {
+    width: 58px;
+    height: 58px;
+    border-radius: 18px;
+  }
+
+  .pricing-page-motion .plan-depth span {
+    font-size: 1.12rem;
+  }
+
+  .pricing-page-motion .plan-depth small {
+    font-size: 0.52rem;
+  }
+
+  .pricing-page-motion .plan-summary {
+    min-height: 44px;
+    margin-top: 14px;
+    font-size: 0.84rem;
+    line-height: 1.48;
+  }
+
+  .pricing-page-motion .plan-metrics {
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .pricing-page-motion .plan-metrics span {
+    padding: 8px;
+    border-radius: 10px;
+    font-size: 0.6rem;
+  }
+
+  .pricing-page-motion .plan-metrics strong {
+    margin-bottom: 3px;
+    font-size: 0.73rem;
+  }
+
+  .pricing-page-motion .plan-divider {
+    margin: 18px 0;
+  }
+
+  .pricing-page-motion .plan ul {
+    gap: 9px;
+    margin-bottom: 24px;
+  }
+
+  .pricing-page-motion .plan ul li {
+    gap: 10px;
+    font-size: 0.82rem;
+    line-height: 1.42;
+  }
+
+  .pricing-page-motion .plan ul li svg {
+    width: 15px;
+    height: 15px;
+    margin-top: 2px;
+  }
+
+  .pricing-page-motion .plan .btn-tg {
+    min-height: 52px;
+    font-size: 0.86rem;
+  }
+
+  .pricing-page-motion .plan-complete .plan-head {
+    padding-right: 102px;
+  }
+
+  .pricing-page-motion .pricing-plan-card > .plan-badge {
+    inset: 16px 16px auto auto;
+    font-size: 0.62rem;
+    padding: 5px 10px;
+  }
 }
 
 :root[data-theme="light"] .pricing-page-motion {
