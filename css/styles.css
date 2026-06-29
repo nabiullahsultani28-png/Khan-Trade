@@ -1346,6 +1346,63 @@ section {
   }
 }
 
+:root[data-theme="light"] #ict.ict-section {
+  background:
+    radial-gradient(68% 52% at 12% 16%, rgba(147, 110, 0, 0.075), transparent 70%),
+    radial-gradient(62% 48% at 86% 26%, rgba(15, 122, 61, 0.07), transparent 72%),
+    linear-gradient(180deg, #FBFCFD 0%, #F3F6F8 46%, #FFFFFF 100%) !important;
+  color: #56606E !important;
+}
+
+:root[data-theme="light"] #ict.ict-section canvas[data-khan-bg] {
+  opacity: 0.16;
+  filter: saturate(0.68) contrast(0.92);
+  mix-blend-mode: multiply;
+}
+
+:root[data-theme="light"] #ict.ict-section .ict-section-scrim {
+  background:
+    linear-gradient(180deg, rgba(251, 252, 253, 0.98), rgba(251, 252, 253, 0.52) 156px, rgba(255, 255, 255, 0.32) calc(100% - 172px), #FFFFFF),
+    linear-gradient(90deg, #FBFCFD, rgba(251, 252, 253, 0.22) 11%, rgba(255, 255, 255, 0.22) 89%, #FFFFFF) !important;
+}
+
+:root[data-theme="light"] #ict.ict-section h2,
+:root[data-theme="light"] #ict.ict-section h3 {
+  color: #161B22 !important;
+}
+
+:root[data-theme="light"] #ict.ict-section p {
+  color: #56606E !important;
+}
+
+:root[data-theme="light"] #ict.ict-section strong {
+  color: #161B22 !important;
+}
+
+:root[data-theme="light"] #ict.ict-section [style*="color:#D4AF37"] {
+  color: #936E00 !important;
+}
+
+:root[data-theme="light"] #ict.ict-section [style*="background:linear-gradient(120deg"] {
+  background: linear-gradient(120deg, #B88900, #936E00 58%, #5E4700) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+
+:root[data-theme="light"] #ict.ict-section .edu-inner-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(247, 249, 252, 0.86)) !important;
+  border-color: #DCE2EA !important;
+  box-shadow:
+    0 22px 58px -42px rgba(15, 23, 42, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+:root[data-theme="light"] #ict.ict-section .edu-inner-card p {
+  color: #5E6977 !important;
+}
+
 /* The hero photo stays dark in every theme, so lock its text to light tokens
    regardless of the active theme (identical to defaults in dark mode). */
 .hero {
