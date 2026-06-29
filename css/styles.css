@@ -1151,13 +1151,31 @@ section {
   display: none !important;
 }
 
-.mlc-num {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
-  color: var(--ink-dim);
-  line-height: 1;
+/* Learn sub-items (CRT / Unicorn) use a dot marker instead of a number.
+   Covers both the dropdown cards and ict.html's indented flat links. */
+.mlc-num,
+.mobile-menu-nav a[style*="padding-left"] .nav-num {
+  display: grid;
+  place-items: center;
+  font-size: 0;
+  line-height: 0;
+}
+
+.mlc-num::before,
+.mobile-menu-nav a[style*="padding-left"] .nav-num::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--ink-dim);
+  transition: background 0.25s;
+}
+
+.mobile-learn-card:hover .mlc-num::before,
+.mobile-learn-card:focus-visible .mlc-num::before,
+.mobile-menu-nav a[style*="padding-left"]:hover .nav-num::before,
+.mobile-menu-nav a[style*="padding-left"]:focus-visible .nav-num::before {
+  background: var(--bull);
 }
 
 .mlc-text {
