@@ -1408,9 +1408,8 @@ section {
 }
 
 :root[data-theme="light"] #khan-why.khan-why-section canvas[data-khan-why-bg] {
-  opacity: 0.34;
-  filter: saturate(0.82) contrast(0.94);
-  mix-blend-mode: multiply;
+  opacity: 0;
+  visibility: hidden;
 }
 
 :root[data-theme="light"] #khan-why.khan-why-section .khan-why-scrim {
