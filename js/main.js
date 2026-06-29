@@ -333,6 +333,22 @@
     const ctx = canvas.getContext('2d');
     if (!host || !ctx) return;
 
+    const isPricingBackdrop = canvas.classList.contains('pricing-bg-canvas');
+    const isLightTheme = () => document.documentElement.getAttribute('data-theme') === 'light';
+    const getBackdropTone = () => {
+      const lightPricing = isPricingBackdrop && isLightTheme();
+      return {
+        orb: lightPricing ? 0.32 : 1,
+        ribbon: lightPricing ? 0.34 : 1,
+        particle: lightPricing ? 0.42 : 1,
+        links: lightPricing ? 0.28 : 1,
+        ripple: lightPricing ? 0.36 : 1,
+        particleCount: lightPricing ? 0.56 : 1,
+        ribbonCount: lightPricing ? 0.62 : 1,
+        glow: lightPricing ? 0.24 : 1
+      };
+    };
+
     // Mobile / low-power path: fewer pixels, fewer elements, 30fps, cheaper draws
     const lowPower = window.matchMedia('(pointer: coarse)').matches
       || window.matchMedia('(max-width: 768px)').matches;
@@ -365,9 +381,11 @@
     };
 
     const makeField = () => {
-      const particleCount = lowPower
+      const tone = getBackdropTone();
+      const baseParticleCount = lowPower
         ? Math.min(70, Math.max(40, Math.round((width * height) / 34000)))
         : Math.min(150, Math.max(74, Math.round((width * height) / 19000)));
+      const particleCount = Math.max(28, Math.round(baseParticleCount * tone.particleCount));
       particles = Array.from({ length: particleCount }, (_, index) => {
         const baseX = (-0.08 + seeded(index + 3) * 1.16) * width;
         const baseY = (0.08 + seeded(index + 17) * 0.86) * height;
@@ -387,7 +405,8 @@
         };
       });
 
-      const ribbonCount = lowPower ? Math.max(3, Math.min(4, Math.round(width / 320))) : Math.max(4, Math.min(7, Math.round(width / 280)));
+      const baseRibbonCount = lowPower ? Math.max(3, Math.min(4, Math.round(width / 320))) : Math.max(4, Math.min(7, Math.round(width / 280)));
+      const ribbonCount = Math.max(2, Math.round(baseRibbonCount * tone.ribbonCount));
       ribbons = Array.from({ length: ribbonCount }, (_, index) => {
         const lane = (index + 0.5) / ribbonCount;
         return {
@@ -406,6 +425,7 @@
     // resize so the loop can blit it instead of rebuilding 3 radial gradients
     // + 3 full-canvas fills every frame.
     const buildOrbLayer = () => {
+      const tone = getBackdropTone();
       orbCanvas = document.createElement('canvas');
       orbCanvas.width = Math.max(1, Math.round(width));
       orbCanvas.height = Math.max(1, Math.round(height));
@@ -417,8 +437,8 @@
         const oy = orb.cy * height;
         const radius = orb.r * Math.max(width, height);
         const gradient = octx.createRadialGradient(ox, oy, 0, ox, oy, radius);
-        gradient.addColorStop(0, 'rgba(' + orb.hue + ',' + orb.a + ')');
-        gradient.addColorStop(0.5, 'rgba(' + orb.hue + ',' + (orb.a * 0.35) + ')');
+        gradient.addColorStop(0, 'rgba(' + orb.hue + ',' + (orb.a * tone.orb) + ')');
+        gradient.addColorStop(0.5, 'rgba(' + orb.hue + ',' + (orb.a * 0.35 * tone.orb) + ')');
         gradient.addColorStop(1, 'rgba(' + orb.hue + ',0)');
         octx.fillStyle = gradient;
         octx.fillRect(0, 0, width, height);
@@ -445,13 +465,14 @@
       Math.sin(x * 0.014 + tick * (ribbon.speed * 0.72) + ribbon.phase * 0.7) * ribbon.amp * 0.42;
 
     const drawRibbon = (ribbon, lineWidth, alphaScale) => {
+      const tone = getBackdropTone();
       ctx.beginPath();
       for (let x = -90; x <= width + 90; x += 28) {
         const y = ribbonY(ribbon, x);
         if (x === -90) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
       }
-      ctx.strokeStyle = 'rgba(' + ribbon.hue + ',' + (ribbon.alpha * alphaScale) + ')';
+      ctx.strokeStyle = 'rgba(' + ribbon.hue + ',' + (ribbon.alpha * alphaScale * tone.ribbon) + ')';
       ctx.lineWidth = lineWidth;
       ctx.stroke();
     };
@@ -512,6 +533,7 @@
     };
 
     const draw = () => {
+      const tone = getBackdropTone();
       ctx.clearRect(0, 0, width, height);
       ctx.globalCompositeOperation = 'lighter';
 
@@ -523,8 +545,8 @@
           const oy = (orb.cy + Math.cos(tick * orb.sy + orb.ph) * orb.ay) * height;
           const radius = orb.r * Math.max(width, height);
           const gradient = ctx.createRadialGradient(ox, oy, 0, ox, oy, radius);
-          gradient.addColorStop(0, 'rgba(' + orb.hue + ',' + orb.a + ')');
-          gradient.addColorStop(0.5, 'rgba(' + orb.hue + ',' + (orb.a * 0.35) + ')');
+          gradient.addColorStop(0, 'rgba(' + orb.hue + ',' + (orb.a * tone.orb) + ')');
+          gradient.addColorStop(0.5, 'rgba(' + orb.hue + ',' + (orb.a * 0.35 * tone.orb) + ')');
           gradient.addColorStop(1, 'rgba(' + orb.hue + ',0)');
           ctx.fillStyle = gradient;
           ctx.fillRect(0, 0, width, height);
@@ -555,7 +577,7 @@
             if (dist > 128) continue;
             const energy = Math.max(particle.prox, neighbor.prox, 0.05) * (1 - dist / 128);
             if (energy < 0.018) continue;
-            ctx.strokeStyle = 'rgba(212,175,55,' + (energy * 0.16) + ')';
+            ctx.strokeStyle = 'rgba(212,175,55,' + (energy * 0.16 * tone.links) + ')';
             ctx.lineWidth = 0.8;
             ctx.beginPath();
             ctx.moveTo(particle.x, particle.y);
@@ -567,13 +589,13 @@
 
       particles.forEach((particle) => {
         const wave = 0.5 + 0.5 * Math.sin(tick * 0.9 + particle.phase);
-        const alpha = 0.08 + wave * 0.1 + particle.prox * 0.56;
+        const alpha = (0.08 + wave * 0.1 + particle.prox * 0.56) * tone.particle;
         const particleRadius = particle.size + wave * 0.4 + particle.prox * 1.35;
         const hue = particle.prox > 0.04 ? '212,175,55' : (particle.tone === 'green' ? '52,211,120' : (particle.tone === 'gold' ? '212,175,55' : '150,166,190'));
 
         if (particle.prox > 0.18 && !lowPower) {
           const glow = ctx.createRadialGradient(particle.x, particle.y, 0, particle.x, particle.y, particleRadius * 4);
-          glow.addColorStop(0, 'rgba(' + hue + ',' + (alpha * 0.4) + ')');
+          glow.addColorStop(0, 'rgba(' + hue + ',' + (alpha * 0.4 * tone.glow) + ')');
           glow.addColorStop(1, 'rgba(' + hue + ',0)');
           ctx.fillStyle = glow;
           ctx.beginPath();
@@ -589,7 +611,7 @@
 
       ripples.forEach((ripple) => {
         const fade = 1 - ripple.r / (Math.max(width, height) * 1.18);
-        ctx.strokeStyle = 'rgba(212,175,55,' + (fade * 0.2) + ')';
+        ctx.strokeStyle = 'rgba(212,175,55,' + (fade * 0.2 * tone.ripple) + ')';
         ctx.lineWidth = 1.4;
         ctx.beginPath();
         ctx.arc(ripple.x, ripple.y, ripple.r, 0, Math.PI * 2);
