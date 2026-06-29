@@ -1123,14 +1123,14 @@ section {
   .mlt-chevron { transition: none; }
 }
 
-/* Render learn items identically to the standard nav rows */
+/* Learn sub-items as richer rows: icon tile + title + subtitle */
 .mobile-learn-card {
   display: grid !important;
-  grid-template-columns: 22px 1fr auto !important;
-  gap: 0 12px !important;
+  grid-template-columns: 34px 1fr auto !important;
+  gap: 0 14px !important;
   align-items: center !important;
   margin: 0 !important;
-  padding: 11px 20px 11px 42px !important;
+  padding: 9px 20px 9px 34px !important;
   border: 0 !important;
   border-bottom: 1px solid var(--line) !important;
   border-radius: 0 !important;
@@ -1145,15 +1145,37 @@ section {
   display: none !important;
 }
 
-/* Hide icon tile + subtitle so the row matches the others exactly */
-.mlc-icon,
-.mlc-sub {
+/* The number badge is replaced by the icon tile on these rows */
+.mlc-num {
   display: none !important;
 }
 
-/* Learn sub-items (CRT / Unicorn) use a dot marker instead of a number.
-   Covers both the dropdown cards and ict.html's indented flat links. */
-.mlc-num,
+/* Icon tile — distinct, subtle, lights up green on hover */
+.mlc-icon {
+  display: grid !important;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: var(--bg-elev-2);
+  border: 1px solid var(--line);
+  color: var(--ink-mute);
+  transition: color 0.25s, border-color 0.25s, background 0.25s;
+}
+
+.mlc-icon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.mobile-learn-card:hover .mlc-icon,
+.mobile-learn-card:focus-visible .mlc-icon {
+  color: var(--bull);
+  border-color: rgba(34, 197, 94, 0.4);
+  background: rgba(34, 197, 94, 0.08);
+}
+
+/* ict.html's single indented flat link keeps a simple dot marker */
 .mobile-menu-nav a[style*="padding-left"] .nav-num {
   display: grid;
   place-items: center;
@@ -1161,7 +1183,6 @@ section {
   line-height: 0;
 }
 
-.mlc-num::before,
 .mobile-menu-nav a[style*="padding-left"] .nav-num::before {
   content: '';
   width: 5px;
@@ -1171,25 +1192,36 @@ section {
   transition: background 0.25s;
 }
 
-.mobile-learn-card:hover .mlc-num::before,
-.mobile-learn-card:focus-visible .mlc-num::before,
 .mobile-menu-nav a[style*="padding-left"]:hover .nav-num::before,
 .mobile-menu-nav a[style*="padding-left"]:focus-visible .nav-num::before {
   background: var(--bull);
 }
 
 .mlc-text {
-  display: block !important;
+  display: flex !important;
+  flex-direction: column;
+  gap: 2px;
   min-width: 0;
 }
 
 .mlc-title {
   font-family: var(--font-display);
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--ink);
-  line-height: 1.1;
+  line-height: 1.15;
   transition: color 0.25s;
+}
+
+/* Subtitle line — small, muted, body font */
+.mlc-sub {
+  display: block !important;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--ink-mute);
+  line-height: 1.2;
+  letter-spacing: 0.01em;
 }
 
 .mobile-learn-card .nav-arrow {
@@ -1203,15 +1235,13 @@ section {
 /* Hover: slide right + green, matching the other rows */
 .mobile-learn-card:hover,
 .mobile-learn-card:focus-visible {
-  padding-left: 48px !important;
+  padding-left: 40px !important;
   background: rgba(34, 197, 94, 0.04) !important;
   transform: none !important;
 }
 
 .mobile-learn-card:hover .mlc-title,
-.mobile-learn-card:focus-visible .mlc-title,
-.mobile-learn-card:hover .mlc-num,
-.mobile-learn-card:focus-visible .mlc-num {
+.mobile-learn-card:focus-visible .mlc-title {
   color: var(--bull);
 }
 
