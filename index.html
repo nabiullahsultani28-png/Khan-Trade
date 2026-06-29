@@ -290,6 +290,13 @@
       user-select: none;
       animation: wmBreath 4.5s ease-in-out infinite;
     }
+    .faq2-detail.is-empty::after,
+    .faq2-detail.is-empty::before {
+      display: none;
+    }
+    .faq2-detail.is-empty .faq2-detail-content {
+      display: none;
+    }
     @keyframes wmBreath { 0%, 100% { opacity: 0.05; } 50% { opacity: 0.1; } }
     .faq2-detail.anim::after { animation: wmFlash 0.7s var(--ease-out) both, wmBreath 4.5s ease-in-out 0.7s infinite; }
     @keyframes wmFlash {
@@ -1255,8 +1262,8 @@
           <div class="faq2-body">
             <div class="faq2-list" role="tablist" aria-label="Frequently asked questions">
 
-              <div class="faq2-item active">
-                <button class="faq2-q" aria-expanded="true">
+              <div class="faq2-item">
+                <button class="faq2-q" aria-expanded="false">
                   <span class="faq2-num">01</span>
                   <span class="faq2-q-text">What's the difference between Free, Premium, and the full course?</span>
                   <svg class="faq2-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6" /></svg>
@@ -1343,7 +1350,7 @@
 
             </div>
 
-            <div class="faq2-detail" data-wm="01" aria-live="polite">
+            <div class="faq2-detail is-empty" data-wm="" aria-live="polite">
               <div class="faq2-detail-content"></div>
             </div>
           </div>
@@ -1457,15 +1464,23 @@
       const detail = root.querySelector('.faq2-detail');
       const content = detail.querySelector('.faq2-detail-content');
       const mqMobile = window.matchMedia('(max-width: 900px)');
-      let current = 0;
+      let current = -1;
 
       function paintDetail(i) {
         const inner = items[i].querySelector('.faq2-src-inner');
         content.innerHTML = inner.innerHTML;
         detail.setAttribute('data-wm', items[i].querySelector('.faq2-num').textContent.trim());
+        detail.classList.remove('is-empty');
         detail.classList.remove('anim');
         void detail.offsetWidth;
         detail.classList.add('anim');
+      }
+
+      function clearDetail() {
+        content.innerHTML = '';
+        detail.setAttribute('data-wm', '');
+        detail.classList.add('is-empty');
+        detail.classList.remove('anim');
       }
 
       function setActive(i) {
@@ -1479,7 +1494,11 @@
       function select(i) {
         current = i;
         setActive(i);
-        if (!mqMobile.matches && i >= 0) paintDetail(i);
+        if (i < 0) {
+          clearDetail();
+        } else if (!mqMobile.matches) {
+          paintDetail(i);
+        }
       }
 
       items.forEach(function (it, idx) {
@@ -1494,14 +1513,14 @@
 
       const onMqChange = function () {
         if (!mqMobile.matches) {
-          if (current < 0) current = 0;
-          select(current);
+          if (current >= 0) select(current);
+          else clearDetail();
         }
       };
       if (mqMobile.addEventListener) mqMobile.addEventListener('change', onMqChange);
       else mqMobile.addListener(onMqChange);
 
-      select(0);
+      select(-1);
     })();
 
     /* Canvas backdrop — aurora orbs behind a magnetic dot matrix that
