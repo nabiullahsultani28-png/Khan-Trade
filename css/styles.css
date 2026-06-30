@@ -504,15 +504,17 @@ section {
   cursor: pointer;
 }
 
-.nav-dropdown-trigger {
+.nav-dropdown-trigger,
+.nav-dropdown-group > span {
   background: transparent;
   border: 0;
   padding: 0;
-  font-size: 0.92rem;
   font: inherit;
+  font-size: 0.92rem;
+  line-height: 1.2;
   color: var(--ink-mute);
   transition: color 0.2s;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 4px;
   min-height: 44px;
@@ -521,8 +523,17 @@ section {
 
 .nav-dropdown-group:hover .nav-dropdown-trigger,
 .nav-dropdown-group:focus-within .nav-dropdown-trigger,
-.nav-dropdown-group.open .nav-dropdown-trigger {
+.nav-dropdown-group.open .nav-dropdown-trigger,
+.nav-dropdown-group:hover > span,
+.nav-dropdown-group:focus-within > span,
+.nav-dropdown-group.open > span {
   color: var(--ink);
+}
+
+.nav-dropdown-trigger svg,
+.nav-dropdown-group > span svg {
+  flex: 0 0 auto;
+  display: block;
 }
 
 .nav-dropdown-menu {
@@ -778,18 +789,50 @@ section {
   color: var(--ink-mute);
 }
 
-/* Keep the nav legible over the dark hero photo when light theme is active
-   and the bar is still transparent (not yet scrolled). */
+/* Light theme keeps the front-page nav as a light glass layer over the dark hero
+   without changing the hero background/animation underneath. */
+:root[data-theme="light"] .nav.over-hero:not(.scrolled) {
+  background: rgba(255, 255, 255, 0.78);
+  -webkit-backdrop-filter: saturate(160%) blur(18px);
+  backdrop-filter: saturate(160%) blur(18px);
+  border-bottom-color: rgba(207, 213, 222, 0.72);
+  box-shadow: 0 18px 54px -42px rgba(15, 23, 42, 0.45);
+}
+
 :root[data-theme="light"] .nav.over-hero:not(.scrolled) .brand,
 :root[data-theme="light"] .nav.over-hero:not(.scrolled) .nav-links a,
 :root[data-theme="light"] .nav.over-hero:not(.scrolled) .nav-dropdown-trigger,
+:root[data-theme="light"] .nav.over-hero:not(.scrolled) .nav-dropdown-group > span,
 :root[data-theme="light"] .nav.over-hero:not(.scrolled) .login-link,
 :root[data-theme="light"] .nav.over-hero:not(.scrolled) .nav-mobile-toggle {
-  color: #EDEFF2;
+  color: #465160;
+}
+
+:root[data-theme="light"] .nav.over-hero:not(.scrolled) .brand,
+:root[data-theme="light"] .nav.over-hero:not(.scrolled) .nav-links a:hover,
+:root[data-theme="light"] .nav.over-hero:not(.scrolled) .nav-dropdown-trigger:hover,
+:root[data-theme="light"] .nav.over-hero:not(.scrolled) .nav-dropdown-group:hover .nav-dropdown-trigger,
+:root[data-theme="light"] .nav.over-hero:not(.scrolled) .nav-dropdown-group:focus-within .nav-dropdown-trigger,
+:root[data-theme="light"] .nav.over-hero:not(.scrolled) .nav-dropdown-group:hover > span,
+:root[data-theme="light"] .nav.over-hero:not(.scrolled) .nav-dropdown-group:focus-within > span {
+  color: #161B22;
 }
 
 :root[data-theme="light"] .nav.over-hero:not(.scrolled) .nav-links a.active {
-  color: #22C55E;
+  color: #0F7A3D;
+}
+
+:root[data-theme="light"] .nav.over-hero:not(.scrolled) .brand-mark {
+  box-shadow: 0 10px 24px -18px rgba(15, 23, 42, 0.52);
+}
+
+:root[data-theme="light"] .nav.over-hero:not(.scrolled) .theme-switch {
+  --sw-track: rgba(15, 23, 42, 0.055);
+  --sw-border: rgba(15, 23, 42, 0.12);
+  --sw-thumb: #FFFFFF;
+  --sw-thumb-line: rgba(15, 23, 42, 0.10);
+  --sw-idle: #657181;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.64);
 }
 
 :root[data-theme="light"] .hero .eyebrow {
@@ -803,7 +846,89 @@ section {
 }
 
 :root[data-theme="light"] .nav.over-hero:not(.scrolled) .nav-mobile-toggle {
-  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.68);
+  border-color: rgba(15, 23, 42, 0.14);
+  box-shadow: 0 14px 28px -24px rgba(15, 23, 42, 0.55);
+}
+
+/* Light theme foreground for the "Why this is different" section.
+   The animated section background stays untouched; only surfaces/text invert. */
+:root[data-theme="light"] #khan-why .khan-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.90), rgba(245, 248, 244, 0.78)) !important;
+  border-color: rgba(207, 213, 222, 0.78) !important;
+  box-shadow:
+    0 24px 56px -40px rgba(15, 23, 42, 0.48),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
+}
+
+:root[data-theme="light"] #khan-why .khan-card h3,
+:root[data-theme="light"] #khan-why .khan-panel h3 {
+  color: #161B22 !important;
+}
+
+:root[data-theme="light"] #khan-why .khan-card p,
+:root[data-theme="light"] #khan-why .khan-panel p,
+:root[data-theme="light"] #khan-why .khan-fitrow span:last-child {
+  color: #4B5563 !important;
+}
+
+:root[data-theme="light"] #khan-why .khan-card .khan-icon {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.62);
+}
+
+:root[data-theme="light"] #khan-why .khan-panel {
+  padding: 30px 28px !important;
+  -webkit-backdrop-filter: blur(16px) saturate(130%);
+  backdrop-filter: blur(16px) saturate(130%);
+  box-shadow:
+    0 28px 66px -48px rgba(15, 23, 42, 0.48),
+    inset 0 1px 0 rgba(255, 255, 255, 0.76),
+    inset 0 -1px 0 rgba(15, 23, 42, 0.06);
+}
+
+:root[data-theme="light"] #khan-why .khan-panel-yes {
+  background:
+    linear-gradient(180deg, rgba(220, 252, 231, 0.72), rgba(250, 252, 249, 0.72) 34%, rgba(240, 246, 239, 0.68)) !important;
+  border-color: rgba(22, 132, 74, 0.46) !important;
+}
+
+:root[data-theme="light"] #khan-why .khan-panel-no {
+  background:
+    linear-gradient(180deg, rgba(254, 226, 226, 0.70), rgba(250, 250, 249, 0.72) 34%, rgba(246, 241, 239, 0.68)) !important;
+  border-color: rgba(185, 28, 28, 0.38) !important;
+}
+
+:root[data-theme="light"] #khan-why .khan-fitrow {
+  align-items: center !important;
+  min-height: 68px;
+  padding: 13px 17px !important;
+  background: rgba(255, 255, 255, 0.70) !important;
+  border-color: rgba(118, 133, 116, 0.20) !important;
+  box-shadow:
+    0 16px 34px -30px rgba(15, 23, 42, 0.48),
+    inset 0 1px 0 rgba(255, 255, 255, 0.80);
+}
+
+:root[data-theme="light"] #khan-why .khan-fitrow.yes {
+  border-left: 3px solid rgba(34, 197, 94, 0.48) !important;
+}
+
+:root[data-theme="light"] #khan-why .khan-fitrow.no {
+  border-left: 3px solid rgba(239, 68, 68, 0.42) !important;
+}
+
+:root[data-theme="light"] #khan-why .khan-fitrow .khan-glyph {
+  width: 30px !important;
+  height: 30px !important;
+  margin-top: 0 !important;
+  border-radius: 10px !important;
+}
+
+:root[data-theme="light"] #khan-why .khan-fitrow span:last-child {
+  font-size: 15px !important;
+  line-height: 1.48 !important;
+  font-weight: 600 !important;
 }
 
 @media (max-width: 1080px) {
@@ -825,7 +950,7 @@ section {
   position: fixed;
   inset: 0;
   z-index: 200;
-  /* Dim backdrop — the menu itself is a panel pinned to the right */
+  /* Dim backdrop - the menu itself is a panel pinned to the right */
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
@@ -1150,7 +1275,7 @@ section {
   display: none !important;
 }
 
-/* Icon tile — distinct, subtle, lights up green on hover */
+/* Icon tile - distinct, subtle, lights up green on hover */
 .mlc-icon {
   display: grid !important;
   place-items: center;
@@ -1213,7 +1338,7 @@ section {
   transition: color 0.25s;
 }
 
-/* Subtitle line — small, muted, body font */
+/* Subtitle line - small, muted, body font */
 .mlc-sub {
   display: block !important;
   font-family: var(--font-body);
@@ -1277,21 +1402,21 @@ section {
   overflow: hidden;
 }
 
-.hero-video {
+/* Animated constellation canvas. Sits above the static .hero-bg poster (same
+   z-index, later in DOM); the overlay (z1) keeps the headline legible. It paints
+   its own dark navy base, so it covers the poster once JS runs. */
+.hero-canvas {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: 78% center;
   z-index: 0;
   display: block;
-  /* Sits on top of the static .hero-bg fallback (same z-index, later in DOM);
-     the overlay (z1) darkens it for headline legibility. */
-  filter: brightness(1.06) saturate(1.04);
+  pointer-events: none;
 }
 
-/* Lightweight poster fallback. The MP4 sits above it when video is available. */
+/* Lightweight poster fallback, shown with JS off / reduced motion until the
+   canvas paints over it. */
 .hero-bg {
   position: absolute;
   inset: 0;
@@ -1309,30 +1434,26 @@ section {
   position: absolute;
   inset: 0;
   background:
-    /* Solid dark column on the left for crisp headline text, opening up to
-       let the world-map glow breathe on the right. */
+    /* Dark column on the left keeps the headline crisp; lighter on the right so
+       the constellation can breathe (it paints its own dark base, so this is
+       gentler than the old video needed). */
     linear-gradient(90deg,
-      rgba(10, 14, 20, 0.98) 0%,
-      rgba(10, 14, 20, 0.96) 38%,
-      rgba(10, 14, 20, 0.66) 52%,
-      rgba(10, 14, 20, 0.16) 72%,
-      rgba(10, 14, 20, 0.40) 100%),
+      rgba(10, 14, 20, 0.90) 0%,
+      rgba(10, 14, 20, 0.78) 36%,
+      rgba(10, 14, 20, 0.46) 58%,
+      rgba(10, 14, 20, 0.16) 80%,
+      rgba(10, 14, 20, 0.30) 100%),
     /* Vertical fade: ease the top, sink the bottom into the ticker. */
     linear-gradient(180deg,
-      rgba(10, 14, 20, 0.18) 0%,
-      rgba(10, 14, 20, 0.0) 30%,
-      rgba(10, 14, 20, 0.82) 100%);
+      rgba(10, 14, 20, 0.20) 0%,
+      rgba(10, 14, 20, 0.0) 32%,
+      rgba(10, 14, 20, 0.80) 100%);
   z-index: 1;
 }
 
-/* On phones the video crops to its bright right side and the headline spans the
-   full width, so shift the framing toward center and darken the overlay top-to-
-   bottom to guarantee text contrast over any video frame. */
+/* On phones the headline spans the full width, so darken the overlay top-to-
+   bottom to guarantee text contrast over the animation. */
 @media (max-width: 720px) {
-  .hero-video {
-    object-position: 65% center;
-  }
-
   .hero-bg {
     background-position: 65% center;
   }
@@ -1397,99 +1518,6 @@ section {
   box-shadow:
     0 24px 62px -44px rgba(15, 23, 42, 0.34),
     inset 0 1px 0 rgba(255, 255, 255, 0.76);
-}
-
-:root[data-theme="light"] #khan-why.khan-why-section {
-  background:
-    radial-gradient(70% 54% at 18% 12%, rgba(180, 135, 0, 0.15), transparent 70%),
-    radial-gradient(64% 54% at 84% 18%, rgba(22, 132, 74, 0.15), transparent 72%),
-    linear-gradient(180deg, #EFF5ED 0%, #E7F0E9 48%, #F2F5EF 100%) !important;
-  color: #4B5563 !important;
-}
-
-:root[data-theme="light"] #khan-why.khan-why-section canvas[data-khan-why-bg] {
-  opacity: 0;
-  visibility: hidden;
-}
-
-:root[data-theme="light"] #khan-why.khan-why-section .khan-why-scrim {
-  background:
-    linear-gradient(180deg, rgba(239, 245, 237, 0.86) 0%, rgba(239, 245, 237, 0.22) 16%, rgba(239, 245, 237, 0.12) 78%, rgba(242, 245, 239, 0.82) 100%),
-    linear-gradient(90deg, rgba(239, 245, 237, 0.74), rgba(239, 245, 237, 0.06) 18%, rgba(242, 245, 239, 0.08) 82%, rgba(242, 245, 239, 0.74)) !important;
-}
-
-:root[data-theme="light"] #khan-why.khan-why-section h2,
-:root[data-theme="light"] #khan-why.khan-why-section h3 {
-  color: #161B22 !important;
-}
-
-:root[data-theme="light"] #khan-why.khan-why-section p,
-:root[data-theme="light"] #khan-why.khan-why-section [style*="color:#8A93A6"],
-:root[data-theme="light"] #khan-why.khan-why-section [style*="color:#9CA3AF"],
-:root[data-theme="light"] #khan-why.khan-why-section [style*="color:#D4DAE4"] {
-  color: #4B5563 !important;
-}
-
-:root[data-theme="light"] #khan-why.khan-why-section [style*="color:#D4AF37"] {
-  color: #936E00 !important;
-}
-
-:root[data-theme="light"] #khan-why.khan-why-section [style*="background:rgba(212,175,55,.10)"] {
-  background: rgba(147, 110, 0, 0.10) !important;
-  border-color: rgba(147, 110, 0, 0.26) !important;
-}
-
-:root[data-theme="light"] #khan-why.khan-why-section .khan-card {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(246, 249, 245, 0.72)) !important;
-  border-color: rgba(118, 133, 116, 0.30) !important;
-  box-shadow:
-    0 24px 58px -42px rgba(15, 23, 42, 0.34),
-    inset 0 1px 0 rgba(255, 255, 255, 0.78);
-}
-
-:root[data-theme="light"] #khan-why.khan-why-section .khan-card:hover {
-  border-color: rgba(147, 110, 0, 0.34) !important;
-  box-shadow:
-    0 28px 64px -42px rgba(15, 23, 42, 0.36),
-    0 18px 46px -34px rgba(147, 110, 0, 0.30);
-}
-
-:root[data-theme="light"] #khan-why.khan-why-section .khan-icon {
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.52);
-}
-
-:root[data-theme="light"] #khan-why.khan-why-section .khan-panel {
-  box-shadow:
-    0 26px 64px -46px rgba(15, 23, 42, 0.34),
-    inset 0 1px 0 rgba(255, 255, 255, 0.70);
-}
-
-:root[data-theme="light"] #khan-why.khan-why-section .khan-panel-yes {
-  background:
-    linear-gradient(180deg, rgba(34, 197, 94, 0.13), rgba(255, 255, 255, 0.72) 42%, rgba(246, 249, 245, 0.76)) !important;
-  border-color: rgba(22, 132, 74, 0.28) !important;
-}
-
-:root[data-theme="light"] #khan-why.khan-why-section .khan-panel-no {
-  background:
-    linear-gradient(180deg, rgba(239, 68, 68, 0.10), rgba(255, 255, 255, 0.72) 42%, rgba(246, 249, 245, 0.76)) !important;
-  border-color: rgba(185, 28, 28, 0.22) !important;
-}
-
-:root[data-theme="light"] #khan-why.khan-why-section .khan-fitrow {
-  background: rgba(255, 255, 255, 0.58) !important;
-  border-color: rgba(118, 133, 116, 0.22) !important;
-}
-
-:root[data-theme="light"] #khan-why.khan-why-section .khan-panel-yes .khan-fitrow:hover {
-  background: rgba(34, 197, 94, 0.09) !important;
-  border-color: rgba(22, 132, 74, 0.28) !important;
-}
-
-:root[data-theme="light"] #khan-why.khan-why-section .khan-panel-no .khan-fitrow:hover {
-  background: rgba(239, 68, 68, 0.075) !important;
-  border-color: rgba(185, 28, 28, 0.22) !important;
 }
 
 :root[data-theme="light"] #ict.ict-section .edu-inner-card p {
@@ -2643,9 +2671,9 @@ section {
 
 .pricing-page-motion::before {
   background:
-    repeating-linear-gradient(107deg, transparent 0 52px, rgba(212, 175, 55, 0.052) 53px 54px, transparent 55px 138px),
-    radial-gradient(ellipse at 18% 24%, rgba(212, 175, 55, 0.13), transparent 56%),
-    radial-gradient(ellipse at 84% 38%, rgba(34, 197, 94, 0.095), transparent 58%);
+    repeating-linear-gradient(107deg, transparent 0 66px, rgba(212, 175, 55, 0.032) 67px 68px, transparent 69px 158px),
+    radial-gradient(ellipse at 18% 24%, rgba(212, 175, 55, 0.09), transparent 58%),
+    radial-gradient(ellipse at 84% 38%, rgba(34, 197, 94, 0.07), transparent 60%);
   background-size: 260px 260px, 100% 100%, 100% 100%;
   -webkit-mask-image:
     linear-gradient(180deg, transparent 0%, #000 8%, #000 94%, transparent 100%),
@@ -2660,9 +2688,9 @@ section {
 
 .pricing-page-motion::after {
   background:
-    radial-gradient(34% 30% at 77% 12%, rgba(212, 175, 55, 0.16), transparent 74%),
-    radial-gradient(44% 40% at 15% 34%, rgba(212, 175, 55, 0.09), transparent 74%),
-    radial-gradient(42% 42% at 84% 76%, rgba(34, 197, 94, 0.1), transparent 76%),
+    radial-gradient(34% 30% at 77% 12%, rgba(212, 175, 55, 0.11), transparent 74%),
+    radial-gradient(44% 40% at 15% 34%, rgba(212, 175, 55, 0.065), transparent 74%),
+    radial-gradient(42% 42% at 84% 76%, rgba(34, 197, 94, 0.075), transparent 76%),
     linear-gradient(180deg, rgba(10, 14, 20, 0) 0%, rgba(10, 14, 20, 0.36) 100%);
   animation: bgGlowBreath 16s ease-in-out infinite alternate;
 }
@@ -2704,7 +2732,7 @@ section {
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
-  opacity: 0.96;
+  opacity: 0.72;
   -webkit-mask-image: radial-gradient(150% 135% at 60% 32%, #000 0%, #000 58%, transparent 100%);
   mask-image: radial-gradient(150% 135% at 60% 32%, #000 0%, #000 58%, transparent 100%);
 }
@@ -2721,7 +2749,7 @@ section {
   position: relative;
   overflow: hidden;
   z-index: 1;
-  padding: clamp(138px, 14vw, 188px) 0 clamp(78px, 8vw, 118px);
+  padding: clamp(124px, 11vw, 164px) 0 clamp(56px, 6vw, 86px);
 }
 
 .pricing-hero::before {
@@ -2768,12 +2796,12 @@ section {
 }
 
 .pricing-hero .lead {
-  max-width: 66ch;
-  margin-top: 28px;
+  max-width: 58ch;
+  margin-top: 24px;
   margin-bottom: 0;
   color: var(--ink-mute);
   font-size: clamp(1.06rem, 1.25vw, 1.28rem);
-  line-height: 1.6;
+  line-height: 1.52;
   text-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
 }
 
@@ -2782,7 +2810,7 @@ section {
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
-  margin-top: 34px;
+  margin-top: 30px;
 }
 
 .pricing-hero-actions .btn-tg {
@@ -2816,7 +2844,7 @@ section {
 
 .pricing-meta.hero-meta {
   width: min(100%, 700px);
-  margin-top: 34px;
+  margin-top: 30px;
   border-top-color: rgba(212, 175, 55, 0.22);
 }
 
@@ -2825,6 +2853,7 @@ section {
 }
 
 .pricing-page-motion .pricing-intro-line.reveal {
+  opacity: 1;
   transform: translate3d(0, 24px, 0);
   transition-property: opacity, transform;
   transition-duration: 0.82s;
@@ -2840,11 +2869,11 @@ section {
 .pricing-page-motion .pricing-plans {
   position: relative;
   z-index: 1;
-  margin-top: clamp(54px, 6vw, 84px);
-  align-items: stretch;
+  margin-top: clamp(34px, 4.5vw, 58px);
+  align-items: start;
   isolation: isolate;
-  perspective: 1400px;
-  transform-style: preserve-3d;
+  perspective: none;
+  transform-style: flat;
 }
 
 .pricing-page-motion .pricing-plans::before {
@@ -2861,8 +2890,8 @@ section {
     radial-gradient(52% 36% at 18% 14%, rgba(34, 197, 94, 0.12), transparent 72%),
     radial-gradient(44% 34% at 72% 18%, rgba(212, 175, 55, 0.12), transparent 74%),
     linear-gradient(90deg, rgba(9, 13, 20, 0), rgba(212, 175, 55, 0.06), rgba(9, 13, 20, 0));
-  filter: blur(18px);
-  opacity: 0.78;
+  filter: blur(24px);
+  opacity: 0.48;
 }
 
 .pricing-page-motion .pricing-plan-card {
@@ -2870,11 +2899,12 @@ section {
   --my: 24%;
   --float-y: 0px;
   overflow: hidden;
-  min-height: 100%;
+  min-height: 0;
+  height: auto;
   border-color: rgba(255, 255, 255, 0.095);
   background:
-    radial-gradient(circle at var(--mx) var(--my), rgba(255, 255, 255, 0.105), transparent 25%),
-    radial-gradient(75% 60% at 50% -18%, rgba(255, 255, 255, 0.08), transparent 62%),
+    radial-gradient(circle at var(--mx) var(--my), rgba(255, 255, 255, 0.08), transparent 25%),
+    radial-gradient(75% 60% at 50% -18%, rgba(255, 255, 255, 0.055), transparent 62%),
     linear-gradient(180deg, rgba(18, 24, 34, 0.94), rgba(10, 15, 23, 0.985));
   -webkit-backdrop-filter: blur(12px) saturate(1.05);
   backdrop-filter: blur(12px) saturate(1.05);
@@ -2893,40 +2923,31 @@ section {
   will-change: opacity, transform, filter;
 }
 
-.pricing-page-motion .pricing-plan-card.reveal {
-  transform: translateY(var(--float-y));
-}
-
+.pricing-page-motion .pricing-plan-card.reveal,
 .pricing-page-motion .pricing-plan-card.reveal.in {
-  animation: pricingCardFloat 8.5s ease-in-out infinite;
-  animation-delay: calc((var(--motion-index, 3) - 3) * -1.4s);
+  opacity: 1;
+  transform: none;
+  animation: none;
 }
 
-.pricing-page-motion .pricing-plan-card.in:hover {
-  border-color: rgba(212, 175, 55, 0.54);
-  filter: saturate(1.05);
-  animation-play-state: paused;
-  transform: translateY(calc(var(--float-y) - 10px));
-  box-shadow:
-    0 52px 120px -74px rgba(0, 0, 0, 0.98),
-    0 20px 70px -54px rgba(212, 175, 55, 0.38),
-    inset 0 1px 0 rgba(255, 255, 255, 0.11);
+@media (pointer: fine) {
+  .pricing-page-motion .pricing-plan-card:hover {
+    border-color: rgba(212, 175, 55, 0.54);
+    filter: saturate(1.04);
+    transform: translateY(-6px);
+    box-shadow:
+      0 42px 110px -76px rgba(0, 0, 0, 0.98),
+      0 18px 64px -54px rgba(212, 175, 55, 0.32),
+      inset 0 1px 0 rgba(255, 255, 255, 0.11);
+  }
 }
 
 .pricing-page-motion .pricing-plan-card.is-spotlit {
   border-color: rgba(212, 175, 55, 0.48);
 }
 
-.pricing-page-motion .pricing-plan-card:nth-child(1) {
-  --float-y: 18px;
-}
-
-.pricing-page-motion .pricing-plan-card:nth-child(2) {
-  --float-y: -6px;
-}
-
-.pricing-page-motion .pricing-plan-card:nth-child(3) {
-  --float-y: 10px;
+.pricing-page-motion .pricing-plan-card:nth-child(n) {
+  --float-y: 0px;
 }
 
 @keyframes pricingCardFloat {
@@ -2944,6 +2965,31 @@ section {
   border-color: rgba(212, 175, 55, 0.24);
 }
 
+.pricing-page-motion .plan-free {
+  opacity: 0.86;
+  border-color: rgba(255, 255, 255, 0.075);
+  background:
+    radial-gradient(75% 60% at 50% -18%, rgba(255, 255, 255, 0.045), transparent 62%),
+    linear-gradient(180deg, rgba(15, 21, 30, 0.9), rgba(9, 14, 22, 0.965));
+}
+
+.pricing-page-motion .pricing-plan-card.plan-free.reveal,
+.pricing-page-motion .pricing-plan-card.plan-free.reveal.in {
+  opacity: 0.86;
+}
+
+.pricing-page-motion .plan-recommended {
+  border-color: rgba(34, 197, 94, 0.32);
+  box-shadow:
+    0 38px 110px -76px rgba(34, 197, 94, 0.46),
+    0 34px 90px -72px rgba(0, 0, 0, 0.96),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.pricing-page-motion .plan-recommended .plan-head {
+  padding-right: 132px;
+}
+
 .pricing-page-motion .plan-paid:not(.premium) {
   background:
     radial-gradient(circle at var(--mx) var(--my), rgba(212, 175, 55, 0.16), transparent 26%),
@@ -2956,6 +3002,18 @@ section {
     0 44px 130px -78px rgba(212, 175, 55, 0.76),
     0 34px 100px -70px rgba(0, 0, 0, 0.98),
     inset 0 1px 0 rgba(255, 255, 255, 0.09);
+  transform: translateY(-8px);
+}
+
+.pricing-page-motion .pricing-plan-card.plan-complete.reveal,
+.pricing-page-motion .pricing-plan-card.plan-complete.reveal.in {
+  transform: translateY(-8px);
+}
+
+@media (pointer: fine) {
+  .pricing-page-motion .plan-complete:hover {
+    transform: translateY(-12px);
+  }
 }
 
 .pricing-page-motion .plan-complete .plan-head {
@@ -2987,6 +3045,12 @@ section {
   z-index: 1;
 }
 
+.pricing-page-motion .plan-badge-muted {
+  background: rgba(34, 197, 94, 0.16);
+  border: 1px solid rgba(34, 197, 94, 0.34);
+  color: #72E6A1;
+}
+
 .pricing-page-motion .pricing-plan-card:not(.premium)::before {
   content: '';
   position: absolute;
@@ -3005,8 +3069,8 @@ section {
 }
 
 .pricing-page-motion .pricing-plan-card :is(.plan-head, .plan-price-row, .plan-summary, .plan-metrics, .plan-divider, li, .btn-tg) {
-  opacity: 0;
-  transform: translate3d(0, 14px, 0);
+  opacity: 1;
+  transform: none;
   transition:
     opacity 0.52s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.52s cubic-bezier(0.16, 1, 0.3, 1);
@@ -3050,6 +3114,19 @@ section {
   .pricing-page-motion .plan-complete .plan-head {
     padding-right: 0;
   }
+
+  .pricing-page-motion .plan-recommended .plan-head {
+    padding-right: 0;
+  }
+
+  .pricing-page-motion .plan-complete {
+    transform: none;
+  }
+
+  .pricing-page-motion .pricing-plan-card.plan-complete.reveal,
+  .pricing-page-motion .pricing-plan-card.plan-complete.reveal.in {
+    transform: none;
+  }
 }
 
 /* Mobile: drop the per-card backdrop blur (heavy GPU pass) and use a more
@@ -3072,21 +3149,23 @@ section {
 
 @media (max-width: 720px) {
   .pricing-hero {
-    padding: 118px 0 68px;
+    padding: 96px 0 34px;
   }
 
   .pricing-hero h1 {
-    max-width: 10ch;
-    font-size: clamp(3rem, 14vw, 4.5rem);
+    max-width: 11ch;
+    font-size: clamp(2.65rem, 12vw, 3.7rem);
+    line-height: 0.98;
   }
 
   .pricing-hero .lead {
-    margin-top: 22px;
-    font-size: 1.02rem;
+    margin-top: 18px;
+    font-size: 0.98rem;
+    line-height: 1.5;
   }
 
   .pricing-hero-actions {
-    margin-top: 28px;
+    margin-top: 22px;
   }
 
   .pricing-hero-actions .btn-tg,
@@ -3096,7 +3175,11 @@ section {
   }
 
   .pricing-meta.hero-meta {
-    margin-top: 28px;
+    margin-top: 22px;
+  }
+
+  .pricing-page-motion .pricing-plans {
+    margin-top: 26px;
   }
 
   .pricing-page-motion .pricing-plan-card.in li:nth-child(n) {
@@ -3112,15 +3195,22 @@ section {
   .pricing-hero::before {
     left: 24px;
     right: 24px;
-    top: 104px;
+    top: 86px;
+  }
+
+  .pricing-page-motion .pricing-plan-card > .plan-badge {
+    position: static;
+    align-self: flex-start;
+    max-width: 100%;
+    margin-bottom: 14px;
   }
 
   .pricing-page-motion .pricing-plan-card :is(.plan-head, .plan-price-row, .plan-summary, .plan-metrics, .plan-divider, li, .btn-tg) {
-    transform: translate3d(0, 10px, 0);
+    transform: none;
   }
 
   .pricing-page-motion .plan {
-    padding: 24px 20px;
+    padding: 22px 18px;
   }
 
   .pricing-page-motion .plan-head {
@@ -3151,7 +3241,7 @@ section {
   }
 
   .pricing-page-motion .plan-summary {
-    margin-top: 12px;
+    margin-top: 10px;
     min-height: auto;
     font-size: 0.88rem;
   }
@@ -3181,21 +3271,23 @@ section {
   }
 
   .pricing-page-motion .plan-divider {
-    margin: 20px 0;
+    margin: 16px 0;
   }
 
   .pricing-page-motion .plan ul {
-    gap: 9px;
-    margin-bottom: 24px;
+    gap: 8px;
+    margin-bottom: 20px;
   }
 
   .pricing-page-motion .plan ul li {
     gap: 10px;
-    font-size: 0.9rem;
+    font-size: 0.86rem;
+    line-height: 1.42;
   }
 
   .pricing-page-motion .plan .btn-tg {
     min-height: 52px;
+    white-space: nowrap;
   }
 }
 
@@ -3263,6 +3355,19 @@ section {
 
   .pricing-page-motion .plan-complete .plan-head {
     padding-right: 0;
+  }
+
+  .pricing-page-motion .plan-recommended .plan-head {
+    padding-right: 0;
+  }
+
+  .pricing-page-motion .plan-complete {
+    transform: none;
+  }
+
+  .pricing-page-motion .pricing-plan-card.plan-complete.reveal,
+  .pricing-page-motion .pricing-plan-card.plan-complete.reveal.in {
+    transform: none;
   }
 }
 
@@ -3373,8 +3478,14 @@ section {
   transform: translateY(-6px);
 }
 
-.pricing-page-motion .pricing-plan-card:hover {
-  transform: translate3d(0, 0, 0);
+@media (pointer: fine) {
+  .pricing-page-motion .pricing-plan-card:hover {
+    transform: translateY(-6px);
+  }
+
+  .pricing-page-motion .plan-complete:hover {
+    transform: translateY(-12px);
+  }
 }
 
 .plan-head {
@@ -3593,8 +3704,8 @@ section {
   position: absolute;
   inset: -1px;
   border-radius: calc(var(--radius-lg) + 1px);
-  background: conic-gradient(from var(--angle), transparent 60%, var(--gold));
-  animation: rotate 6s linear infinite;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.72), rgba(212, 175, 55, 0.08) 36%, transparent 64%, rgba(212, 175, 55, 0.38));
+  animation: none;
   z-index: -1;
 }
 
@@ -3671,7 +3782,7 @@ section {
   }
 
   .pricing-page-motion .pricing-plan-card {
-    min-height: 720px;
+    min-height: auto;
   }
 
   .pricing-page-motion .plan {
@@ -3728,8 +3839,8 @@ section {
   }
 
   .pricing-page-motion .plan-summary {
-    min-height: 44px;
-    margin-top: 14px;
+    min-height: auto;
+    margin-top: 12px;
     font-size: 0.84rem;
     line-height: 1.48;
   }
@@ -3751,12 +3862,12 @@ section {
   }
 
   .pricing-page-motion .plan-divider {
-    margin: 18px 0;
+    margin: 16px 0;
   }
 
   .pricing-page-motion .plan ul {
-    gap: 9px;
-    margin-bottom: 24px;
+    gap: 8px;
+    margin-bottom: 20px;
   }
 
   .pricing-page-motion .plan ul li {
@@ -3774,6 +3885,7 @@ section {
   .pricing-page-motion .plan .btn-tg {
     min-height: 52px;
     font-size: 0.86rem;
+    white-space: nowrap;
   }
 
   .pricing-page-motion .plan-complete .plan-head {
@@ -3789,9 +3901,9 @@ section {
 
 :root[data-theme="light"] .pricing-page-motion {
   background:
-    radial-gradient(70% 52% at 82% 10%, rgba(15, 122, 61, 0.045), transparent 70%),
-    radial-gradient(58% 44% at 8% 30%, rgba(147, 110, 0, 0.035), transparent 72%),
-    linear-gradient(180deg, #FBFCFD 0%, #F4F7FA 52%, #FFFFFF 100%);
+    radial-gradient(70% 52% at 82% 10%, rgba(15, 122, 61, 0.035), transparent 70%),
+    radial-gradient(58% 44% at 8% 30%, rgba(147, 110, 0, 0.028), transparent 72%),
+    linear-gradient(180deg, #FBFCFD 0%, #F6F8FB 52%, #FFFFFF 100%);
 }
 
 :root[data-theme="light"] .pricing-page-motion::before {
@@ -3813,7 +3925,7 @@ section {
 }
 
 :root[data-theme="light"] .pricing-bg-fx {
-  opacity: 0.18;
+  opacity: 0.12;
   mix-blend-mode: normal;
   filter: saturate(0.5) contrast(0.9);
   -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.32) 0%, #000 18%, #000 72%, transparent 100%);
@@ -3869,21 +3981,46 @@ section {
    the base plan styles so light mode cannot inherit dark card surfaces. */
 :root[data-theme="light"] .pricing-page-motion .pricing-plan-card {
   background:
-    radial-gradient(circle at var(--mx) var(--my), rgba(212, 175, 55, 0.035), transparent 25%),
+    radial-gradient(circle at var(--mx) var(--my), rgba(212, 175, 55, 0.026), transparent 25%),
     #FFFFFF;
   border-color: #DCE2EA;
   color: var(--ink);
   box-shadow:
-    0 34px 90px -58px rgba(31, 41, 55, 0.42),
-    0 20px 70px -64px rgba(147, 110, 0, 0.34),
+    0 28px 76px -58px rgba(31, 41, 55, 0.34),
+    0 16px 58px -56px rgba(147, 110, 0, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+
+:root[data-theme="light"] .pricing-page-motion .plan-free {
+  opacity: 0.86;
+  background:
+    radial-gradient(circle at var(--mx) var(--my), rgba(34, 197, 94, 0.026), transparent 27%),
+    #FFFFFF;
+  border-color: #E4E9F0;
+  box-shadow:
+    0 24px 64px -58px rgba(31, 41, 55, 0.28),
     inset 0 1px 0 rgba(255, 255, 255, 0.96);
 }
 
 :root[data-theme="light"] .pricing-page-motion .plan-paid:not(.premium) {
   background:
-    radial-gradient(circle at var(--mx) var(--my), rgba(212, 175, 55, 0.085), transparent 27%),
+    radial-gradient(circle at var(--mx) var(--my), rgba(34, 197, 94, 0.055), transparent 27%),
+    radial-gradient(80% 58% at 50% -18%, rgba(212, 175, 55, 0.06), transparent 64%),
     #FFFFFF;
-  border-color: rgba(212, 175, 55, 0.42);
+  border-color: rgba(34, 197, 94, 0.34);
+}
+
+:root[data-theme="light"] .pricing-page-motion .plan-recommended {
+  box-shadow:
+    0 34px 90px -62px rgba(15, 122, 61, 0.34),
+    0 18px 66px -58px rgba(31, 41, 55, 0.30),
+    inset 0 1px 0 rgba(255, 255, 255, 0.98);
+}
+
+:root[data-theme="light"] .pricing-page-motion .plan-badge-muted {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(15, 122, 61, 0.24);
+  color: #0F7A3D;
 }
 
 :root[data-theme="light"] .pricing-page-motion .pricing-plan-card.in:hover,
@@ -3892,6 +4029,13 @@ section {
   box-shadow:
     0 48px 110px -64px rgba(31, 41, 55, 0.48),
     0 24px 82px -60px rgba(147, 110, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.98);
+}
+
+:root[data-theme="light"] .pricing-page-motion .plan-complete {
+  box-shadow:
+    0 44px 112px -64px rgba(147, 110, 0, 0.38),
+    0 24px 82px -62px rgba(31, 41, 55, 0.36),
     inset 0 1px 0 rgba(255, 255, 255, 0.98);
 }
 
@@ -9791,7 +9935,7 @@ section {
   transform: translateX(3px);
 }
 
-/* At-a-glance facts — compact 3-up stat strip tied to the methods above */
+/* At-a-glance facts - compact 3-up stat strip tied to the methods above */
 .contact-facts {
   list-style: none;
   margin: 12px 0 0;

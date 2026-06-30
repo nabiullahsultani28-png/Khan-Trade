@@ -29,5 +29,9 @@ IMPROVEMENT_PLAN.md
 # Local Claude Code config
 .claude/
 
+# Local Codex/session artifacts
+.codex-memory.md
+.playwright-cli/
+
 # Local code-intelligence index
 .codegraph/

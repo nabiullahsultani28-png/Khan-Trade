@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>FAQ + CTA — preview</title>
+<title>FAQ + CTA - preview</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -12,7 +12,7 @@
   body { margin: 0; background: var(--bg-base); }
 
   /* ============================================================
-     Animated backdrop — drifting chart-grid + breathing glow
+     Animated backdrop - drifting chart-grid + breathing glow
      ============================================================ */
   .faq-section, .join-section { position: relative; isolation: isolate; }
   .faq-section > .container, .join-section > .container { position: relative; z-index: 1; }
@@ -60,7 +60,7 @@
   .bg-canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
 
   /* ============================================================
-     FAQ v3 — "Support Desk" terminal (master / detail)
+     FAQ v3 - "Support Desk" terminal (master / detail)
      ============================================================ */
   .faq-section { padding: clamp(64px, 7vw, 112px) 0 clamp(40px, 4vw, 72px); }
 
@@ -174,7 +174,7 @@
   .faq2-item.active .faq2-num { color: var(--gold); }
   .faq2-item.active .faq2-chev { color: var(--gold); transform: translateX(3px); }
 
-  /* Hidden source — cloned into the pane on desktop, expanded inline on mobile */
+  /* Hidden source - cloned into the pane on desktop, expanded inline on mobile */
   .faq2-src { display: none; }
 
   /* Answer detail pane */
@@ -215,7 +215,7 @@
   .faq2-detail.anim::before { animation: paneSweep 0.85s cubic-bezier(0.4, 0, 0.1, 1); }
   @keyframes paneSweep { 0% { left: -50%; opacity: 1; } 100% { left: 120%; opacity: 0; } }
 
-  /* live equalizer — ambient motion while reading */
+  /* live equalizer - ambient motion while reading */
   @keyframes liveBar { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1); } }
   .faq2-ans-tag {
     display: flex; align-items: center; gap: 16px;
@@ -289,7 +289,7 @@
   }
 
   /* ============================================================
-     Final CTA — anchored panel
+     Final CTA - anchored panel
      ============================================================ */
   .join-section { padding: clamp(36px, 4vw, 60px) 0 clamp(72px, 7vw, 112px); }
   .join-panel {
@@ -322,7 +322,7 @@
     will-change: transform;
   }
 
-  /* Idle float — gentle, staggered, organic. Starts only once the card has
+  /* Idle float - gentle, staggered, organic. Starts only once the card has
      revealed (.in) so it doesn't fight the entrance transition. */
   .join-section .join-tier.reveal.in {
     animation: tierFloat 6s ease-in-out infinite;
@@ -375,7 +375,7 @@
   .join-foot .join-note { margin: 22px 0 0; font-size: 0.95rem; color: var(--ink-mute); }
 
   /* ============================================================
-     Motion — staggered, blur-in scroll reveal
+     Motion - staggered, blur-in scroll reveal
      ============================================================ */
   .faq-section .reveal,
   .join-section .reveal {
@@ -391,7 +391,7 @@
   }
 
   /* ============================================================
-     Mobile — terminal collapses to an accordion
+     Mobile - terminal collapses to an accordion
      ============================================================ */
   @media (max-width: 900px) {
     .faq2-head { flex-direction: column; align-items: flex-start; }
@@ -651,7 +651,7 @@
     })();
 
     /* ============================================================
-       Canvas backdrop — aurora orbs behind a MAGNETIC DOT MATRIX:
+       Canvas backdrop - aurora orbs behind a MAGNETIC DOT MATRIX:
        an ordered grid of dots that breathes with a slow brightness
        wave and ripples/repels away from the cursor (spring return),
        brightening to gold near the pointer.
@@ -741,7 +741,7 @@
                 d.vy += (dy / dd) * push * 0.05;
               }
             }
-            // shockwave impulse — dots near the expanding ring get shoved outward
+            // shockwave impulse - dots near the expanding ring get shoved outward
             for (var s2 = 0; s2 < ripples.length; s2++) {
               var rp2 = ripples[s2];
               var rx = d.hx - rp2.x, ry = d.hy - rp2.y;
@@ -761,7 +761,7 @@
             d.prox = prox;
           }
 
-          // energized mesh — links to right & bottom neighbours, gold near the cursor
+          // energized mesh - links to right & bottom neighbours, gold near the cursor
           for (var li = 0; li < dots.length; li++) {
             var a = dots[li];
             var col = li % cols;

@@ -185,7 +185,7 @@
     }
 
     // Redraw only while the eased pan is still catching up to the scroll
-    // target. Once it settles, the loop stops — idle frames cost nothing.
+    // target. Once it settles, the loop stops - idle frames cost nothing.
     function loop() {
       _raf = null;
       if (reduce || !onScreen || document.hidden) return;
