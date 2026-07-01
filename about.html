@@ -853,6 +853,12 @@
     padding: clamp(28px, 3vw, 44px) clamp(26px, 3vw, 46px);
     min-height: 348px;
   }
+  .faq2-detail-content:empty { display: none; }
+  .faq2:not(.has-open) .faq2-detail {
+    background:
+      radial-gradient(circle at 82% 20%, rgba(212, 175, 55, 0.035), transparent 28%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.012), transparent 52%);
+  }
   .faq2-detail::after {
     content: attr(data-wm);
     position: absolute; top: 16px; right: 26px;
@@ -868,6 +874,7 @@
   }
   @keyframes wmBreath { 0%, 100% { opacity: 0.05; } 50% { opacity: 0.1; } }
   .faq2-detail.anim::after { animation: wmFlash 0.7s var(--ease-out) both, wmBreath 4.5s ease-in-out 0.7s infinite; }
+  .faq2:not(.has-open) .faq2-detail::after { content: ''; animation: none; }
   @keyframes wmFlash {
     0% { opacity: 0; transform: translateY(8px) scale(0.9); }
     55% { opacity: 0.2; }
@@ -1340,8 +1347,8 @@
         <div class="faq2-body">
           <div class="faq2-list" role="tablist" aria-label="Legal &amp; privacy policies">
 
-            <div class="faq2-item active" id="privacy">
-              <button class="faq2-q" aria-expanded="true">
+            <div class="faq2-item" id="privacy">
+              <button class="faq2-q" aria-expanded="false">
                 <span class="faq2-num">01</span>
                 <span class="faq2-q-text">Privacy Policy</span>
                 <svg class="faq2-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6" /></svg>
@@ -1439,7 +1446,7 @@
 
           </div>
 
-          <div class="faq2-detail" data-wm="01" aria-live="polite">
+          <div class="faq2-detail" data-wm="" aria-live="polite">
             <div class="faq2-detail-content"></div>
           </div>
         </div>
@@ -1525,9 +1532,15 @@
     var detail = root.querySelector('.faq2-detail');
     var content = detail.querySelector('.faq2-detail-content');
     var mqMobile = window.matchMedia('(max-width: 900px)');
-    var current = 0;
+    var current = -1;
 
     function paintDetail(i) {
+      if (i < 0) {
+        content.innerHTML = '';
+        detail.setAttribute('data-wm', '');
+        detail.classList.remove('anim');
+        return;
+      }
       var inner = items[i].querySelector('.faq2-src-inner');
       content.innerHTML = inner.innerHTML;
       detail.setAttribute('data-wm', items[i].querySelector('.faq2-num').textContent.trim());
@@ -1546,22 +1559,20 @@
 
     function select(i) {
       current = i;
+      root.classList.toggle('has-open', i >= 0);
       setActive(i);
       if (!mqMobile.matches && i >= 0) paintDetail(i);
+      else if (i < 0) paintDetail(-1);
     }
 
     items.forEach(function (it, idx) {
       it.querySelector('.faq2-q').addEventListener('click', function () {
-        if (mqMobile.matches) {
-          select(it.classList.contains('active') ? -1 : idx);
-        } else if (idx !== current) {
-          select(idx);
-        }
+        select(idx === current ? -1 : idx);
       });
     });
 
     var onMqChange = function () {
-      if (!mqMobile.matches) { if (current < 0) current = 0; select(current); }
+      select(current);
     };
     if (mqMobile.addEventListener) mqMobile.addEventListener('change', onMqChange);
     else mqMobile.addListener(onMqChange);
@@ -1577,7 +1588,7 @@
     }
     window.addEventListener('hashchange', openFromHash);
 
-    select(0);
+    select(-1);
     if (location.hash) setTimeout(openFromHash, 80);
   })();
 
